@@ -1,0 +1,91 @@
+import { T } from "../../compiler/compile";
+import { CPP } from "../langue/cpp";
+import { ConfigurationBase } from "./configuration_base";
+
+export class ConfigurationCPP extends CPP implements ConfigurationBase {
+
+    constructor(namespace: string, path: string, fileName: string) {
+        super(namespace, path, fileName);
+    }
+
+    public precompile(declaration: string): void {
+        {
+            let content: string = `#pragma once` +
+                "\n#include <tuple>" +
+                "\n#include <string>" +
+                "\n#include <vector>" +
+                "\n#include <optional>" +
+                "\n#include <unordered_map>\n" +
+
+                `\n/* ${declaration} */` +
+                `\nnamespace ${this.namespace} \n{` +
+                `\n${T}using int64 = int64_t;` +
+                `\n${T}using int32 = int32_t;` +
+                `\n${T}using namespace std;`;
+            this.addHeadContent(content);
+        }
+        {
+            let content: string = "" +
+                "\n#include <tuple>" +
+                "\n#include <string>" +
+                "\n#include <vector>" +
+                "\n#include <optional>" +
+                "\n#include <unordered_map>\n" +
+                `\n#include \"${this.fileName}.h\"\n` +
+
+                `\n/* ${declaration} */` +
+                `\nnamespace ${this.namespace} \n{` +
+                `\n${T}using namespace std;`;
+            this.addSourceContent(content);
+        }
+    }
+
+    public compileTypeNames(files: FileMeta[], exportType: ExportType): void {
+        let content = `\n${T}namespace TypeNames\n${T}{`;
+        for (const meta of files) {
+            if (meta.format & exportType) {
+                content += `\n${T}${T}/* ${meta.name} */`;
+                content += `\n${T}${T}const string ${meta.jsonName} = \"${meta.jsonName}\";`;
+            }
+        }
+        content += `\n${T}};\n`;
+        this.addHeadContent(content);
+    }
+
+    public compileTypes(files: FileMeta[], exportType: ExportType): void {
+        let content = `\n${T}namespace Types\n${T}{`;
+        for (const meta of files) {
+            if (meta.format & exportType) {
+                content += `\n${T}${T}/* ${meta.name} */`;
+                content += `\n${T}${T}${this.className(meta.element)} ${meta.jsonName};`;
+            }
+        }
+        content += `\n${T}};\n`;
+        this.addHeadContent(content);
+    }
+
+    public compileStruct(files: FileMeta[], exportType: ExportType): void {
+        let content = `\n${T}namespace Struct\n${T}{`;
+        for (const meta of files) {
+            if (meta.format & exportType) {
+                content += `\n${T}${T}/* ${meta.name} */`;
+                switch (meta.type) {
+                    case FileType.tuple: {
+                        content += `\n${T}${T}using ${meta.jsonName} = ${this.className(meta.element)};`;
+                        break;
+                    }
+                    case FileType.array: {
+                        content += `\n${T}${T}using ${meta.jsonName} = std::vector<${this.className(meta.element)}>;`;
+                        break;
+                    }
+                    case FileType.hash: {
+                        content += `\n${T}${T}using ${meta.jsonName} = std::unordered_map<string, ${this.className(meta.element)}>;`;
+                        break;
+                    }
+                }
+            }
+        }
+        content += `\n${T}};\n`;
+        this.addHeadContent(content);
+    }
+}

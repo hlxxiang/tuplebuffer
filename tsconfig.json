@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "sourceMap": true,
+    "removeComments": true,
+    "outDir": "bin",
+    "esModuleInterop": false,
+    "diagnostics": true,
+    "noEmitOnError": true,
+    "noEmitHelpers": true,
+    "listEmittedFiles": true,
+    "listFiles": true,
+    "preserveSymlinks": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": false,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": false,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "alwaysStrict": true,
+    "newLine": "crlf",
+  },
+  "exclude": [
+    "node_modules",
+    "export/inspect.ts",
+  ],
+  "include": [
+    "libs/*",
+    "libs/**/*",
+    "src/*",
+    "src/**/*"
+  ]
+}
