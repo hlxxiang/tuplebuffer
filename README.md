@@ -61,15 +61,37 @@
         0：客户端(客户端看成一个服务)
         1: Gateway服务
         ...
-
+    
+    支持自定义 RPC 协议，RPC 服务器框架未给出相关代码，待定
+         RPC 协议：
+         `
+         Protocols.protocol(
+            "AuthClient", "客户端验证",
+            GroupType.Client, ServiceType.Gateway, GatewaySegment.Common,
+            [
+                //第一个结构里面是请求的数据
+                string("account", "账号"),
+            ],
+            [
+                //第二个结构里面是返回的数据
+                int64("code", "错误码"),
+            ],
+        );
+         `
+        普通协议
+        `
+        Protocols.protocol(
+            "Ping", "客户端心跳",
+            GroupType.Client, ServiceType.Gateway, GatewaySegment.Common
+        );
+        `
     解析协议
-        如: 协议号 opcode = 0x100000
+        如: 协议号 opcode: AuthClient = 0x100000
           groupType = opcode & Protocols.ProtocolMask.ServiceMask;
           serviceType = opcode & Protocols.ProtocolMask.ServiceMask;
         此时:
           groupType == Protocols.GroupType.Client;
           serviceType == Protocols.ServiceType.Gateway;
-
 ```
 
 #### 3. 数据库
@@ -98,6 +120,6 @@
     enums.ts：引用需要生成枚举的源码文件
 ```
 
-线上项目10万MMO游戏角色数据在 Redis 上只占 2.5G 运行内存，RDB 文件大小 1G，稍加修改源码可以将前端配置打成一个配置占用磁盘不到 3M，非常适合h5游戏.
+线上项目10万MMO游戏角色数据在 Redis 上只占 2.5G 运行内存，RDB 文件大小 1G，稍加修改源码可以将前端配置打成一个配置，MMO项目占用磁盘不到 3M，非常适合h5游戏.
 
 详细使用教程，待完善.
