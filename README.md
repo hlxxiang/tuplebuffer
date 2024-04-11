@@ -53,7 +53,7 @@
     protocols.ts：引用需要生成协议的源码文件
 
     协议号组成
-        协议号 = GroupType << 24 | ServiceType << 20 | i，即：消息发送给 group 的 service 服务
+        协议号 = GroupType << 24 | ServiceType << 20 | i，即：group (来源) 的消息发送给 service 服务
     自定义组类型 GroupType
         0：客户端
         1: 服务器
