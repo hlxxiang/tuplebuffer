@@ -21,7 +21,7 @@ export class Enum {
     }
 
     public static async compile(path: string, langueType: LangueType): Promise<void> {
-        let langue = new (langueList.get(langueType))(this._namespace, path, `enum`);
+        let langue = new (langueList.get(langueType))(this._namespace, path, `Enum`);
         langue.precompile(this._declaration);
         langue.compileEnum();
         langue.saveFile();

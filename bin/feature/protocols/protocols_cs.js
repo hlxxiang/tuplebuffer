@@ -16,9 +16,37 @@ class ProtocolsCS extends cs_1.CS {
     precompile(declaration) {
         let content = `` +
             "\nusing MessagePack;" +
+            "\nusing System;" +
             "\nusing System.Collections.Generic;" +
             `\n/* ${declaration} */` +
-            `\nnamespace ${this.namespace}\n{`;
+            `\nnamespace ${this.namespace}\n{` +
+            `\n${compile_1.T}/// <summary> 协议接口 </summary>` +
+            `\n${compile_1.T}public interface IProtocols` +
+            `\n${compile_1.T}{` +
+            `\n` +
+            `\n${compile_1.T}}` +
+            `\n` +
+            `\n${compile_1.T}/// <summary> 普通协议 </summary>` +
+            `\n${compile_1.T}/// <typeparam name="T1">发送协议参数类型</typeparam>` +
+            `\n${compile_1.T}/// <typeparam name="OP">协议号</typeparam>` +
+            `\n${compile_1.T}public class Send<T1, OP> : IProtocols` +
+            `\n${compile_1.T}{` +
+            `\n${compile_1.T}${compile_1.T}/// <summary> 发送的消息 </summary>` +
+            `\n${compile_1.T}${compile_1.T}public T1 Request;` +
+            `\n${compile_1.T}}` +
+            `\n` +
+            `\n${compile_1.T}/// <summary> RPC 协议 </summary>` +
+            `\n${compile_1.T}/// <typeparam name="T1">请求</typeparam>` +
+            `\n${compile_1.T}/// <typeparam name="T2">回应</typeparam>` +
+            `\n${compile_1.T}/// <typeparam name="OP">协议号</typeparam>` +
+            `\n${compile_1.T}public class Call<T1, T2, OP> : IProtocols` +
+            `\n${compile_1.T}{` +
+            `\n${compile_1.T}${compile_1.T}/// <summary> 发送的消息 </summary>` +
+            `\n${compile_1.T}${compile_1.T}public T1 Request;` +
+            `\n${compile_1.T}${compile_1.T}/// <summary> 返回的消息 </summary>` +
+            `\n${compile_1.T}${compile_1.T}public T2 Reply;` +
+            `\n${compile_1.T}}` +
+            `\n`;
         this.addContent(content);
     }
     compileEnum(name, elements) {
@@ -67,7 +95,7 @@ class ProtocolsCS extends cs_1.CS {
                 s2s_result += this.compileCommand_s2s(channels, name, pair[1]);
             }
         }
-        content += `\n${compile_1.T}public enum ${name}${this.commandSuffix} {`;
+        content += `\n${compile_1.T}public enum ${name}${this.commandSuffix}\n${compile_1.T}{`;
         if (c2s_result.length > 0) {
             content += c2s_result;
         }
@@ -141,7 +169,7 @@ class ProtocolsCS extends cs_1.CS {
                 if (meta.comment != null) {
                     content += `\n${compile_1.T}${compile_1.T}/// <summary> ${meta.comment} </summary>`;
                 }
-                content += `\n${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)},`;
+                content += `\n${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)}`;
             }
         }
         content += `\n${compile_1.T}};`;
@@ -161,33 +189,9 @@ class ProtocolsCS extends cs_1.CS {
     }
     compileGroupTypes(name, group, channelDefine) {
         let content = "";
-        let first = "C";
-        let second = "S";
         for (const pair of channelDefine) {
             let channels = group[pair[0]];
             if (channels != null) {
-                if (name == "Client") {
-                    first = "";
-                    second = "";
-                }
-                else if (pair[1] == "Client") {
-                    first = "";
-                    second = "";
-                }
-                else {
-                    if (name == "System") {
-                        first = "S";
-                        second = pair[1];
-                    }
-                    else if (pair[1] == "System") {
-                        first = name;
-                        second = "S";
-                    }
-                    else {
-                        first = name;
-                        second = pair[1];
-                    }
-                }
                 for (let segment of channels) {
                     for (let i = 0, size = segment[1].length; i < size; ++i) {
                         let meta = segment[1][i];
@@ -195,13 +199,19 @@ class ProtocolsCS extends cs_1.CS {
                             if (meta.metaRpc.comment) {
                                 content += `\n${compile_1.T}${compile_1.T}/// <summary> ${meta.metaRpc.comment} </summary>`;
                             }
-                            content += `\n${compile_1.T}${compile_1.T}using ${this.className(meta.meta)} = Tuple<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}>;`;
+                            content += `\n${compile_1.T}${compile_1.T}public class ${this.className(meta.meta)}Oper : Call<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}, ${name}${this.commandSuffix}>`;
+                            content += `\n${compile_1.T}${compile_1.T}{`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}public const ${name}${this.commandSuffix} Opcode = ${name}${this.commandSuffix}.${this.className(meta.meta)};`;
+                            content += `\n${compile_1.T}${compile_1.T}}`;
                         }
                         else {
                             if (meta.meta.comment) {
                                 content += `\n${compile_1.T}${compile_1.T}/// <summary> ${meta.meta.comment} </summary>`;
                             }
-                            content += `\n${compile_1.T}${compile_1.T}using ${this.className(meta.meta)} = Tuple<${this.className(meta.meta)}>;`;
+                            content += `\n${compile_1.T}${compile_1.T}public class ${this.className(meta.meta)}Oper : Send<${this.className(meta.meta)}, ${name}${this.commandSuffix}>`;
+                            content += `\n${compile_1.T}${compile_1.T}{`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}public const ${name}${this.commandSuffix} Opcode = ${name}${this.commandSuffix}.${this.className(meta.meta)};`;
+                            content += `\n${compile_1.T}${compile_1.T}}`;
                         }
                     }
                 }

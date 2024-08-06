@@ -105,10 +105,6 @@ class Protocols {
             }
         }
         if (fieldsReply) {
-            if (channel == 0) {
-                log_1.Log.instance.error(`不能请求客户端RPC消息`);
-                throw new Error("不能请求客户端RPC消息");
-            }
             let nameReply = name + "Reply";
             if (fieldsReply instanceof Array) {
                 meta.metaRpc = (0, compile_1.tuple)(nameReply, fieldsReply, "RPC返回:" + comment);
@@ -154,7 +150,7 @@ class Protocols {
         this._protocols.push(meta);
     }
     static compile(path, langueType) {
-        let langue = new (langueList.get(langueType))(this._namespace, path, `protocols`);
+        let langue = new (langueList.get(langueType))(this._namespace, path, `Protocols`);
         langue.init(this._maxOpcode, this._channelLimit, this._commandSuffix);
         langue.precompile(this._declaration);
         langue.compileEnum(this._rpcFields, this._rpcDefine);

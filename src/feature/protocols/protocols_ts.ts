@@ -164,7 +164,7 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
             result += `${T}/***************************************${v[1]}命令***************************************/\n\n`;
             result += this.compileGroupTypes(v[1], list, channelDefine);
         }
-        content += `${T}\n`;
+        content += result + `${T}}\n`;
 
         this.addContent(content);
     }

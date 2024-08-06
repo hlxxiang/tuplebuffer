@@ -21,9 +21,38 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
     public precompile(declaration: string): void {
         let content: string = `` +
             "\nusing MessagePack;" +
+            "\nusing System;" +
             "\nusing System.Collections.Generic;" +
             `\n/* ${declaration} */` +
-            `\nnamespace ${this.namespace}\n{`;
+            `\nnamespace ${this.namespace}\n{` +
+            `\n${T}/// <summary> 协议接口 </summary>` +
+            `\n${T}public interface IProtocols` +
+            `\n${T}{` +
+            `\n`+
+            `\n${T}}` +
+            `\n`+
+
+            `\n${T}/// <summary> 普通协议 </summary>` +
+            `\n${T}/// <typeparam name="T1">发送协议参数类型</typeparam>` +
+            `\n${T}/// <typeparam name="OP">协议号</typeparam>` +
+            `\n${T}public class Send<T1, OP> : IProtocols` +
+            `\n${T}{` +
+            `\n${T}${T}/// <summary> 发送的消息 </summary>` +
+            `\n${T}${T}public T1 Request;` +
+            `\n${T}}` +
+            `\n`+
+            `\n${T}/// <summary> RPC 协议 </summary>` +
+            `\n${T}/// <typeparam name="T1">请求</typeparam>` +
+            `\n${T}/// <typeparam name="T2">回应</typeparam>` +
+            `\n${T}/// <typeparam name="OP">协议号</typeparam>` +
+            `\n${T}public class Call<T1, T2, OP> : IProtocols` +
+            `\n${T}{` +
+            `\n${T}${T}/// <summary> 发送的消息 </summary>` +
+            `\n${T}${T}public T1 Request;` +
+            `\n${T}${T}/// <summary> 返回的消息 </summary>` +
+            `\n${T}${T}public T2 Reply;` +
+            `\n${T}}`+
+            `\n`;
         this.addContent(content);
     }
 
@@ -77,7 +106,7 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
             }
             // content += this.compileProtocol(channels, name, pair[1]);
         }
-        content += `\n${T}public enum ${name}${this.commandSuffix} {`;
+        content += `\n${T}public enum ${name}${this.commandSuffix}\n${T}{`;
         if (c2s_result.length > 0) {
             content += c2s_result;
         }
@@ -157,7 +186,7 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
                 if (meta.comment != null) {
                     content += `\n${T}${T}/// <summary> ${meta.comment} </summary>`;
                 }
-                content += `\n${T}${T}${meta.name} = 0x${opcode.toString(16)},`;
+                content += `\n${T}${T}${meta.name} = 0x${opcode.toString(16)}`;
             }
         }
         content += `\n${T}};`;
@@ -180,54 +209,42 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
 
     private compileGroupTypes(name: string, group: ProtocolGroup, channelDefine: [number, string, string][]): string {
         let content: string = "";
-        let first = "C";
-        let second = "S";
         for (const pair of channelDefine) {
             let channels = group[pair[0]];
             if (channels != null) {
-                if (name == "Client") {
-                    first = "";
-                    second = "";
-                }
-                else if (pair[1] == "Client") {
-                    first = "";
-                    second = "";
-                }
-                else {
-                    if (name == "System") {
-                        first = "S";
-                        second = pair[1];
-                    }
-                    else if (pair[1] == "System") {
-                        first = name;
-                        second = "S";
-                    }
-                    else {
-                        first = name;
-                        second = pair[1];
-                    }
-                }
-                // result += `${T}${T}//${first}${Second}${this._commandSuffix}\n`;
                 for (let segment of channels) {
                     for (let i = 0, size = segment[1].length; i < size; ++i) {
                         let meta = segment[1][i];
                         // if (meta.metaRpc) {
-                        //     result += `\n${T}${T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}, ${this.className(meta.metaRpc)}],`;
+                        //     if (meta.metaRpc.comment) {
+                        //         content += `\n${T}${T}/// <summary> ${meta.metaRpc.comment} </summary>`;
+                        //     }
+                        //     content += `\n${T}${T}using ${this.className(meta.meta)} = Tuple<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}>;`;
                         // }
                         // else {
-                        //     result += `\n${T}${T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}],`;
+                        //     if (meta.meta.comment) {
+                        //         content += `\n${T}${T}/// <summary> ${meta.meta.comment} </summary>`;
+                        //     }
+                        //     content += `\n${T}${T}using ${this.className(meta.meta)} = Tuple<${this.className(meta.meta)}>;`;
                         // }
+
                         if (meta.metaRpc) {
                             if (meta.metaRpc.comment) {
                                 content += `\n${T}${T}/// <summary> ${meta.metaRpc.comment} </summary>`;
                             }
-                            content += `\n${T}${T}using ${this.className(meta.meta)} = Tuple<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}>;`;
+                            content += `\n${T}${T}public class ${this.className(meta.meta)}Oper : Call<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}, ${name}${this.commandSuffix}>`;
+                            content += `\n${T}${T}{`;
+                            content += `\n${T}${T}${T}public const ${name}${this.commandSuffix} Opcode = ${name}${this.commandSuffix}.${this.className(meta.meta)};`;
+                            content += `\n${T}${T}}`;
                         }
                         else {
                             if (meta.meta.comment) {
                                 content += `\n${T}${T}/// <summary> ${meta.meta.comment} </summary>`;
                             }
-                            content += `\n${T}${T}using ${this.className(meta.meta)} = Tuple<${this.className(meta.meta)}>;`;
+                            content += `\n${T}${T}public class ${this.className(meta.meta)}Oper : Send<${this.className(meta.meta)}, ${name}${this.commandSuffix}>`;
+                            content += `\n${T}${T}{`;
+                            content += `\n${T}${T}${T}public const ${name}${this.commandSuffix} Opcode = ${name}${this.commandSuffix}.${this.className(meta.meta)};`;
+                            content += `\n${T}${T}}`;
                         }
                     }
                 }

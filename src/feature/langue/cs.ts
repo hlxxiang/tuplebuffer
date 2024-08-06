@@ -131,7 +131,7 @@ export abstract class CS extends TupleBase {
                     if (comment != null) {
                         content += `\n${T}${T}/// <summary> ${comment} </summary>`;
                     }
-                    content += `\n${T}${T}[Key(${index})]\n${T}${T}public ${this.className(field.meta)}? ${name};`;
+                    content += `\n${T}${T}[Key(${index})]\n${T}${T}public ${this.className(field.meta)}? ${name} { get; set; }`;
                     index++;
                 }
             }

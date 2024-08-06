@@ -148,7 +148,7 @@ class ProtocolsTS extends ts_1.TS {
             result += `${compile_1.T}/***************************************${v[1]}命令***************************************/\n\n`;
             result += this.compileGroupTypes(v[1], list, channelDefine);
         }
-        content += `${compile_1.T}\n`;
+        content += result + `${compile_1.T}}\n`;
         this.addContent(content);
     }
     compileGroupTypes(name, group, channelDefine) {

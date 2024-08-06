@@ -182,7 +182,7 @@ export class Configuration {
 
     public static compile(path: string, langueType: LangueType): void {
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `server_configuration`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `Server_configuration`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, ExportType.Server);
             langue.compileTypeNames(this._files, ExportType.Server);
@@ -193,7 +193,7 @@ export class Configuration {
             langue.saveFile();
         }
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `client_configuration`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `Client_configuration`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, ExportType.Client);
             langue.compileTypeNames(this._files, ExportType.Client);

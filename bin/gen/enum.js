@@ -11,7 +11,7 @@ class Enum {
         langueList.set(langueType, constructor);
     }
     static async compile(path, langueType) {
-        let langue = new (langueList.get(langueType))(this._namespace, path, `enum`);
+        let langue = new (langueList.get(langueType))(this._namespace, path, `Enum`);
         langue.precompile(this._declaration);
         langue.compileEnum();
         langue.saveFile();

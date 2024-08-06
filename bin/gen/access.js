@@ -63,14 +63,26 @@ class Access {
         this._keys[key] = true;
     }
     static compile(path, langueType) {
-        let langue = new (langueList.get(langueType))(this._namespace, path, `access`);
-        langue.precompile(this._declaration);
-        langue.compileDeclare(this._indexSuffix, 3);
-        for (const group of this._groupDefine) {
-            let list = this._groups[group[0]];
-            langue.compileGroupTypes(group[1], list, this._channelDefine);
+        {
+            let langue = new (langueList.get(langueType))(this._namespace, path, `Server_Access`);
+            langue.precompile(this._declaration);
+            langue.compileDeclare(this._indexSuffix, 1);
+            for (const group of this._groupDefine) {
+                let list = this._groups[group[0]];
+                langue.compileGroupTypes(group[1], list, this._channelDefine);
+            }
+            langue.saveFile();
         }
-        langue.saveFile();
+        {
+            let langue = new (langueList.get(langueType))(this._namespace, path, `Client_Access`);
+            langue.precompile(this._declaration);
+            langue.compileDeclare(this._indexSuffix, 2);
+            for (const group of this._groupDefine) {
+                let list = this._groups[group[0]];
+                langue.compileGroupTypes(group[1], list, this._channelDefine);
+            }
+            langue.saveFile();
+        }
     }
 }
 exports.Access = Access;

@@ -136,7 +136,7 @@ class Configuration {
     }
     static compile(path, langueType) {
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `server_configuration`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `Server_configuration`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, 1);
             langue.compileTypeNames(this._files, 1);
@@ -144,7 +144,7 @@ class Configuration {
             langue.saveFile();
         }
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `client_configuration`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `Client_configuration`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, 2);
             langue.compileTypeNames(this._files, 2);

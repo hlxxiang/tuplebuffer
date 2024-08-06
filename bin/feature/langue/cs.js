@@ -129,7 +129,7 @@ class CS extends tuple_base_1.TupleBase {
                     if (comment != null) {
                         content += `\n${compile_1.T}${compile_1.T}/// <summary> ${comment} </summary>`;
                     }
-                    content += `\n${compile_1.T}${compile_1.T}[Key(${index})]\n${compile_1.T}${compile_1.T}public ${this.className(field.meta)}? ${name};`;
+                    content += `\n${compile_1.T}${compile_1.T}[Key(${index})]\n${compile_1.T}${compile_1.T}public ${this.className(field.meta)}? ${name} { get; set; }`;
                     index++;
                 }
             }

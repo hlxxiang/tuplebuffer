@@ -7,3 +7,8 @@ export class GatewaySegment {
     /** Client 到 Gateway 的消息段 */
     public static Common = Protocols.segment(GroupType.Client, ServiceType.Gateway, null, 100);
 }
+
+export class ClientSegment {
+    /** Client 到 Gateway 的消息段 */
+    public static Common = Protocols.segment(GroupType.System, ServiceType.Client, null, 100);
+}
