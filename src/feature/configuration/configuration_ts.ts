@@ -7,21 +7,21 @@ export class ConfigurationTS extends TS implements ConfigurationBase {
         super(namespace, path, fileName);
     }
     precompile(declaration: string): void {
-        let content: string = `/*${declaration}*/` +
-            "\n" +
-            `declare namespace ${this.namespace} {\n`;
+        let content: string = `declare namespace Gen {\n` +
+            `${T}/*${declaration}*/\n` +
+            `${T}namespace ${this.namespace} {\n`;
         this.addContent(content);
     }
 
     public compileTypeNames(files: FileMeta[], exportType: ExportType): void {
-        let content: string = `${T}const enum StructNames {\n`;
+        let content: string = `${T}${T}const enum StructNames {\n`;
         for (const meta of files) {
             if (meta.format & exportType) {
-                content += `${T}${T}/** ${meta.name} */\n`;
-                content += `${T}${T}${meta.jsonName} = \"${meta.jsonName}\",\n`;
+                content += `${T}${T}${T}/** ${meta.name} */\n`;
+                content += `${T}${T}${T}${meta.jsonName} = \"${meta.jsonName}\",\n`;
             }
         }
-        content += `${T}}\n\n`;
+        content += `${T}${T}}\n\n`;
         this.addContent(content);
     }
 
@@ -38,29 +38,29 @@ export class ConfigurationTS extends TS implements ConfigurationBase {
     }
 
     public compileStruct(files: FileMeta[], exportType: ExportType): void {
-        let content: string = `${T}interface Struct {\n`;
+        let content: string = `${T}${T}interface Struct {\n`;
         for (const meta of files) {
             if (meta.format & exportType) {
                 switch (meta.type) {
                     case FileType.tuple: {
-                        content += `${T}${T}/** ${meta.name} */\n`;
-                        content += `${T}${T}\"${meta.jsonName}\": ${this.className(meta.element)};\n`;
+                        content += `${T}${T}${T}/** ${meta.name} */\n`;
+                        content += `${T}${T}${T}\"${meta.jsonName}\": ${this.className(meta.element)};\n`;
                         break;
                     }
                     case FileType.array: {
-                        content += `${T}${T}/** ${meta.name} */\n`;
-                        content += `${T}${T}\"${meta.jsonName}\": Array<${this.className(meta.element)}>;\n`;
+                        content += `${T}${T}${T}/** ${meta.name} */\n`;
+                        content += `${T}${T}${T}\"${meta.jsonName}\": Array<${this.className(meta.element)}>;\n`;
                         break;
                     }
                     case FileType.hash: {
-                        content += `${T}${T}/** ${meta.name} */\n`;
-                        content += `${T}${T}\"${meta.jsonName}\": Table<${this.className(meta.element)}>;\n`;
+                        content += `${T}${T}${T}/** ${meta.name} */\n`;
+                        content += `${T}${T}${T}\"${meta.jsonName}\": Table<${this.className(meta.element)}>;\n`;
                         break;
                     }
                 }
             }
         }
-        content += `${T}}\n`;
+        content += `${T}${T}}\n`;
         this.addContent(content);
     }
 }

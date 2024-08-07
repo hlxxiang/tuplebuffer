@@ -300,9 +300,9 @@ class CPP extends tuple_base_1.TupleBase {
     compileTupleIndex(meta, indexSuffix, interfaceName, exportType) {
         let content = "";
         if (meta.comment != null) {
-            content += `\n${compile_1.T}/* ${meta.comment} */`;
+            content += `\n${compile_1.T}${compile_1.T}/* ${meta.comment} */`;
         }
-        content += `\n${compile_1.T}struct ${meta.className} : public ${interfaceName}\n${compile_1.T}{\n${compile_1.T}${compile_1.T}using Tuple = std::tuple<${this.classSource(meta, exportType, false)}>;\n`;
+        content += `\n${compile_1.T}${compile_1.T}struct ${meta.className} : public ${interfaceName}\n${compile_1.T}${compile_1.T}{\n${compile_1.T}${compile_1.T}${compile_1.T}using Tuple = std::tuple<${this.classSource(meta, exportType, false)}>;\n`;
         let fields = meta.fields;
         if (fields != null) {
             let index = 0;
@@ -312,32 +312,32 @@ class CPP extends tuple_base_1.TupleBase {
                 if (field.exportType & exportType) {
                     let comment = field.comment;
                     if (comment != null) {
-                        content += `${compile_1.T}${compile_1.T}/* ${comment} */\n`;
+                        content += `${compile_1.T}${compile_1.T}${compile_1.T}/* ${comment} */\n`;
                     }
-                    content += `${compile_1.T}${compile_1.T}${this.className(field.meta, true)} ${name};\n`;
+                    content += `${compile_1.T}${compile_1.T}${compile_1.T}${this.className(field.meta, true)} ${name};\n`;
                     index++;
                 }
             }
         }
-        content += `${compile_1.T}};`;
+        content += `${compile_1.T}${compile_1.T}};`;
         this.addHeadContent(content);
     }
     compileTupleTypeEncode(meta, exportType) {
         {
-            let content = `\n${compile_1.T}${this.classTuple(meta, exportType, true)} ${meta.className}Encode(std::optional<${meta.className}>& obj);`;
+            let content = `\n${compile_1.T}${compile_1.T}${this.classTuple(meta, exportType, true)} ${meta.className}Encode(std::optional<${meta.className}>& obj);`;
             this.addHeadContent(content);
         }
         {
-            let content = `\n${compile_1.T}${this.classTuple(meta, exportType, true)} ${meta.className}Encode(std::optional<${meta.className}>& obj)\n${compile_1.T}{`;
+            let content = `\n${compile_1.T}${compile_1.T}${this.classTuple(meta, exportType, true)} ${meta.className}Encode(std::optional<${meta.className}>& obj)\n${compile_1.T}${compile_1.T}{`;
             this.addSourceContent(content);
         }
     }
     compileTupleIndexEncode(meta, indexSuffix, exportType) {
         let names = Object.create(null);
         let fields = meta.fields;
-        let content = `\n${compile_1.T}${compile_1.T}if (obj.has_value()) {`;
+        let content = `\n${compile_1.T}${compile_1.T}${compile_1.T}if (obj.has_value()) {`;
         if (fields != null) {
-            let ret = `\n${compile_1.T}${compile_1.T}${compile_1.T}auto& oValue = obj.value();`;
+            let ret = `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& oValue = obj.value();`;
             let arrSize = 0;
             for (let i = 0; i < fields.length; ++i) {
                 let field = fields[i];
@@ -346,17 +346,17 @@ class CPP extends tuple_base_1.TupleBase {
                     if (8 == field.meta.metaType) {
                         arrSize++;
                         if (field.metaType == 8 || field.metaType == 10) {
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${this.classTuple(field.meta, exportType, true)} ${name}Arr;`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}if (oValue.${name}.has_value())`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}{`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${name}Arr = ${this.classTuple(field.meta, exportType, false)}();`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& value = ${name}Arr.value();`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& ${name} = oValue.${name}.value();`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}for (auto i = 0; i < ${name}.size(); ++i)`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${this.classTuple(field.meta, exportType, true)} ${name}Arr;`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}if (oValue.${name}.has_value())`;
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}{`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}value.push_back(${this.encode(field.meta, exportType, name, i)});`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${name}Arr = ${this.classTuple(field.meta, exportType, false)}();`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& value = ${name}Arr.value();`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& ${name} = oValue.${name}.value();`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}for (auto i = 0; i < ${name}.size(); ++i)`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}{`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}value.push_back(${this.encode(field.meta, exportType, name, i)});`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}}`;
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}}`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}}`;
                         }
                     }
                 }
@@ -381,7 +381,7 @@ class CPP extends tuple_base_1.TupleBase {
             }
         }
         if (exportIndex > 0) {
-            let str = `\n${compile_1.T}${compile_1.T}${compile_1.T}return ${meta.className}::Tuple(`;
+            let str = `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}return ${meta.className}::Tuple(`;
             if (fields != null) {
                 if (fields.length > 0) {
                     let index = 0;
@@ -406,34 +406,34 @@ class CPP extends tuple_base_1.TupleBase {
                     str += ret;
                 }
             }
-            str += `);\n${compile_1.T}${compile_1.T}}`;
-            str += `\n${compile_1.T}${compile_1.T}else {`;
-            str += `\n${compile_1.T}${compile_1.T}${compile_1.T}return std::nullopt;\n${compile_1.T}${compile_1.T}}`;
-            content += str + `\n${compile_1.T}}`;
+            str += `);\n${compile_1.T}${compile_1.T}${compile_1.T}}`;
+            str += `\n${compile_1.T}${compile_1.T}${compile_1.T}else {`;
+            str += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}return std::nullopt;\n${compile_1.T}${compile_1.T}${compile_1.T}}`;
+            content += str + `\n${compile_1.T}${compile_1.T}}`;
         }
         else {
-            content = `\n${compile_1.T}${compile_1.T}return std::nullopt;\n${compile_1.T}}`;
+            content = `\n${compile_1.T}${compile_1.T}${compile_1.T}return std::nullopt;\n${compile_1.T}${compile_1.T}}`;
         }
         this.addSourceContent(content);
     }
     compileTupleTypeDecode(meta, exportType) {
         {
-            let content = `\n${compile_1.T}std::optional<${meta.className}> ${meta.className}Decode(${this.classTuple(meta, exportType, true)}& t);\n`;
+            let content = `\n${compile_1.T}${compile_1.T}std::optional<${meta.className}> ${meta.className}Decode(${this.classTuple(meta, exportType, true)}& t);\n`;
             this.addHeadContent(content);
         }
         {
-            let content = `\n${compile_1.T}std::optional<${meta.className}> ${meta.className}Decode(${this.classTuple(meta, exportType, true)}& t)\n${compile_1.T}{`;
+            let content = `\n${compile_1.T}${compile_1.T}std::optional<${meta.className}> ${meta.className}Decode(${this.classTuple(meta, exportType, true)}& t)\n${compile_1.T}${compile_1.T}{`;
             this.addSourceContent(content);
         }
     }
     compileTupleIndexDecode(meta, indexSuffix, exportType) {
         let names = Object.create(null);
         let fields = meta.fields;
-        let content = `\n${compile_1.T}${compile_1.T}${this.className(meta, true)} obj;`;
-        content += `\n${compile_1.T}${compile_1.T}if (t.has_value())\n${compile_1.T}${compile_1.T}{`;
-        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}obj = ${this.className(meta, false)}();`;
-        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}auto& oValue = obj.value();`;
-        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}auto& tValue = t.value();`;
+        let content = `\n${compile_1.T}${compile_1.T}${compile_1.T}${this.className(meta, true)} obj;`;
+        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}if (t.has_value())\n${compile_1.T}${compile_1.T}${compile_1.T}{`;
+        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}obj = ${this.className(meta, false)}();`;
+        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& oValue = obj.value();`;
+        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& tValue = t.value();`;
         if (fields != null) {
             let ret = "";
             let index = 0;
@@ -444,17 +444,17 @@ class CPP extends tuple_base_1.TupleBase {
                     let comment = field.comment;
                     if (8 == field.meta.metaType) {
                         if (field.metaType == 8 || field.metaType == 10) {
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}auto& ${name}_t = std::get<${index}>(tValue);`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}if (${name}_t.has_value())`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}{`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}oValue.${name} = ${this.className(field.meta, false)}();`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& ${name} = ${name}_t.value();`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& value = oValue.${name}.value();`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}for (auto i = 0; i < ${name}.size(); ++i)`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& ${name}_t = std::get<${index}>(tValue);`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}if (${name}_t.has_value())`;
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}{`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}value.push_back(${this.decode(field.meta, exportType, name, i)});`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}oValue.${name} = ${this.className(field.meta, false)}();`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& ${name} = ${name}_t.value();`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& value = oValue.${name}.value();`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}for (auto i = 0; i < ${name}.size(); ++i)`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}{`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}value.push_back(${this.decode(field.meta, exportType, name, i)});`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}}`;
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}}`;
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}}`;
                         }
                     }
                     index++;
@@ -488,23 +488,23 @@ class CPP extends tuple_base_1.TupleBase {
                     if (field.exportType & exportType) {
                         let comment = field.comment;
                         if (8 != field.meta.metaType) {
-                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}oValue.${field.name} = ${this.decode(field.meta, exportType, name, index)};`;
+                            ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}oValue.${field.name} = ${this.decode(field.meta, exportType, name, index)};`;
                         }
                         index++;
                     }
                 }
                 content += ret;
             }
-            content += `\n${compile_1.T}${compile_1.T}}\n${compile_1.T}${compile_1.T}return obj;\n${compile_1.T}}\n`;
+            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}}\n${compile_1.T}${compile_1.T}${compile_1.T}return obj;\n${compile_1.T}${compile_1.T}}\n`;
         }
         else {
-            content = `\n${compile_1.T}${compile_1.T}return std::nullopt;\n${compile_1.T}}\n`;
+            content = `\n${compile_1.T}${compile_1.T}${compile_1.T}return std::nullopt;\n${compile_1.T}${compile_1.T}}\n`;
         }
         this.addSourceContent(content);
     }
     saveFile() {
-        this.addHeadContent("\n}");
-        this.addSourceContent("\n}");
+        this.addHeadContent(`${compile_1.T}}\n}`);
+        this.addSourceContent(`${compile_1.T}}\n}`);
         {
             let file = `${this.path}/${this.fileName}.h`;
             fs.writeFileSync(file, this.headFileContent, { encoding: 'utf8' });

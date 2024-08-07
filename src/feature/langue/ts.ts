@@ -115,10 +115,10 @@ export abstract class TS extends TupleBase {
         let names: Table<boolean> = Object.create(null);
         let content = "";
         if (meta.comment != null) {
-            content += `\n${T}/** ${meta.comment}\n${T} */`;
+            content += `\n${T}${T}${T}/** ${meta.comment} */`;
         }
         let fields = meta.fields;
-        content += `\n${T}const enum ${meta.className}${indexSuffix}{\n`;
+        content += `\n${T}${T}const enum ${meta.className}${indexSuffix} {\n`;
         fields = meta.fields;
         if (fields != null) {
             let index = 0;
@@ -133,43 +133,43 @@ export abstract class TS extends TupleBase {
                 if (field.exportType & exportType) {
                     let comment = field.comment;
                     if (comment != null) {
-                        content += `${T}${T}/** ${comment} */\n`;
+                        content += `${T}${T}${T}/** ${comment} */\n`;
                     }
-                    content += `${T}${T}${name} = ${index++},\n`;
+                    content += `${T}${T}${T}${name} = ${index++},\n`;
                 }
             }
         }
-        content += `\n${T}}\n`;
+        content += `\n${T}${T}}\n`;
         this.addContent(content);
     }
 
     protected compileTupleInterface(meta: TupleTypeMeta, indexSuffix: string, exportType: ExportType): void {
-        let content = `${T}interface ${meta.className}Types {\n`;
+        let content = `${T}${T}interface ${meta.className}Types {\n`;
         let fields = meta.fields;
         if (fields != null) {
             for (let i = 0; i < fields.length; ++i) {
                 let field = fields[i];
                 let name = field.name;
                 if (field.exportType & exportType) {
-                    content += `${T}${T}[${meta.className}${indexSuffix}.${name}]: ${this.className(field.meta)};\n`;
+                    content += `${T}${T}${T}[${meta.className}${indexSuffix}.${name}]: ${this.className(field.meta)};\n`;
                 }
             }
         }
-        content += `${T}}\n`;
+        content += `${T}${T}}\n`;
         this.addContent(content);
     }
 
     protected compileTupleType(meta: TupleTypeMeta, exportType: ExportType): void {
         let content: string = "";
         if (meta.comment != null) {
-            content += `${T}/** ${meta.comment} */\n`;
+            content += `${T}${T}/** ${meta.comment} */\n`;
         }
-        content += `${T}type ${meta.className} = ${this.classSource(meta, exportType)};\n`;
+        content += `${T}${T}type ${meta.className} = ${this.classSource(meta, exportType)};\n`;
         this.addContent(content);
     }
 
     public override saveFile(): void {
-        this.addContent("\n}");
+        this.addContent(`${T}}\n}`);
         {
             let file = `${this.path}/${this.fileName}.d.ts`;
             fs.writeFileSync(file, this.content, { encoding: 'utf8' });

@@ -109,10 +109,10 @@ class CS extends tuple_base_1.TupleBase {
         let names = Object.create(null);
         let content = "";
         if (meta.comment != null) {
-            content += `\n${compile_1.T}/// <summary>\n${compile_1.T}/// ${meta.comment}\n${compile_1.T}/// </summary>*/`;
+            content += `\n${compile_1.T}${compile_1.T}/// <summary>\n${compile_1.T}${compile_1.T}/// ${meta.comment}\n${compile_1.T}${compile_1.T}/// </summary>*/`;
         }
         let fields = meta.fields;
-        content += `\n${compile_1.T}[MessagePackObject]\n${compile_1.T}public class ${meta.className} : ${interfaceName}\n${compile_1.T}{`;
+        content += `\n${compile_1.T}${compile_1.T}[MessagePackObject(true)]\n${compile_1.T}${compile_1.T}public class ${meta.className} : ${interfaceName}\n${compile_1.T}${compile_1.T}{`;
         fields = meta.fields;
         if (fields != null) {
             let index = 0;
@@ -127,18 +127,18 @@ class CS extends tuple_base_1.TupleBase {
                 if (field.exportType & exportType) {
                     let comment = field.comment;
                     if (comment != null) {
-                        content += `\n${compile_1.T}${compile_1.T}/// <summary> ${comment} </summary>`;
+                        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/// <summary> ${comment} </summary>`;
                     }
-                    content += `\n${compile_1.T}${compile_1.T}[Key(${index})]\n${compile_1.T}${compile_1.T}public ${this.className(field.meta)} ${name} { get; set; }`;
+                    content += `\n${compile_1.T}${compile_1.T}${compile_1.T}[Key(${index})]\n${compile_1.T}${compile_1.T}${compile_1.T}public ${this.className(field.meta)} ${name} { get; set; }`;
                     index++;
                 }
             }
         }
-        content += `\n${compile_1.T}}\n`;
+        content += `\n${compile_1.T}${compile_1.T}}\n`;
         this.addContent(content);
     }
     saveFile() {
-        this.addContent("\n}");
+        this.addContent(`${compile_1.T}}\n}`);
         {
             let file = `${this.path}/${this.fileName}.cs`;
             fs.writeFileSync(file, this.content, { encoding: 'utf8' });

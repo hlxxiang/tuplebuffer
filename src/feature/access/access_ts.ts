@@ -7,9 +7,9 @@ export class AccessTS extends TS implements AccessBase {
         super(namespace, path, fileName);
     }
     precompile(declaration: string): void {
-        let content: string = `/*${declaration}*/` +
-            "\n" +
-            `declare namespace ${this.namespace} {\n`;
+        let content: string = `declare namespace Gen {\n` +
+            `${T}/*${declaration}*/\n` +
+            `${T}namespace ${this.namespace} {\n`;
         this.addContent(content);
     }
 
@@ -18,22 +18,22 @@ export class AccessTS extends TS implements AccessBase {
         for (const pair of channelDefine) {
             let channels: Array<RecordMeta> = group[pair[0]];
 
-            content += `${T}const enum ${prefix}${pair[1]}${"Names"} {\n`;
+            content += `${T}${T}const enum ${prefix}${pair[1]}${"Names"} {\n`;
             if (channels != null) {
                 for (const record of channels) {
-                    content += `${T}${T}${record.name} = \"${record.name}\",\n`;
+                    content += `${T}${T}${T}${record.name} = \"${record.name}\",\n`;
                 }
             }
-            content += `${T}}\n\n`;
+            content += `${T}${T}}\n\n`;
 
-            content += `${T}interface ${prefix}${pair[1]} {\n`;
+            content += `${T}${T}interface ${prefix}${pair[1]} {\n`;
             if (channels != null) {
                 for (const record of channels) {
                     let meta = record.meta;
-                    content += `${T}${T}\"${record.name}\": ${this.className(meta)},\n`;
+                    content += `${T}${T}${T}\"${record.name}\": ${this.className(meta)},\n`;
                 }
             }
-            content += `${T}}\n\n`;
+            content += `${T}${T}}\n\n`;
         }
         this.addContent(content);
     }

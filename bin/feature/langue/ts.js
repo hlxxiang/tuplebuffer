@@ -113,10 +113,10 @@ class TS extends tuple_base_1.TupleBase {
         let names = Object.create(null);
         let content = "";
         if (meta.comment != null) {
-            content += `\n${compile_1.T}/** ${meta.comment}\n${compile_1.T} */`;
+            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/** ${meta.comment} */`;
         }
         let fields = meta.fields;
-        content += `\n${compile_1.T}const enum ${meta.className}${indexSuffix}{\n`;
+        content += `\n${compile_1.T}${compile_1.T}const enum ${meta.className}${indexSuffix} {\n`;
         fields = meta.fields;
         if (fields != null) {
             let index = 0;
@@ -131,40 +131,40 @@ class TS extends tuple_base_1.TupleBase {
                 if (field.exportType & exportType) {
                     let comment = field.comment;
                     if (comment != null) {
-                        content += `${compile_1.T}${compile_1.T}/** ${comment} */\n`;
+                        content += `${compile_1.T}${compile_1.T}${compile_1.T}/** ${comment} */\n`;
                     }
-                    content += `${compile_1.T}${compile_1.T}${name} = ${index++},\n`;
+                    content += `${compile_1.T}${compile_1.T}${compile_1.T}${name} = ${index++},\n`;
                 }
             }
         }
-        content += `\n${compile_1.T}}\n`;
+        content += `\n${compile_1.T}${compile_1.T}}\n`;
         this.addContent(content);
     }
     compileTupleInterface(meta, indexSuffix, exportType) {
-        let content = `${compile_1.T}interface ${meta.className}Types {\n`;
+        let content = `${compile_1.T}${compile_1.T}interface ${meta.className}Types {\n`;
         let fields = meta.fields;
         if (fields != null) {
             for (let i = 0; i < fields.length; ++i) {
                 let field = fields[i];
                 let name = field.name;
                 if (field.exportType & exportType) {
-                    content += `${compile_1.T}${compile_1.T}[${meta.className}${indexSuffix}.${name}]: ${this.className(field.meta)};\n`;
+                    content += `${compile_1.T}${compile_1.T}${compile_1.T}[${meta.className}${indexSuffix}.${name}]: ${this.className(field.meta)};\n`;
                 }
             }
         }
-        content += `${compile_1.T}}\n`;
+        content += `${compile_1.T}${compile_1.T}}\n`;
         this.addContent(content);
     }
     compileTupleType(meta, exportType) {
         let content = "";
         if (meta.comment != null) {
-            content += `${compile_1.T}/** ${meta.comment} */\n`;
+            content += `${compile_1.T}${compile_1.T}/** ${meta.comment} */\n`;
         }
-        content += `${compile_1.T}type ${meta.className} = ${this.classSource(meta, exportType)};\n`;
+        content += `${compile_1.T}${compile_1.T}type ${meta.className} = ${this.classSource(meta, exportType)};\n`;
         this.addContent(content);
     }
     saveFile() {
-        this.addContent("\n}");
+        this.addContent(`${compile_1.T}}\n}`);
         {
             let file = `${this.path}/${this.fileName}.d.ts`;
             fs.writeFileSync(file, this.content, { encoding: 'utf8' });

@@ -6,17 +6,18 @@ import { EnumBase } from "./enum_base";
 export class EnumCPP extends EnumBase {
     precompile(declaration: string): void {
         let content: string = `#pragma once`;
-        content += `\n/* ${declaration} */`;
-        content += `\nnamespace ${this.namespace}\n{`;
+        content += `\nnamespace Gen\n{`;
+        content += `\n${T}/* ${declaration} */`;
+        content += `\n${T}namespace ${this.namespace}\n${T}{`;
         this.addContent(content);
     }
     protected override compileEnumIndex(meta: EnumTypeMeta): void {
         let names: Table<boolean> = Object.create(null);
         let content: string = "";
         if (meta.comment != null) {
-            content += `\n${T}/* ${meta.comment} */`;
+            content += `\n${T}${T}/* ${meta.comment} */`;
         }
-        content += `\n${T}enum class ${meta.className}\n${T}{`;
+        content += `\n${T}${T}enum class ${meta.className}\n${T}${T}{`;
         let fields = meta.fields;
         if (fields != null) {
             let val = 0;
@@ -33,7 +34,7 @@ export class EnumCPP extends EnumBase {
                 let value = field.value;
                 let otherValue = 0;
                 if (comment != null) {
-                    content += `\n${T}${T}/* ${comment} */`;
+                    content += `\n${T}${T}${T}/* ${comment} */`;
                 }
                 if (otherItem) {
                     otherItem = otherItem.replace(".", "::");
@@ -44,25 +45,26 @@ export class EnumCPP extends EnumBase {
                     otherValue = this.fieldList.get(otherItem);
                 }
                 if (otherItem) {
-                    content += `\n${T}${T}${name} = (int)(${otherItem}),`;
+                    content += `\n${T}${T}${T}${name} = (int)(${otherItem}),`;
                     val = otherValue;
                 }
                 else if (null != value && !otherItem) {
-                    content += `\n${T}${T}${name} = ${value},`;
+                    content += `\n${T}${T}${T}${name} = ${value},`;
                     val = value;
                 }
                 else {
-                    content += `\n${T}${T}${name} = ${val},`;
+                    content += `\n${T}${T}${T}${name} = ${val},`;
                 }
                 this.fieldList.set(`${meta.className}::${name}`, val);
                 val += 1;
             }
         }
-        content += `\n${T}};\n`;
+        content += `\n${T}${T}};\n`;
         this.addContent(content);
     }
 
     public saveFile(): void {
+        this.addContent(`\n${T}}`);
         this.addContent("\n}");
         let file = `${this.path}/${this.fileName}.h`;
         fs.writeFileSync(file, this.content, { encoding: 'utf8' });

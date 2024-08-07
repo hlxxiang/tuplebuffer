@@ -11,7 +11,6 @@ Enum.init(
 require("./enum_util");
 
 Enum.add(LangueType.CS, EnumCS);
-
 Enum.add(LangueType.CPP, EnumCPP);
 Enum.add(LangueType.TS, EnumTS);
 

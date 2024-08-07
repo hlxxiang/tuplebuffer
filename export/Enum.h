@@ -1,23 +1,26 @@
 #pragma once
-/* 枚举 */
-namespace Enum
+namespace Gen
 {
-    /* TestA */
-    enum class TestA
+    /* 枚举 */
+    namespace Enum
     {
-        /* TestA.a */
-        a = 1,
-        /* TestA.b */
-        b = 2,
-    };
+        /* TestA */
+        enum class TestA
+        {
+            /* TestA.a */
+            a = 1,
+            /* TestA.b */
+            b = 2,
+        };
 
-    /* TestB */
-    enum class TestB
-    {
-        /* TestB.a */
-        a = (int)(TestA::b),
-        /* TestB.b */
-        b = 3,
-    };
+        /* TestB */
+        enum class TestB
+        {
+            /* TestB.a */
+            a = (int)(TestA::b),
+            /* TestB.b */
+            b = 3,
+        };
 
+    }
 }

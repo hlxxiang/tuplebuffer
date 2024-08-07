@@ -8,20 +8,20 @@ class ConfigurationTS extends ts_1.TS {
         super(namespace, path, fileName);
     }
     precompile(declaration) {
-        let content = `/*${declaration}*/` +
-            "\n" +
-            `declare namespace ${this.namespace} {\n`;
+        let content = `declare namespace Gen {\n` +
+            `${compile_1.T}/*${declaration}*/\n` +
+            `${compile_1.T}namespace ${this.namespace} {\n`;
         this.addContent(content);
     }
     compileTypeNames(files, exportType) {
-        let content = `${compile_1.T}const enum StructNames {\n`;
+        let content = `${compile_1.T}${compile_1.T}const enum StructNames {\n`;
         for (const meta of files) {
             if (meta.format & exportType) {
-                content += `${compile_1.T}${compile_1.T}/** ${meta.name} */\n`;
-                content += `${compile_1.T}${compile_1.T}${meta.jsonName} = \"${meta.jsonName}\",\n`;
+                content += `${compile_1.T}${compile_1.T}${compile_1.T}/** ${meta.name} */\n`;
+                content += `${compile_1.T}${compile_1.T}${compile_1.T}${meta.jsonName} = \"${meta.jsonName}\",\n`;
             }
         }
-        content += `${compile_1.T}}\n\n`;
+        content += `${compile_1.T}${compile_1.T}}\n\n`;
         this.addContent(content);
     }
     compileTypes(files, exportType) {
@@ -36,29 +36,29 @@ class ConfigurationTS extends ts_1.TS {
         this.addContent(content);
     }
     compileStruct(files, exportType) {
-        let content = `${compile_1.T}interface Struct {\n`;
+        let content = `${compile_1.T}${compile_1.T}interface Struct {\n`;
         for (const meta of files) {
             if (meta.format & exportType) {
                 switch (meta.type) {
                     case 0: {
-                        content += `${compile_1.T}${compile_1.T}/** ${meta.name} */\n`;
-                        content += `${compile_1.T}${compile_1.T}\"${meta.jsonName}\": ${this.className(meta.element)};\n`;
+                        content += `${compile_1.T}${compile_1.T}${compile_1.T}/** ${meta.name} */\n`;
+                        content += `${compile_1.T}${compile_1.T}${compile_1.T}\"${meta.jsonName}\": ${this.className(meta.element)};\n`;
                         break;
                     }
                     case 1: {
-                        content += `${compile_1.T}${compile_1.T}/** ${meta.name} */\n`;
-                        content += `${compile_1.T}${compile_1.T}\"${meta.jsonName}\": Array<${this.className(meta.element)}>;\n`;
+                        content += `${compile_1.T}${compile_1.T}${compile_1.T}/** ${meta.name} */\n`;
+                        content += `${compile_1.T}${compile_1.T}${compile_1.T}\"${meta.jsonName}\": Array<${this.className(meta.element)}>;\n`;
                         break;
                     }
                     case 2: {
-                        content += `${compile_1.T}${compile_1.T}/** ${meta.name} */\n`;
-                        content += `${compile_1.T}${compile_1.T}\"${meta.jsonName}\": Table<${this.className(meta.element)}>;\n`;
+                        content += `${compile_1.T}${compile_1.T}${compile_1.T}/** ${meta.name} */\n`;
+                        content += `${compile_1.T}${compile_1.T}${compile_1.T}\"${meta.jsonName}\": Table<${this.className(meta.element)}>;\n`;
                         break;
                     }
                 }
             }
         }
-        content += `${compile_1.T}}\n`;
+        content += `${compile_1.T}${compile_1.T}}\n`;
         this.addContent(content);
     }
 }

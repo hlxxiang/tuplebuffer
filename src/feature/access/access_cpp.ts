@@ -15,11 +15,12 @@ export class AccessCPP extends CPP implements AccessBase {
                 "\n#include <optional>" +
                 "\n#include <unordered_map>\n" +
 
-                `\n/* ${declaration} */` +
-                `\nnamespace ${this.namespace} \n{` +
-                `\n${T}using int64 = int64_t;` +
-                `\n${T}using int32 = int32_t;` +
-                `\n${T}using namespace std;`;
+                `\nnamespace Gen\n{` +
+                `\n${T}/* ${declaration} */` +
+                `\n${T}namespace ${this.namespace}\n${T}{` +
+                `\n${T}${T}using int64 = int64_t;` +
+                `\n${T}${T}using int32 = int32_t;` +
+                `\n${T}${T}using namespace std;`;
             this.addHeadContent(content);
         }
         {
@@ -31,9 +32,10 @@ export class AccessCPP extends CPP implements AccessBase {
                 "\n#include <unordered_map>\n" +
                 `\n#include \"${this.fileName}.h\"\n` +
 
-                `\n/* ${declaration} */` +
-                `\nnamespace ${this.namespace} \n{` +
-                `\n${T}using namespace std;`;
+                `\nnamespace Gen\n{` +
+                `\n${T}/* ${declaration} */` +
+                `\n${T}namespace ${this.namespace}\n${T}{` +
+                `\n${T}${T}using namespace std;`;
             this.addSourceContent(content);
         }
     }
@@ -43,30 +45,30 @@ export class AccessCPP extends CPP implements AccessBase {
         for (const pair of channelDefine) {
             let channels: Array<RecordMeta> = group[pair[0]];
 
-            content += `\n\n${T}namespace ${prefix}${pair[1]}${"Names"}\n${T}{\n`;
+            content += `\n\n${T}${T}namespace ${prefix}${pair[1]}${"Names"}\n${T}${T}{\n`;
             if (channels != null) {
                 for (const record of channels) {
                     let comment = record.comment;
                     if (comment != null) {
-                        content += `${T}${T}/* ${comment} */\n`;
+                        content += `${T}${T}${T}/* ${comment} */\n`;
                     }
-                    content += `${T}${T}const string ${record.name} = \"${record.name}\";\n`;
+                    content += `${T}${T}${T}const string ${record.name} = \"${record.name}\";\n`;
                 }
             }
-            content += `${T}}`;
+            content += `${T}${T}}`;
 
-            content += `\n\n${T}namespace ${prefix}${pair[1]}\n${T}{\n`;
+            content += `\n\n${T}${T}namespace ${prefix}${pair[1]}\n${T}${T}{\n`;
             if (channels != null) {
                 for (const record of channels) {
                     let meta = record.meta;
                     let comment = record.comment;
                     if (comment != null) {
-                        content += `${T}${T}/* ${comment} */\n`;
+                        content += `${T}${T}${T}/* ${comment} */\n`;
                     }
-                    content += `${T}${T}using ${record.name} = ${this.className(meta, true)};\n`;
+                    content += `${T}${T}${T}using ${record.name} = ${this.className(meta, true)};\n`;
                 }
             }
-            content += `${T}};`;
+            content += `${T}${T}};\n`;
         }
         this.addHeadContent(content);
     }

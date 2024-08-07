@@ -310,9 +310,9 @@ export abstract class CPP extends TupleBase {
     protected compileTupleIndex(meta: TupleTypeMeta, indexSuffix: string, interfaceName: string, exportType: ExportType): void {
         let content = "";
         if (meta.comment != null) {
-            content += `\n${T}/* ${meta.comment} */`;
+            content += `\n${T}${T}/* ${meta.comment} */`;
         }
-        content += `\n${T}struct ${meta.className} : public ${interfaceName}\n${T}{\n${T}${T}using Tuple = std::tuple<${this.classSource(meta, exportType, false)}>;\n`;
+        content += `\n${T}${T}struct ${meta.className} : public ${interfaceName}\n${T}${T}{\n${T}${T}${T}using Tuple = std::tuple<${this.classSource(meta, exportType, false)}>;\n`;
         let fields = meta.fields;
         if (fields != null) {
             let index = 0;
@@ -323,24 +323,24 @@ export abstract class CPP extends TupleBase {
                     let comment = field.comment;
 
                     if (comment != null) {
-                        content += `${T}${T}/* ${comment} */\n`;
+                        content += `${T}${T}${T}/* ${comment} */\n`;
                     }
-                    content += `${T}${T}${this.className(field.meta, true)} ${name};\n`;
+                    content += `${T}${T}${T}${this.className(field.meta, true)} ${name};\n`;
                     index++
                 }
             }
         }
-        content += `${T}};`;
+        content += `${T}${T}};`;
         this.addHeadContent(content);
     }
 
     protected compileTupleTypeEncode(meta: TupleTypeMeta, exportType: ExportType): void {
         {
-            let content = `\n${T}${this.classTuple(meta, exportType, true)} ${meta.className}Encode(std::optional<${meta.className}>& obj);`;
+            let content = `\n${T}${T}${this.classTuple(meta, exportType, true)} ${meta.className}Encode(std::optional<${meta.className}>& obj);`;
             this.addHeadContent(content);
         }
         {
-            let content = `\n${T}${this.classTuple(meta, exportType, true)} ${meta.className}Encode(std::optional<${meta.className}>& obj)\n${T}{`;
+            let content = `\n${T}${T}${this.classTuple(meta, exportType, true)} ${meta.className}Encode(std::optional<${meta.className}>& obj)\n${T}${T}{`;
             this.addSourceContent(content);
         }
     }
@@ -348,9 +348,9 @@ export abstract class CPP extends TupleBase {
     protected compileTupleIndexEncode(meta: TupleTypeMeta, indexSuffix: string, exportType: ExportType): void {
         let names: Table<boolean> = Object.create(null);
         let fields = meta.fields;
-        let content = `\n${T}${T}if (obj.has_value()) {`;
+        let content = `\n${T}${T}${T}if (obj.has_value()) {`;
         if (fields != null) {
-            let ret = `\n${T}${T}${T}auto& oValue = obj.value();`
+            let ret = `\n${T}${T}${T}${T}auto& oValue = obj.value();`
             let arrSize = 0;
             for (let i = 0; i < fields.length; ++i) {
                 let field = fields[i];
@@ -359,17 +359,17 @@ export abstract class CPP extends TupleBase {
                     if (MetaType.array == field.meta.metaType) {
                         arrSize++;
                         if (field.metaType == MetaType.array || field.metaType == MetaType.tuple) {
-                            ret += `\n${T}${T}${T}${this.classTuple(field.meta, exportType, true)} ${name}Arr;`;
-                            ret += `\n${T}${T}${T}if (oValue.${name}.has_value())`;
-                            ret += `\n${T}${T}${T}{`;
-                            ret += `\n${T}${T}${T}${T}${name}Arr = ${this.classTuple(field.meta, exportType, false)}();`;
-                            ret += `\n${T}${T}${T}${T}auto& value = ${name}Arr.value();`;
-                            ret += `\n${T}${T}${T}${T}auto& ${name} = oValue.${name}.value();`
-                            ret += `\n${T}${T}${T}${T}for (auto i = 0; i < ${name}.size(); ++i)`;
+                            ret += `\n${T}${T}${T}${T}${this.classTuple(field.meta, exportType, true)} ${name}Arr;`;
+                            ret += `\n${T}${T}${T}${T}if (oValue.${name}.has_value())`;
                             ret += `\n${T}${T}${T}${T}{`;
-                            ret += `\n${T}${T}${T}${T}${T}value.push_back(${this.encode(field.meta, exportType, name, i)});`;
+                            ret += `\n${T}${T}${T}${T}${T}${name}Arr = ${this.classTuple(field.meta, exportType, false)}();`;
+                            ret += `\n${T}${T}${T}${T}${T}auto& value = ${name}Arr.value();`;
+                            ret += `\n${T}${T}${T}${T}${T}auto& ${name} = oValue.${name}.value();`
+                            ret += `\n${T}${T}${T}${T}${T}for (auto i = 0; i < ${name}.size(); ++i)`;
+                            ret += `\n${T}${T}${T}${T}${T}{`;
+                            ret += `\n${T}${T}${T}${T}${T}${T}value.push_back(${this.encode(field.meta, exportType, name, i)});`;
+                            ret += `\n${T}${T}${T}${T}${T}}`;
                             ret += `\n${T}${T}${T}${T}}`;
-                            ret += `\n${T}${T}${T}}`;
                         }
                     }
                 }
@@ -394,7 +394,7 @@ export abstract class CPP extends TupleBase {
             }
         }
         if (exportIndex > 0) {
-            let str = `\n${T}${T}${T}return ${meta.className}::Tuple(`;
+            let str = `\n${T}${T}${T}${T}return ${meta.className}::Tuple(`;
             if (fields != null) {
                 if (fields.length > 0) {
                     let index = 0;
@@ -419,24 +419,24 @@ export abstract class CPP extends TupleBase {
                     str += ret;
                 }
             }
-            str += `);\n${T}${T}}`;
-            str += `\n${T}${T}else {`;
-            str += `\n${T}${T}${T}return std::nullopt;\n${T}${T}}`
-            content += str + `\n${T}}`;
+            str += `);\n${T}${T}${T}}`;
+            str += `\n${T}${T}${T}else {`;
+            str += `\n${T}${T}${T}${T}return std::nullopt;\n${T}${T}${T}}`
+            content += str + `\n${T}${T}}`;
         }
         else {
-            content = `\n${T}${T}return std::nullopt;\n${T}}`
+            content = `\n${T}${T}${T}return std::nullopt;\n${T}${T}}`
         }
         this.addSourceContent(content);
     }
 
     protected compileTupleTypeDecode(meta: TupleTypeMeta, exportType: ExportType): void {
         {
-            let content = `\n${T}std::optional<${meta.className}> ${meta.className}Decode(${this.classTuple(meta, exportType, true)}& t);\n`;
+            let content = `\n${T}${T}std::optional<${meta.className}> ${meta.className}Decode(${this.classTuple(meta, exportType, true)}& t);\n`;
             this.addHeadContent(content);
         }
         {
-            let content = `\n${T}std::optional<${meta.className}> ${meta.className}Decode(${this.classTuple(meta, exportType, true)}& t)\n${T}{`;
+            let content = `\n${T}${T}std::optional<${meta.className}> ${meta.className}Decode(${this.classTuple(meta, exportType, true)}& t)\n${T}${T}{`;
             this.addSourceContent(content);
         }
     }
@@ -444,11 +444,11 @@ export abstract class CPP extends TupleBase {
     protected compileTupleIndexDecode(meta: TupleTypeMeta, indexSuffix: string, exportType: ExportType): void {
         let names: Table<boolean> = Object.create(null);
         let fields = meta.fields;
-        let content = `\n${T}${T}${this.className(meta, true)} obj;`;
-        content += `\n${T}${T}if (t.has_value())\n${T}${T}{`;
-        content += `\n${T}${T}${T}obj = ${this.className(meta, false)}();`;
-        content += `\n${T}${T}${T}auto& oValue = obj.value();`
-        content += `\n${T}${T}${T}auto& tValue = t.value();`
+        let content = `\n${T}${T}${T}${this.className(meta, true)} obj;`;
+        content += `\n${T}${T}${T}if (t.has_value())\n${T}${T}${T}{`;
+        content += `\n${T}${T}${T}${T}obj = ${this.className(meta, false)}();`;
+        content += `\n${T}${T}${T}${T}auto& oValue = obj.value();`
+        content += `\n${T}${T}${T}${T}auto& tValue = t.value();`
         if (fields != null) {
             let ret = ""
             let index = 0;
@@ -459,17 +459,17 @@ export abstract class CPP extends TupleBase {
                     let comment = field.comment;
                     if (MetaType.array == field.meta.metaType) {
                         if (field.metaType == MetaType.array || field.metaType == MetaType.tuple) {
-                            ret += `\n${T}${T}${T}auto& ${name}_t = std::get<${index}>(tValue);`;
-                            ret += `\n${T}${T}${T}if (${name}_t.has_value())`;
-                            ret += `\n${T}${T}${T}{`;
-                            ret += `\n${T}${T}${T}${T}oValue.${name} = ${this.className(field.meta, false)}();`;
-                            ret += `\n${T}${T}${T}${T}auto& ${name} = ${name}_t.value();`;
-                            ret += `\n${T}${T}${T}${T}auto& value = oValue.${name}.value();`;
-                            ret += `\n${T}${T}${T}${T}for (auto i = 0; i < ${name}.size(); ++i)`;
+                            ret += `\n${T}${T}${T}${T}auto& ${name}_t = std::get<${index}>(tValue);`;
+                            ret += `\n${T}${T}${T}${T}if (${name}_t.has_value())`;
                             ret += `\n${T}${T}${T}${T}{`;
-                            ret += `\n${T}${T}${T}${T}${T}value.push_back(${this.decode(field.meta, exportType, name, i)});`;
+                            ret += `\n${T}${T}${T}${T}${T}oValue.${name} = ${this.className(field.meta, false)}();`;
+                            ret += `\n${T}${T}${T}${T}${T}auto& ${name} = ${name}_t.value();`;
+                            ret += `\n${T}${T}${T}${T}${T}auto& value = oValue.${name}.value();`;
+                            ret += `\n${T}${T}${T}${T}${T}for (auto i = 0; i < ${name}.size(); ++i)`;
+                            ret += `\n${T}${T}${T}${T}${T}{`;
+                            ret += `\n${T}${T}${T}${T}${T}${T}value.push_back(${this.decode(field.meta, exportType, name, i)});`;
+                            ret += `\n${T}${T}${T}${T}${T}}`;
                             ret += `\n${T}${T}${T}${T}}`;
-                            ret += `\n${T}${T}${T}}`;
                         }
                     }
                     index++;
@@ -503,24 +503,24 @@ export abstract class CPP extends TupleBase {
                     if (field.exportType & exportType) {
                         let comment = field.comment;
                         if (MetaType.array != field.meta.metaType) {
-                            ret += `\n${T}${T}${T}oValue.${field.name} = ${this.decode(field.meta, exportType, name, index)};`;
+                            ret += `\n${T}${T}${T}${T}oValue.${field.name} = ${this.decode(field.meta, exportType, name, index)};`;
                         }
                         index++;
                     }
                 }
                 content += ret;
             }
-            content += `\n${T}${T}}\n${T}${T}return obj;\n${T}}\n`;
+            content += `\n${T}${T}${T}}\n${T}${T}${T}return obj;\n${T}${T}}\n`;
         }
         else {
-            content = `\n${T}${T}return std::nullopt;\n${T}}\n`;
+            content = `\n${T}${T}${T}return std::nullopt;\n${T}${T}}\n`;
         }
         this.addSourceContent(content);
     }
 
     public override saveFile(): void {
-        this.addHeadContent("\n}");
-        this.addSourceContent("\n}");
+        this.addHeadContent(`${T}}\n}`);
+        this.addSourceContent(`${T}}\n}`);
         {
             let file = `${this.path}/${this.fileName}.h`;
             fs.writeFileSync(file, this.headFileContent, { encoding: 'utf8' });

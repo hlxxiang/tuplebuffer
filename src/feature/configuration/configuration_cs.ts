@@ -9,61 +9,62 @@ export class ConfigurationCS extends CS implements ConfigurationBase {
     }
 
     public precompile(declaration: string): void {
-        let content: string = `` +
-            "\nusing MessagePack;" +
+        let content: string = "using MessagePack;" +
+            "\nusing System;" +
             "\nusing System.Collections.Generic;" +
-            `\n/// <summary> ${declaration} </summary>` +
-            `\nnamespace ${this.namespace} \n{`;
+            `\nnamespace Gen\n{` +
+            `\n${T}/*${declaration} */` +
+            `\n${T}namespace ${this.namespace}\n${T}{`;
         this.addContent(content);
     }
 
     public compileTypeNames(files: FileMeta[], exportType: ExportType): void {
-        let content = `${T}public class TypeNames {\n`;
+        let content = `\n${T}${T}public class TypeNames\n${T}${T}{\n`;
         for (const meta of files) {
             if (meta.format & exportType) {
-                content += `${T}${T}/// <summary> ${meta.name} </summary>\n`;
-                content += `${T}${T}public static string ${meta.jsonName} = \"${meta.jsonName}\";\n`;
+                content += `${T}${T}${T}/// <summary> ${meta.name} </summary>\n`;
+                content += `${T}${T}${T}public static string ${meta.jsonName} = \"${meta.jsonName}\";\n`;
             }
         }
-        content += `${T}}\n\n`;
+        content += `${T}${T}}\n`;
         this.addContent(content);
     }
 
     public compileTypes(files: FileMeta[], exportType: ExportType): void {
-        let content = `${T}public class Types {\n`;
+        let content = `\n${T}${T}public class Types\n${T}${T}{`;
         for (const meta of files) {
             if (meta.format & exportType) {
-                content += `${T}${T}/// <summary> ${meta.name} </summary>\n`;
-                content += `${T}${T}public ${this.className(meta.element)}? ${meta.jsonName};\n`;
+                content += `${T}${T}${T}/// <summary> ${meta.name} </summary>\n`;
+                content += `${T}${T}${T}public ${this.className(meta.element)}? ${meta.jsonName};\n`;
             }
         }
-        content += `\n${T}};\n`;
+        content += `\n${T}${T}};\n`;
         this.addContent(content);
     }
 
     public compileStruct(files: FileMeta[], exportType: ExportType): void {
-        let content = `\n${T}public class Struct {\n`;
+        let content = `\n${T}${T}public class Struct\n${T}${T}{\n`;
         for (const meta of files) {
             if (meta.format & exportType) {
-                content += `${T}${T}/// <summary> ${meta.name} </summary>\n`;
+                content += `${T}${T}${T}/// <summary> ${meta.name} </summary>\n`;
                 switch (meta.type) {
                     case FileType.tuple: {
 
-                        content += `${T}${T}public ${this.className(meta.element)}? ${meta.jsonName};\n`;
+                        content += `${T}${T}${T}public ${this.className(meta.element)}? ${meta.jsonName};\n`;
                         break;
                     }
                     case FileType.array: {
-                        content += `${T}${T}public ${this.className(meta.element)}[]? ${meta.jsonName};\n`;
+                        content += `${T}${T}${T}public ${this.className(meta.element)}[]? ${meta.jsonName};\n`;
                         break;
                     }
                     case FileType.hash: {
-                        content += `${T}${T}public Dictionary<string, ${this.className(meta.element)}>? ${meta.jsonName};\n`;
+                        content += `${T}${T}${T}public Dictionary<string, ${this.className(meta.element)}>? ${meta.jsonName};\n`;
                         break;
                     }
                 }
             }
         }
-        content += `\n${T}};\n`;
+        content += `\n${T}${T}};\n`;
         this.addContent(content);
     }
 }

@@ -15,11 +15,12 @@ class ConfigurationCPP extends cpp_1.CPP {
                 "\n#include <vector>" +
                 "\n#include <optional>" +
                 "\n#include <unordered_map>\n" +
-                `\n/* ${declaration} */` +
-                `\nnamespace ${this.namespace} \n{` +
-                `\n${compile_1.T}using int64 = int64_t;` +
-                `\n${compile_1.T}using int32 = int32_t;` +
-                `\n${compile_1.T}using namespace std;`;
+                `\nnamespace Gen\n{` +
+                `\n${compile_1.T}/* ${declaration} */` +
+                `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{` +
+                `\n${compile_1.T}${compile_1.T}using int64 = int64_t;` +
+                `\n${compile_1.T}${compile_1.T}using int32 = int32_t;` +
+                `\n${compile_1.T}${compile_1.T}using namespace std;`;
             this.addHeadContent(content);
         }
         {
@@ -30,56 +31,57 @@ class ConfigurationCPP extends cpp_1.CPP {
                 "\n#include <optional>" +
                 "\n#include <unordered_map>\n" +
                 `\n#include \"${this.fileName}.h\"\n` +
-                `\n/* ${declaration} */` +
-                `\nnamespace ${this.namespace} \n{` +
-                `\n${compile_1.T}using namespace std;`;
+                `\nnamespace Gen\n{` +
+                `\n${compile_1.T}/* ${declaration} */` +
+                `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{` +
+                `\n${compile_1.T}${compile_1.T}using namespace std;`;
             this.addSourceContent(content);
         }
     }
     compileTypeNames(files, exportType) {
-        let content = `\n${compile_1.T}namespace TypeNames\n${compile_1.T}{`;
+        let content = `\n${compile_1.T}${compile_1.T}namespace TypeNames\n${compile_1.T}${compile_1.T}{`;
         for (const meta of files) {
             if (meta.format & exportType) {
-                content += `\n${compile_1.T}${compile_1.T}/* ${meta.name} */`;
-                content += `\n${compile_1.T}${compile_1.T}const string ${meta.jsonName} = \"${meta.jsonName}\";`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/* ${meta.name} */`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}const string ${meta.jsonName} = \"${meta.jsonName}\";`;
             }
         }
-        content += `\n${compile_1.T}};\n`;
+        content += `\n${compile_1.T}${compile_1.T}};\n`;
         this.addHeadContent(content);
     }
     compileTypes(files, exportType) {
-        let content = `\n${compile_1.T}namespace Types\n${compile_1.T}{`;
+        let content = `\n${compile_1.T}${compile_1.T}namespace Types\n${compile_1.T}${compile_1.T}{`;
         for (const meta of files) {
             if (meta.format & exportType) {
-                content += `\n${compile_1.T}${compile_1.T}/* ${meta.name} */`;
-                content += `\n${compile_1.T}${compile_1.T}${this.className(meta.element)} ${meta.jsonName};`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/* ${meta.name} */`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${this.className(meta.element)} ${meta.jsonName};`;
             }
         }
-        content += `\n${compile_1.T}};\n`;
+        content += `\n${compile_1.T}${compile_1.T}};\n`;
         this.addHeadContent(content);
     }
     compileStruct(files, exportType) {
-        let content = `\n${compile_1.T}namespace Struct\n${compile_1.T}{`;
+        let content = `\n${compile_1.T}${compile_1.T}namespace Struct\n${compile_1.T}${compile_1.T}{`;
         for (const meta of files) {
             if (meta.format & exportType) {
-                content += `\n${compile_1.T}${compile_1.T}/* ${meta.name} */`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/* ${meta.name} */`;
                 switch (meta.type) {
                     case 0: {
-                        content += `\n${compile_1.T}${compile_1.T}using ${meta.jsonName} = ${this.className(meta.element)};`;
+                        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}using ${meta.jsonName} = ${this.className(meta.element)};`;
                         break;
                     }
                     case 1: {
-                        content += `\n${compile_1.T}${compile_1.T}using ${meta.jsonName} = std::vector<${this.className(meta.element)}>;`;
+                        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}using ${meta.jsonName} = std::vector<${this.className(meta.element)}>;`;
                         break;
                     }
                     case 2: {
-                        content += `\n${compile_1.T}${compile_1.T}using ${meta.jsonName} = std::unordered_map<string, ${this.className(meta.element)}>;`;
+                        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}using ${meta.jsonName} = std::unordered_map<string, ${this.className(meta.element)}>;`;
                         break;
                     }
                 }
             }
         }
-        content += `\n${compile_1.T}};\n`;
+        content += `\n${compile_1.T}${compile_1.T}};\n`;
         this.addHeadContent(content);
     }
 }

@@ -111,10 +111,10 @@ export abstract class CS extends TupleBase {
         let names: Table<boolean> = Object.create(null);
         let content = "";
         if (meta.comment != null) {
-            content += `\n${T}/// <summary>\n${T}/// ${meta.comment}\n${T}/// </summary>*/`;
+            content += `\n${T}${T}/// <summary>\n${T}${T}/// ${meta.comment}\n${T}${T}/// </summary>*/`;
         }
         let fields = meta.fields;
-        content += `\n${T}[MessagePackObject]\n${T}public class ${meta.className} : ${interfaceName}\n${T}{`;
+        content += `\n${T}${T}[MessagePackObject(true)]\n${T}${T}public class ${meta.className} : ${interfaceName}\n${T}${T}{`;
         fields = meta.fields;
         if (fields != null) {
             let index = 0;
@@ -129,19 +129,19 @@ export abstract class CS extends TupleBase {
                 if (field.exportType & exportType) {
                     let comment = field.comment;
                     if (comment != null) {
-                        content += `\n${T}${T}/// <summary> ${comment} </summary>`;
+                        content += `\n${T}${T}${T}/// <summary> ${comment} </summary>`;
                     }
-                    content += `\n${T}${T}[Key(${index})]\n${T}${T}public ${this.className(field.meta)} ${name} { get; set; }`;
+                    content += `\n${T}${T}${T}[Key(${index})]\n${T}${T}${T}public ${this.className(field.meta)} ${name} { get; set; }`;
                     index++;
                 }
             }
         }
-        content += `\n${T}}\n`;
+        content += `\n${T}${T}}\n`;
         this.addContent(content);
     }
 
     public override saveFile(): void {
-        this.addContent("\n}");
+        this.addContent(`${T}}\n}`);
         {
             let file = `${this.path}/${this.fileName}.cs`;
             fs.writeFileSync(file, this.content, { encoding: 'utf8' });

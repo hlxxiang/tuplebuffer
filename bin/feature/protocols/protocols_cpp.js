@@ -21,11 +21,12 @@ class ProtocolsCpp extends cpp_1.CPP {
                 "\n#include <vector>" +
                 "\n#include <optional>" +
                 "\n#include <unordered_map>\n" +
-                `\n/* ${declaration} */` +
-                `\nnamespace ${this.namespace} \n{` +
-                `\n${compile_1.T}using int64 = int64_t;` +
-                `\n${compile_1.T}using int32 = int32_t;` +
-                `\n${compile_1.T}using namespace std;`;
+                `\nnamespace Gen\n{` +
+                `\n${compile_1.T}/* ${declaration} */` +
+                `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{` +
+                `\n${compile_1.T}${compile_1.T}using int64 = int64_t;` +
+                `\n${compile_1.T}${compile_1.T}using int32 = int32_t;` +
+                `\n${compile_1.T}${compile_1.T}using namespace std;`;
             this.addHeadContent(content);
         }
         {
@@ -36,9 +37,10 @@ class ProtocolsCpp extends cpp_1.CPP {
                 "\n#include <optional>" +
                 "\n#include <unordered_map>\n" +
                 `\n#include \"${this.fileName}.h\"\n` +
-                `\n/* ${declaration} */` +
-                `\nnamespace ${this.namespace} \n{` +
-                `\n${compile_1.T}using namespace std;`;
+                `\nnamespace Gen\n{` +
+                `\n${compile_1.T}/* ${declaration} */` +
+                `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{` +
+                `\n${compile_1.T}${compile_1.T}using namespace std;`;
             this.addSourceContent(content);
         }
     }
@@ -48,14 +50,14 @@ class ProtocolsCpp extends cpp_1.CPP {
             content = "";
         }
         else {
-            content = `\n${compile_1.T}enum class ${name}\n${compile_1.T}{`;
+            content = `\n${compile_1.T}${compile_1.T}enum class ${name}\n${compile_1.T}${compile_1.T}{`;
             for (const pair of elements) {
                 if (pair[2] && "" != pair[2]) {
-                    content += `\n${compile_1.T}${compile_1.T}/* ${pair[2]} */`;
+                    content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/* ${pair[2]} */`;
                 }
-                content += `\n${compile_1.T}${compile_1.T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
             }
-            content += `\n${compile_1.T}};`;
+            content += `\n${compile_1.T}${compile_1.T}};`;
         }
         this.addHeadContent(content);
     }
@@ -63,7 +65,7 @@ class ProtocolsCpp extends cpp_1.CPP {
         let content = "";
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${compile_1.T}/* ${v[1]}命令 */\n`;
+            content += `\n${compile_1.T}${compile_1.T}/* ${v[1]}命令 */\n`;
             content += this.compileGroup(v[1], list, channelDefine);
         }
         this.addHeadContent(content);
@@ -88,14 +90,14 @@ class ProtocolsCpp extends cpp_1.CPP {
                 s2s_result += this.compileCommand_s2s(channels, name, pair[1]);
             }
         }
-        content += `${compile_1.T}enum class ${name}${this.commandSuffix}\n${compile_1.T}{\n`;
+        content += `${compile_1.T}${compile_1.T}enum class ${name}${this.commandSuffix}\n${compile_1.T}${compile_1.T}{\n`;
         if (c2s_result.length > 0) {
             content += c2s_result;
         }
         if (s2c_result.length > 0) {
             content += s2c_result;
         }
-        content += `${compile_1.T}};\n`;
+        content += `${compile_1.T}${compile_1.T}};\n`;
         content += s2s_result;
         return content;
     }
@@ -119,9 +121,9 @@ class ProtocolsCpp extends cpp_1.CPP {
                     throw new Error("协议号超上限");
                 }
                 if (meta.comment != null) {
-                    content += `${compile_1.T}${compile_1.T}/* ${meta.comment} */\n`;
+                    content += `${compile_1.T}${compile_1.T}${compile_1.T}/* ${meta.comment} */\n`;
                 }
-                content += `${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)},\n`;
+                content += `${compile_1.T}${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)},\n`;
             }
         }
         return content;
@@ -141,7 +143,7 @@ class ProtocolsCpp extends cpp_1.CPP {
             first = group;
             second = type;
         }
-        let content = `\n${compile_1.T}enum class ${first}${second}${this.commandSuffix}\n${compile_1.T}{\n`;
+        let content = `\n${compile_1.T}${compile_1.T}enum class ${first}${second}${this.commandSuffix}\n${compile_1.T}${compile_1.T}{\n`;
         for (let segment of channels) {
             let base = segment[0];
             for (let i = 0, size = segment[1].length; i < size; ++i) {
@@ -169,15 +171,15 @@ class ProtocolsCpp extends cpp_1.CPP {
         return content;
     }
     compileTypes(typesName, groups, groupDefines, channelDefine) {
-        let content = `\n\n${compile_1.T}/*${compile_1.T}命令类型${compile_1.T}*/`;
-        content += `\n${compile_1.T}namespace ${typesName}`;
-        content += `\n${compile_1.T}{`;
+        let content = `\n\n${compile_1.T}${compile_1.T}/*${compile_1.T}命令类型${compile_1.T}*/`;
+        content += `\n${compile_1.T}${compile_1.T}namespace ${typesName}`;
+        content += `\n${compile_1.T}${compile_1.T}{`;
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${compile_1.T}${compile_1.T}/* ${v[1]}命令 */`;
+            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/* ${v[1]}命令 */`;
             content += this.compileGroupTypes(v[1], list, channelDefine);
         }
-        content += `\n${compile_1.T}}`;
+        content += `\n${compile_1.T}${compile_1.T}}\n`;
         this.addHeadContent(content);
     }
     compileGroupTypes(name, group, channelDefine) {
@@ -214,15 +216,15 @@ class ProtocolsCpp extends cpp_1.CPP {
                         let meta = segment[1][i];
                         if (meta.metaRpc) {
                             if (meta.metaRpc.comment) {
-                                content += `\n${compile_1.T}${compile_1.T}/* ${meta.metaRpc.comment} */`;
+                                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/* ${meta.metaRpc.comment} */`;
                             }
-                            content += `\n${compile_1.T}${compile_1.T}using ${this.className(meta.meta)} = std::tuple<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}>;`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}using ${this.className(meta.meta)} = std::tuple<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}>;`;
                         }
                         else {
                             if (meta.meta.comment) {
-                                content += `\n${compile_1.T}${compile_1.T}/* ${meta.meta.comment} */`;
+                                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/* ${meta.meta.comment} */`;
                             }
-                            content += `\n${compile_1.T}${compile_1.T}using ${this.className(meta.meta)} = std::tuple<${this.className(meta.meta)}>;`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}using ${this.className(meta.meta)} = std::tuple<${this.className(meta.meta)}>;`;
                         }
                     }
                 }

@@ -14,13 +14,12 @@ class ProtocolsCS extends cs_1.CS {
         this.commandSuffix = commandSuffix;
     }
     precompile(declaration) {
-        let content = `` +
-            "\nusing MessagePack;" +
+        let content = "using MessagePack;" +
             "\nusing System;" +
             "\nusing System.Collections.Generic;" +
-            `\n/* ${declaration} */` +
-            `\nnamespace ${this.namespace}\n{` +
-            "";
+            `\nnamespace Gen\n{` +
+            `\n/*${compile_1.T}${declaration} */` +
+            `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{`;
         this.addContent(content);
     }
     compileEnum(name, elements) {
@@ -29,14 +28,14 @@ class ProtocolsCS extends cs_1.CS {
             content = "";
         }
         else {
-            content += `\n${compile_1.T}public enum ${name} \n${compile_1.T}{`;
+            content += `\n${compile_1.T}${compile_1.T}public enum ${name} \n${compile_1.T}${compile_1.T}{`;
             for (const pair of elements) {
                 if (pair[2] && "" != pair[2]) {
-                    content += `\n${compile_1.T}${compile_1.T}/// <summary>${pair[2]}</summary>`;
+                    content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/// <summary>${pair[2]}</summary>`;
                 }
-                content += `\n${compile_1.T}${compile_1.T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
             }
-            content += `\n${compile_1.T}}\n`;
+            content += `\n${compile_1.T}${compile_1.T}}\n`;
         }
         this.addContent(content);
     }
@@ -44,7 +43,7 @@ class ProtocolsCS extends cs_1.CS {
         let content = "";
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${compile_1.T}/// <summary>   ${v[1]}命令   </summary>\n`;
+            content += `\n${compile_1.T}${compile_1.T}/// <summary>   ${v[1]}命令   </summary>\n`;
             content += this.compileGroup(v[1], list, channelDefine);
         }
         this.addContent(content);
@@ -69,14 +68,14 @@ class ProtocolsCS extends cs_1.CS {
                 s2s_result += this.compileCommand_s2s(channels, name, pair[1]);
             }
         }
-        content += `\n${compile_1.T}public enum ${name}${this.commandSuffix}\n${compile_1.T}{`;
+        content += `\n${compile_1.T}${compile_1.T}public enum ${name}${this.commandSuffix}\n${compile_1.T}${compile_1.T}{`;
         if (c2s_result.length > 0) {
             content += c2s_result;
         }
         if (s2c_result.length > 0) {
             content += s2c_result;
         }
-        content += `\n${compile_1.T}}`;
+        content += `\n${compile_1.T}${compile_1.T}}`;
         content += s2s_result;
         return content;
     }
@@ -100,9 +99,9 @@ class ProtocolsCS extends cs_1.CS {
                     throw new Error("协议号超上限");
                 }
                 if (meta.comment != null) {
-                    content += `\n${compile_1.T}${compile_1.T}/// <summary> ${meta.comment} </summary>`;
+                    content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/// <summary> ${meta.comment} </summary>`;
                 }
-                content += `\n${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)},`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)},`;
             }
         }
         return content;
@@ -122,7 +121,7 @@ class ProtocolsCS extends cs_1.CS {
             first = group;
             second = type;
         }
-        let content = `\n\tpublic enum ${first}${second}${this.commandSuffix}\n{`;
+        let content = `\n\tpublic enum ${first}${second}${this.commandSuffix}\n${compile_1.T}${compile_1.T}{`;
         for (let segment of channels) {
             let base = segment[0];
             for (let i = 0, size = segment[1].length; i < size; ++i) {
@@ -141,23 +140,24 @@ class ProtocolsCS extends cs_1.CS {
                     throw new Error("协议号超上限");
                 }
                 if (meta.comment != null) {
-                    content += `\n${compile_1.T}${compile_1.T}/// <summary> ${meta.comment} </summary>`;
+                    content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/// <summary> ${meta.comment} </summary>`;
                 }
-                content += `\n${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)}`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)}`;
             }
         }
-        content += `\n${compile_1.T}};`;
+        content += `\n${compile_1.T}${compile_1.T};`;
         return content;
     }
     compileTypes(typesName, groups, groupDefines, channelDefine) {
-        let content = `\n\n${compile_1.T}/// <summary>${compile_1.T}命令类型${compile_1.T}</summary>`;
-        content += `\n${compile_1.T}namespace ${typesName}`;
-        content += `\n${compile_1.T}{`;
+        let content = `\n\n${compile_1.T}${compile_1.T}/// <summary>${compile_1.T}命令类型${compile_1.T}</summary>`;
+        content += `\n${compile_1.T}${compile_1.T}namespace ${typesName}`;
+        content += `\n${compile_1.T}${compile_1.T}{`;
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${compile_1.T}${compile_1.T}/// <summary> ${v[1]}命令 </summary>`;
+            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/// <summary> ${v[1]}命令 </summary>`;
             content += this.compileGroupTypes(v[1], list, channelDefine);
         }
+        content += `\n${compile_1.T}${compile_1.T}}`;
         content += `\n${compile_1.T}}`;
         this.addContent(content);
     }
@@ -171,21 +171,21 @@ class ProtocolsCS extends cs_1.CS {
                         let meta = segment[1][i];
                         if (meta.metaRpc) {
                             if (meta.metaRpc.comment) {
-                                content += `\n${compile_1.T}${compile_1.T}/// <summary> ${meta.metaRpc.comment} </summary>`;
+                                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/// <summary> ${meta.metaRpc.comment} </summary>`;
                             }
-                            content += `\n${compile_1.T}${compile_1.T}public class ${this.className(meta.meta)}Oper : Call<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}, ${name}${this.commandSuffix}>`;
-                            content += `\n${compile_1.T}${compile_1.T}{`;
-                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}public const ${name}${this.commandSuffix} Opcode = ${name}${this.commandSuffix}.${this.className(meta.meta)};`;
-                            content += `\n${compile_1.T}${compile_1.T}}`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}public class ${this.className(meta.meta)}Oper : Call<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}, ${name}${this.commandSuffix}>`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}{`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}public const ${name}${this.commandSuffix} Opcode = ${name}${this.commandSuffix}.${this.className(meta.meta)};`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}}`;
                         }
                         else {
                             if (meta.meta.comment) {
-                                content += `\n${compile_1.T}${compile_1.T}/// <summary> ${meta.meta.comment} </summary>`;
+                                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/// <summary> ${meta.meta.comment} </summary>`;
                             }
-                            content += `\n${compile_1.T}${compile_1.T}public class ${this.className(meta.meta)}Oper : Send<${this.className(meta.meta)}, ${name}${this.commandSuffix}>`;
-                            content += `\n${compile_1.T}${compile_1.T}{`;
-                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}public const ${name}${this.commandSuffix} Opcode = ${name}${this.commandSuffix}.${this.className(meta.meta)};`;
-                            content += `\n${compile_1.T}${compile_1.T}}`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}public class ${this.className(meta.meta)}Oper : Send<${this.className(meta.meta)}, ${name}${this.commandSuffix}>`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}{`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}public const ${name}${this.commandSuffix} Opcode = ${name}${this.commandSuffix}.${this.className(meta.meta)};`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}}`;
                         }
                     }
                 }
