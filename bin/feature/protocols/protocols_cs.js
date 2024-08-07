@@ -20,33 +20,7 @@ class ProtocolsCS extends cs_1.CS {
             "\nusing System.Collections.Generic;" +
             `\n/* ${declaration} */` +
             `\nnamespace ${this.namespace}\n{` +
-            `\n${compile_1.T}/// <summary> 协议接口 </summary>` +
-            `\n${compile_1.T}public interface IProtocols` +
-            `\n${compile_1.T}{` +
-            `\n` +
-            `\n${compile_1.T}}` +
-            `\n` +
-            `\n${compile_1.T}/// <summary> 普通协议 </summary>` +
-            `\n${compile_1.T}/// <typeparam name="T1">发送协议参数类型</typeparam>` +
-            `\n${compile_1.T}/// <typeparam name="OP">协议号</typeparam>` +
-            `\n${compile_1.T}public class Send<T1, OP> : IProtocols` +
-            `\n${compile_1.T}{` +
-            `\n${compile_1.T}${compile_1.T}/// <summary> 发送的消息 </summary>` +
-            `\n${compile_1.T}${compile_1.T}public T1 Request;` +
-            `\n${compile_1.T}}` +
-            `\n` +
-            `\n${compile_1.T}/// <summary> RPC 协议 </summary>` +
-            `\n${compile_1.T}/// <typeparam name="T1">请求</typeparam>` +
-            `\n${compile_1.T}/// <typeparam name="T2">回应</typeparam>` +
-            `\n${compile_1.T}/// <typeparam name="OP">协议号</typeparam>` +
-            `\n${compile_1.T}public class Call<T1, T2, OP> : IProtocols` +
-            `\n${compile_1.T}{` +
-            `\n${compile_1.T}${compile_1.T}/// <summary> 发送的消息 </summary>` +
-            `\n${compile_1.T}${compile_1.T}public T1 Request;` +
-            `\n${compile_1.T}${compile_1.T}/// <summary> 返回的消息 </summary>` +
-            `\n${compile_1.T}${compile_1.T}public T2 Reply;` +
-            `\n${compile_1.T}}` +
-            `\n`;
+            "";
         this.addContent(content);
     }
     compileEnum(name, elements) {

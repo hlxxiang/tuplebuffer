@@ -105,13 +105,13 @@ export abstract class TS extends TupleBase {
         return content;
     }
 
-    protected override compileTuple(meta: TupleTypeMeta, indexSuffix: string, exportType: ExportType): void {
-        this.compileTupleIndex(meta, indexSuffix, exportType);
+    protected override compileTuple(meta: TupleTypeMeta, indexSuffix: string, interfaceName: string, exportType: ExportType): void {
+        this.compileTupleIndex(meta, indexSuffix, interfaceName, exportType);
         this.compileTupleInterface(meta, indexSuffix, exportType);
         this.compileTupleType(meta, exportType);
     }
 
-    protected compileTupleIndex(meta: TupleTypeMeta, indexSuffix: string, exportType: ExportType): void {
+    protected compileTupleIndex(meta: TupleTypeMeta, indexSuffix: string, interfaceName: string, exportType: ExportType): void {
         let names: Table<boolean> = Object.create(null);
         let content = "";
         if (meta.comment != null) {

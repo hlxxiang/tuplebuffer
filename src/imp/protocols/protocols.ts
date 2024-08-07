@@ -6,6 +6,7 @@ import { Protocols } from "../../gen/protocols";
 Protocols.init(
     "Protocols",
     "协议",
+    "IMessage",
     "Types",
     "Rpcs",
     "Opcode",
@@ -44,10 +45,10 @@ Protocols.init(
 require("./cs/protocols_gateway");
 
 
-Protocols.add(LangueType.CPP, ProtocolsCpp);
 Protocols.add(LangueType.CS, ProtocolsCS);
+Protocols.add(LangueType.CPP, ProtocolsCpp);
 Protocols.add(LangueType.TS, ProtocolsTS);
 
-Protocols.compile("./export", LangueType.CPP);
 Protocols.compile("./export", LangueType.CS);
+Protocols.compile("./export", LangueType.CPP);
 Protocols.compile("./export", LangueType.TS);

@@ -5,33 +5,6 @@ using System.Collections.Generic;
 /* 协议 */
 namespace Protocols
 {
-    /// <summary> 协议接口 </summary>
-    public interface IProtocols
-    {
-
-    }
-
-    /// <summary> 普通协议 </summary>
-    /// <typeparam name="T1">发送协议参数类型</typeparam>
-    /// <typeparam name="OP">协议号</typeparam>
-    public class Send<T1, OP> : IProtocols
-    {
-        /// <summary> 发送的消息 </summary>
-        public T1 Request;
-    }
-
-    /// <summary> RPC 协议 </summary>
-    /// <typeparam name="T1">请求</typeparam>
-    /// <typeparam name="T2">回应</typeparam>
-    /// <typeparam name="OP">协议号</typeparam>
-    public class Call<T1, T2, OP> : IProtocols
-    {
-        /// <summary> 发送的消息 </summary>
-        public T1 Request;
-        /// <summary> 返回的消息 </summary>
-        public T2 Reply;
-    }
-
     public enum MsgFields 
     {
         /// <summary>请求</summary>
@@ -78,65 +51,65 @@ namespace Protocols
     /// 测试1
     /// </summary>*/
     [MessagePackObject]
-    public class Test1 
+    public class Test1 : IMessage
     {
         [Key(0)]
-        public string? test { get; set; }
+        public string test { get; set; }
     }
 
     /// <summary>
     /// 测试2
     /// </summary>*/
     [MessagePackObject]
-    public class Test2 
+    public class Test2 : IMessage
     {
         /// <summary> 账号 </summary>
         [Key(0)]
-        public string? account { get; set; }
+        public string account { get; set; }
     }
 
     /// <summary>
     /// RPC返回:测试2
     /// </summary>*/
     [MessagePackObject]
-    public class Test2Reply 
+    public class Test2Reply : IMessage
     {
         /// <summary> 错误码 </summary>
         [Key(0)]
-        public Int64? code { get; set; }
+        public Int64 code { get; set; }
     }
 
     /// <summary>
     /// 测试3
     /// </summary>*/
     [MessagePackObject]
-    public class Test3 
+    public class Test3 : IMessage
     {
         /// <summary> 账号 </summary>
         [Key(0)]
-        public string? account { get; set; }
+        public string account { get; set; }
     }
 
     /// <summary>
     /// RPC返回:测试3
     /// </summary>*/
     [MessagePackObject]
-    public class Test3Reply 
+    public class Test3Reply : IMessage
     {
         /// <summary> 错误码 </summary>
         [Key(0)]
-        public Int64? code { get; set; }
+        public Int64 code { get; set; }
     }
 
     /// <summary>
     /// 测试4
     /// </summary>*/
     [MessagePackObject]
-    public class Test4 
+    public class Test4 : IMessage
     {
         /// <summary> test </summary>
         [Key(0)]
-        public string? test { get; set; }
+        public string test { get; set; }
     }
 
     /// <summary>   Client命令   </summary>

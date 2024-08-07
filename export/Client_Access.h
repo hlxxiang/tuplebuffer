@@ -16,7 +16,7 @@ namespace Access
     using int32 = int32_t;
     using namespace std;
     /* 三维坐标 */
-    struct Vector3
+    struct Vector3 : public IAccess
     {
         using Tuple = std::tuple<std::optional<float>, std::optional<float>, std::optional<float>>;
         /* 坐标X */
@@ -30,7 +30,7 @@ namespace Access
     std::optional<Vector3> Vector3Decode(std::optional<Vector3::Tuple>& t);
 
     /* 场景信息 */
-    struct SceneRecord
+    struct SceneRecord : public IAccess
     {
         using Tuple = std::tuple<std::optional<Vector3::Tuple>>;
         /* 坐标信息 */
@@ -40,7 +40,7 @@ namespace Access
     std::optional<SceneRecord> SceneRecordDecode(std::optional<SceneRecord::Tuple>& t);
 
     /* Data */
-    struct DataRecord
+    struct DataRecord : public IAccess
     {
         using Tuple = std::tuple<std::optional<Vector3::Tuple>>;
         /* 坐标信息 */
@@ -50,7 +50,7 @@ namespace Access
     std::optional<DataRecord> DataRecordDecode(std::optional<DataRecord::Tuple>& t);
 
     /* 账号 */
-    struct AccountInfo
+    struct AccountInfo : public IAccess
     {
         using Tuple = std::tuple<std::optional<string>, std::optional<int64>, std::optional<int64>>;
         /* 帐号名 */

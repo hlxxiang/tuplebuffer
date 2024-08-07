@@ -49,7 +49,7 @@ namespace Protocols
         End = 0x1400000,
     };
     /* 测试1 */
-    struct Test1
+    struct Test1 : public IMessage
     {
         using Tuple = std::tuple<std::optional<string>>;
         std::optional<string> test;
@@ -58,7 +58,7 @@ namespace Protocols
     std::optional<Test1> Test1Decode(std::optional<Test1::Tuple>& t);
 
     /* 测试2 */
-    struct Test2
+    struct Test2 : public IMessage
     {
         using Tuple = std::tuple<std::optional<string>>;
         /* 账号 */
@@ -68,7 +68,7 @@ namespace Protocols
     std::optional<Test2> Test2Decode(std::optional<Test2::Tuple>& t);
 
     /* RPC返回:测试2 */
-    struct Test2Reply
+    struct Test2Reply : public IMessage
     {
         using Tuple = std::tuple<std::optional<int64>>;
         /* 错误码 */
@@ -78,7 +78,7 @@ namespace Protocols
     std::optional<Test2Reply> Test2ReplyDecode(std::optional<Test2Reply::Tuple>& t);
 
     /* 测试3 */
-    struct Test3
+    struct Test3 : public IMessage
     {
         using Tuple = std::tuple<std::optional<string>>;
         /* 账号 */
@@ -88,7 +88,7 @@ namespace Protocols
     std::optional<Test3> Test3Decode(std::optional<Test3::Tuple>& t);
 
     /* RPC返回:测试3 */
-    struct Test3Reply
+    struct Test3Reply : public IMessage
     {
         using Tuple = std::tuple<std::optional<int64>>;
         /* 错误码 */
@@ -98,7 +98,7 @@ namespace Protocols
     std::optional<Test3Reply> Test3ReplyDecode(std::optional<Test3Reply::Tuple>& t);
 
     /* 测试4 */
-    struct Test4
+    struct Test4 : public IMessage
     {
         using Tuple = std::tuple<std::optional<string>>;
         /* test */

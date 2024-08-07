@@ -15,10 +15,12 @@ export class Access {
     private static _indexSuffix: string;
     private static _declaration: string;
     private static _namespace: string;
+    private static _interfaceName: string;
 
     public static init(
         namespace: string,
         declaration: string,
+        interfaceName: string,
         indexSuffix: string,
         typePrefix: string,
         channelDefine: Array<[number, string]>
@@ -26,6 +28,7 @@ export class Access {
         this._namespace = namespace;
         this._declaration = declaration;
         this._indexSuffix = indexSuffix;
+        this._interfaceName = interfaceName;
 
         this._channelDefine = channelDefine;
 
@@ -92,7 +95,7 @@ export class Access {
         {
             let langue = new (langueList.get(langueType))(this._namespace, path, `Server_Access`);
             langue.precompile(this._declaration);
-            langue.compileDeclare(this._indexSuffix, ExportType.Server);
+            langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Server);
             for (const group of this._groupDefine) {
                 let list = this._groups[group[0]];
                 langue.compileGroupTypes(group[1], list, this._channelDefine);
@@ -102,7 +105,7 @@ export class Access {
         {
             let langue = new (langueList.get(langueType))(this._namespace, path, `Client_Access`);
             langue.precompile(this._declaration);
-            langue.compileDeclare(this._indexSuffix, ExportType.Client);
+            langue.compileDeclare(this._indexSuffix,  this._interfaceName, ExportType.Client);
             for (const group of this._groupDefine) {
                 let list = this._groups[group[0]];
                 langue.compileGroupTypes(group[1], list, this._channelDefine);

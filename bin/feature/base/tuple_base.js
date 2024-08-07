@@ -9,9 +9,9 @@ class TupleBase {
         this.path = path;
         this.fileName = fileName;
     }
-    compileDeclare(indexSuffix, exportType) {
+    compileDeclare(indexSuffix, interfaceName, exportType) {
         for (const tuple of compile_1.declareTypes) {
-            this.compileTuple(tuple, indexSuffix, exportType);
+            this.compileTuple(tuple, indexSuffix, interfaceName, exportType);
         }
         for (let v of compile_1.checkTupleNames) {
             if (v[1] == 0) {

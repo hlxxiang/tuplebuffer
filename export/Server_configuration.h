@@ -12,7 +12,7 @@ namespace Configuration
     using int32 = int32_t;
     using namespace std;
     /* 测试 */
-    struct Test
+    struct Test : public IConfiguration
     {
         using Tuple = std::tuple<std::optional<int64>, std::optional<int64>, std::optional<string>>;
         /* id */
@@ -26,7 +26,7 @@ namespace Configuration
     std::optional<Test> TestDecode(std::optional<Test::Tuple>& t);
 
     /* 属性 */
-    struct Attr
+    struct Attr : public IConfiguration
     {
         using Tuple = std::tuple<std::optional<int64>, std::optional<int64>>;
         /* 属性ID */
@@ -38,7 +38,7 @@ namespace Configuration
     std::optional<Attr> AttrDecode(std::optional<Attr::Tuple>& t);
 
     /* 三维坐标 */
-    struct Vector3
+    struct Vector3 : public IConfiguration
     {
         using Tuple = std::tuple<std::optional<float>, std::optional<float>, std::optional<float>>;
         /* 坐标X */
@@ -51,7 +51,7 @@ namespace Configuration
     std::optional<Vector3::Tuple> Vector3Encode(std::optional<Vector3>& obj);
     std::optional<Vector3> Vector3Decode(std::optional<Vector3::Tuple>& t);
 
-    struct Monster
+    struct Monster : public IConfiguration
     {
         using Tuple = std::tuple<std::optional<int64>, std::optional<string>, std::optional<int64>, std::optional<std::vector<std::optional<Attr::Tuple>>>, std::optional<std::vector<std::optional<int64>>>, std::optional<Vector3::Tuple>>;
         /* 怪物Id */

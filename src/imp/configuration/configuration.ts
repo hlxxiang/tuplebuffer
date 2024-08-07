@@ -5,6 +5,7 @@ import { Configuration } from "../../gen/configuration";
 
 Configuration.init(
     "Configuration",
+    "IConfiguration",
     "Fields",
     "配置",
     "demo/config/excel",
@@ -17,10 +18,10 @@ Configuration.init(
 
 require("./configuration_declare");
 
-Configuration.add(LangueType.CPP, ConfigurationCPP);
 Configuration.add(LangueType.CS, ConfigurationCS);
+Configuration.add(LangueType.CPP, ConfigurationCPP);
 Configuration.add(LangueType.TS, ConfigurationTS);
 
-Configuration.compile("./export", LangueType.CPP);
 Configuration.compile("./export", LangueType.CS);
+Configuration.compile("./export", LangueType.CPP);
 Configuration.compile("./export", LangueType.TS);

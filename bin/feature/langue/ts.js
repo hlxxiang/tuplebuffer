@@ -104,12 +104,12 @@ class TS extends tuple_base_1.TupleBase {
         }
         return content;
     }
-    compileTuple(meta, indexSuffix, exportType) {
-        this.compileTupleIndex(meta, indexSuffix, exportType);
+    compileTuple(meta, indexSuffix, interfaceName, exportType) {
+        this.compileTupleIndex(meta, indexSuffix, interfaceName, exportType);
         this.compileTupleInterface(meta, indexSuffix, exportType);
         this.compileTupleType(meta, exportType);
     }
-    compileTupleIndex(meta, indexSuffix, exportType) {
+    compileTupleIndex(meta, indexSuffix, interfaceName, exportType) {
         let names = Object.create(null);
         let content = "";
         if (meta.comment != null) {

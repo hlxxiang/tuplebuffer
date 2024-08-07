@@ -29,6 +29,7 @@ export class Configuration {
 
     private static _declaration: string;
     private static _namespace: string;
+    private static _interfaceName: string;
     private static _indexSuffix: string;
     private static _excelPath: string;
     private static _scriptPath: string;
@@ -41,6 +42,7 @@ export class Configuration {
 
     public static init(
         namespace: string,
+        interfaceName: string,
         indexSuffix: string,
         declaration: string,
         excelPath: string,
@@ -51,6 +53,7 @@ export class Configuration {
         clientJsonPath: string
     ): void {
         this._namespace = namespace;
+        this._interfaceName = interfaceName;
         this._indexSuffix = indexSuffix;
         this._declaration = declaration;
         this._files = [];
@@ -184,7 +187,7 @@ export class Configuration {
         {
             let langue = new (langueList.get(langueType))(this._namespace, path, `Server_configuration`);
             langue.precompile(this._declaration);
-            langue.compileDeclare(this._indexSuffix, ExportType.Server);
+            langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Server);
             langue.compileTypeNames(this._files, ExportType.Server);
             // 生成单行数据对应数据类型，应该用不上，
             // langue.compileTypes(this._files, ExportType.Server);
@@ -195,7 +198,7 @@ export class Configuration {
         {
             let langue = new (langueList.get(langueType))(this._namespace, path, `Client_configuration`);
             langue.precompile(this._declaration);
-            langue.compileDeclare(this._indexSuffix, ExportType.Client);
+            langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Client);
             langue.compileTypeNames(this._files, ExportType.Client);
             // 生成单行数据对应数据类型，应该用不上，
             // langue.compileTypes(this._files, ExportType.Client);

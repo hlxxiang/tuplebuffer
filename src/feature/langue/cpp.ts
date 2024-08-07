@@ -299,20 +299,20 @@ export abstract class CPP extends TupleBase {
         return content;
     }
 
-    protected override compileTuple(meta: TupleTypeMeta, indexSuffix: string, exportType: ExportType): void {
-        this.compileTupleIndex(meta, indexSuffix, exportType);
+    protected override compileTuple(meta: TupleTypeMeta, indexSuffix: string, interfaceName: string, exportType: ExportType): void {
+        this.compileTupleIndex(meta, indexSuffix, interfaceName, exportType);
         this.compileTupleTypeEncode(meta, exportType);
         this.compileTupleIndexEncode(meta, indexSuffix, exportType);
         this.compileTupleTypeDecode(meta, exportType);
         this.compileTupleIndexDecode(meta, indexSuffix, exportType);
     }
 
-    protected compileTupleIndex(meta: TupleTypeMeta, indexSuffix: string, exportType: ExportType): void {
+    protected compileTupleIndex(meta: TupleTypeMeta, indexSuffix: string, interfaceName: string, exportType: ExportType): void {
         let content = "";
         if (meta.comment != null) {
             content += `\n${T}/* ${meta.comment} */`;
         }
-        content += `\n${T}struct ${meta.className}\n${T}{\n${T}${T}using Tuple = std::tuple<${this.classSource(meta, exportType, false)}>;\n`;
+        content += `\n${T}struct ${meta.className} : public ${interfaceName}\n${T}{\n${T}${T}using Tuple = std::tuple<${this.classSource(meta, exportType, false)}>;\n`;
         let fields = meta.fields;
         if (fields != null) {
             let index = 0;

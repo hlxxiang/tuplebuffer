@@ -13,9 +13,9 @@ export abstract class TupleBase {
         this.fileName = fileName;
     }
 
-    public compileDeclare(indexSuffix: string, exportType: ExportType): void {
+    public compileDeclare(indexSuffix: string, interfaceName: string, exportType: ExportType): void {
         for (const tuple of declareTypes) {
-            this.compileTuple(tuple, indexSuffix, exportType);
+            this.compileTuple(tuple, indexSuffix, interfaceName, exportType);
         }
         for (let v of checkTupleNames) {
             if (v[1] == 0) {
@@ -24,7 +24,7 @@ export abstract class TupleBase {
         }
     }
 
-    protected abstract compileTuple(meta: TupleTypeMeta, indexSuffix: string, exportType: ExportType): void;
+    protected abstract compileTuple(meta: TupleTypeMeta, indexSuffix: string, interfaceName: string, exportType: ExportType): void;
 
     protected abstract className(typeMeta: TypeMeta): string;
 

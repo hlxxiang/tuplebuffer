@@ -102,17 +102,17 @@ class CS extends tuple_base_1.TupleBase {
         }
         return content;
     }
-    compileTuple(meta, indexSuffix, exportType) {
-        this.compileTupleIndex(meta, indexSuffix, exportType);
+    compileTuple(meta, indexSuffix, interfaceName, exportType) {
+        this.compileTupleIndex(meta, indexSuffix, interfaceName, exportType);
     }
-    compileTupleIndex(meta, indexSuffix, exportType) {
+    compileTupleIndex(meta, indexSuffix, interfaceName, exportType) {
         let names = Object.create(null);
         let content = "";
         if (meta.comment != null) {
             content += `\n${compile_1.T}/// <summary>\n${compile_1.T}/// ${meta.comment}\n${compile_1.T}/// </summary>*/`;
         }
         let fields = meta.fields;
-        content += `\n${compile_1.T}[MessagePackObject]\n${compile_1.T}public class ${meta.className} \n${compile_1.T}{`;
+        content += `\n${compile_1.T}[MessagePackObject]\n${compile_1.T}public class ${meta.className} : ${interfaceName}\n${compile_1.T}{`;
         fields = meta.fields;
         if (fields != null) {
             let index = 0;
@@ -129,7 +129,7 @@ class CS extends tuple_base_1.TupleBase {
                     if (comment != null) {
                         content += `\n${compile_1.T}${compile_1.T}/// <summary> ${comment} </summary>`;
                     }
-                    content += `\n${compile_1.T}${compile_1.T}[Key(${index})]\n${compile_1.T}${compile_1.T}public ${this.className(field.meta)}? ${name} { get; set; }`;
+                    content += `\n${compile_1.T}${compile_1.T}[Key(${index})]\n${compile_1.T}${compile_1.T}public ${this.className(field.meta)} ${name} { get; set; }`;
                     index++;
                 }
             }

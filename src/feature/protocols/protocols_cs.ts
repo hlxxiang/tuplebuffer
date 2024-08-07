@@ -25,34 +25,35 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
             "\nusing System.Collections.Generic;" +
             `\n/* ${declaration} */` +
             `\nnamespace ${this.namespace}\n{` +
-            `\n${T}/// <summary> 协议接口 </summary>` +
-            `\n${T}public interface IProtocols` +
-            `\n${T}{` +
-            `\n`+
-            `\n${T}}` +
-            `\n`+
+            // `\n${T}/// <summary> 协议接口 </summary>` +
+            // `\n${T}public interface IProtocols` +
+            // `\n${T}{` +
+            // `\n`+
+            // `\n${T}}` +
+            // `\n`+
 
-            `\n${T}/// <summary> 普通协议 </summary>` +
-            `\n${T}/// <typeparam name="T1">发送协议参数类型</typeparam>` +
-            `\n${T}/// <typeparam name="OP">协议号</typeparam>` +
-            `\n${T}public class Send<T1, OP> : IProtocols` +
-            `\n${T}{` +
-            `\n${T}${T}/// <summary> 发送的消息 </summary>` +
-            `\n${T}${T}public T1 Request;` +
-            `\n${T}}` +
-            `\n`+
-            `\n${T}/// <summary> RPC 协议 </summary>` +
-            `\n${T}/// <typeparam name="T1">请求</typeparam>` +
-            `\n${T}/// <typeparam name="T2">回应</typeparam>` +
-            `\n${T}/// <typeparam name="OP">协议号</typeparam>` +
-            `\n${T}public class Call<T1, T2, OP> : IProtocols` +
-            `\n${T}{` +
-            `\n${T}${T}/// <summary> 发送的消息 </summary>` +
-            `\n${T}${T}public T1 Request;` +
-            `\n${T}${T}/// <summary> 返回的消息 </summary>` +
-            `\n${T}${T}public T2 Reply;` +
-            `\n${T}}`+
-            `\n`;
+            // `\n${T}/// <summary> 普通协议 </summary>` +
+            // `\n${T}/// <typeparam name="T1">发送协议参数类型</typeparam>` +
+            // `\n${T}/// <typeparam name="OP">协议号</typeparam>` +
+            // `\n${T}public class Send<T1, OP> : IProtocols` +
+            // `\n${T}{` +
+            // `\n${T}${T}/// <summary> 发送的消息 </summary>` +
+            // `\n${T}${T}public T1 Request;` +
+            // `\n${T}}` +
+            // `\n`+
+            // `\n${T}/// <summary> RPC 协议 </summary>` +
+            // `\n${T}/// <typeparam name="T1">请求</typeparam>` +
+            // `\n${T}/// <typeparam name="T2">回应</typeparam>` +
+            // `\n${T}/// <typeparam name="OP">协议号</typeparam>` +
+            // `\n${T}public class Call<T1, T2, OP> : IProtocols` +
+            // `\n${T}{` +
+            // `\n${T}${T}/// <summary> 发送的消息 </summary>` +
+            // `\n${T}${T}public T1 Request;` +
+            // `\n${T}${T}/// <summary> 返回的消息 </summary>` +
+            // `\n${T}${T}public T2 Reply;` +
+            // `\n${T}}`+
+            // `\n`;
+            "";
         this.addContent(content);
     }
 

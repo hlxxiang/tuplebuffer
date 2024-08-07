@@ -33,6 +33,7 @@ export class Protocols {
     private static _rpcName: string;
     private static _declaration: string;
     private static _namespace: string;
+    private static _interfaceName: string;
 
     private static _segments: Array<ProtocolSegment>;
 
@@ -41,6 +42,7 @@ export class Protocols {
     public static init(
         namespace: string,
         declaration: string,
+        interfaceName: string,
         typesName: string,
         rpcName: string,
         commandSuffix: string,
@@ -55,6 +57,7 @@ export class Protocols {
     ): void {
         this._namespace = namespace;
         this._declaration = declaration;
+        this._interfaceName = interfaceName;
         this._typesName = typesName;
         this._rpcName = rpcName;
         this._commandSuffix = commandSuffix;
@@ -225,7 +228,7 @@ export class Protocols {
         langue.compileEnum(this._bitMask, this._bitMaskDefine);
         langue.compileEnum(this._groupName, this._groupDefine);
         langue.compileEnum(this._channelName, this._channelDefine);
-        langue.compileDeclare(this._indexSuffix, ExportType.All);
+        langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.All);
         langue.compileGroups(this._groups, this._groupDefine, this._channelDefine);
         langue.compileTypes(this._typesName, this._groups, this._groupDefine, this._channelDefine);
         langue.saveFile();

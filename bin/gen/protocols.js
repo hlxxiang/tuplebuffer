@@ -5,9 +5,10 @@ const compile_1 = require("../compiler/compile");
 const log_1 = require("../utils/log");
 let langueList = new Map();
 class Protocols {
-    static init(namespace, declaration, typesName, rpcName, commandSuffix, indexSuffix, rpcFields, rpcDefine, maskName, maskDefine, bitMask, bitMaskDefine, groupName, groupDefine, channelName, channelDefine, channelLimit, maxOpcode) {
+    static init(namespace, declaration, interfaceName, typesName, rpcName, commandSuffix, indexSuffix, rpcFields, rpcDefine, maskName, maskDefine, bitMask, bitMaskDefine, groupName, groupDefine, channelName, channelDefine, channelLimit, maxOpcode) {
         this._namespace = namespace;
         this._declaration = declaration;
+        this._interfaceName = interfaceName;
         this._typesName = typesName;
         this._rpcName = rpcName;
         this._commandSuffix = commandSuffix;
@@ -158,7 +159,7 @@ class Protocols {
         langue.compileEnum(this._bitMask, this._bitMaskDefine);
         langue.compileEnum(this._groupName, this._groupDefine);
         langue.compileEnum(this._channelName, this._channelDefine);
-        langue.compileDeclare(this._indexSuffix, 3);
+        langue.compileDeclare(this._indexSuffix, this._interfaceName, 3);
         langue.compileGroups(this._groups, this._groupDefine, this._channelDefine);
         langue.compileTypes(this._typesName, this._groups, this._groupDefine, this._channelDefine);
         langue.saveFile();

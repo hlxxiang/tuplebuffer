@@ -5,10 +5,11 @@ const compile_1 = require("../compiler/compile");
 const log_1 = require("../utils/log");
 let langueList = new Map();
 class Access {
-    static init(namespace, declaration, indexSuffix, typePrefix, channelDefine) {
+    static init(namespace, declaration, interfaceName, indexSuffix, typePrefix, channelDefine) {
         this._namespace = namespace;
         this._declaration = declaration;
         this._indexSuffix = indexSuffix;
+        this._interfaceName = interfaceName;
         this._channelDefine = channelDefine;
         this._groups = [[], []];
         this._groupDefine = [[0, typePrefix], [1, ""]];
@@ -66,7 +67,7 @@ class Access {
         {
             let langue = new (langueList.get(langueType))(this._namespace, path, `Server_Access`);
             langue.precompile(this._declaration);
-            langue.compileDeclare(this._indexSuffix, 1);
+            langue.compileDeclare(this._indexSuffix, this._interfaceName, 1);
             for (const group of this._groupDefine) {
                 let list = this._groups[group[0]];
                 langue.compileGroupTypes(group[1], list, this._channelDefine);
@@ -76,7 +77,7 @@ class Access {
         {
             let langue = new (langueList.get(langueType))(this._namespace, path, `Client_Access`);
             langue.precompile(this._declaration);
-            langue.compileDeclare(this._indexSuffix, 2);
+            langue.compileDeclare(this._indexSuffix, this._interfaceName, 2);
             for (const group of this._groupDefine) {
                 let list = this._groups[group[0]];
                 langue.compileGroupTypes(group[1], list, this._channelDefine);

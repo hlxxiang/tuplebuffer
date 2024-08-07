@@ -103,18 +103,18 @@ export abstract class CS extends TupleBase {
         return content;
     }
 
-    protected override compileTuple(meta: TupleTypeMeta, indexSuffix: string, exportType: ExportType): void {
-        this.compileTupleIndex(meta, indexSuffix, exportType);
+    protected override compileTuple(meta: TupleTypeMeta, indexSuffix: string, interfaceName: string, exportType: ExportType): void {
+        this.compileTupleIndex(meta, indexSuffix, interfaceName, exportType);
     }
 
-    protected compileTupleIndex(meta: TupleTypeMeta, indexSuffix: string, exportType: ExportType): void {
+    protected compileTupleIndex(meta: TupleTypeMeta, indexSuffix: string, interfaceName: string, exportType: ExportType): void {
         let names: Table<boolean> = Object.create(null);
         let content = "";
         if (meta.comment != null) {
             content += `\n${T}/// <summary>\n${T}/// ${meta.comment}\n${T}/// </summary>*/`;
         }
         let fields = meta.fields;
-        content += `\n${T}[MessagePackObject]\n${T}public class ${meta.className} \n${T}{`;
+        content += `\n${T}[MessagePackObject]\n${T}public class ${meta.className} : ${interfaceName}\n${T}{`;
         fields = meta.fields;
         if (fields != null) {
             let index = 0;
@@ -131,7 +131,7 @@ export abstract class CS extends TupleBase {
                     if (comment != null) {
                         content += `\n${T}${T}/// <summary> ${comment} </summary>`;
                     }
-                    content += `\n${T}${T}[Key(${index})]\n${T}${T}public ${this.className(field.meta)}? ${name} { get; set; }`;
+                    content += `\n${T}${T}[Key(${index})]\n${T}${T}public ${this.className(field.meta)} ${name} { get; set; }`;
                     index++;
                 }
             }

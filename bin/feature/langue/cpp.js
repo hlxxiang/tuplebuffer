@@ -290,19 +290,19 @@ class CPP extends tuple_base_1.TupleBase {
         }
         return content;
     }
-    compileTuple(meta, indexSuffix, exportType) {
-        this.compileTupleIndex(meta, indexSuffix, exportType);
+    compileTuple(meta, indexSuffix, interfaceName, exportType) {
+        this.compileTupleIndex(meta, indexSuffix, interfaceName, exportType);
         this.compileTupleTypeEncode(meta, exportType);
         this.compileTupleIndexEncode(meta, indexSuffix, exportType);
         this.compileTupleTypeDecode(meta, exportType);
         this.compileTupleIndexDecode(meta, indexSuffix, exportType);
     }
-    compileTupleIndex(meta, indexSuffix, exportType) {
+    compileTupleIndex(meta, indexSuffix, interfaceName, exportType) {
         let content = "";
         if (meta.comment != null) {
             content += `\n${compile_1.T}/* ${meta.comment} */`;
         }
-        content += `\n${compile_1.T}struct ${meta.className}\n${compile_1.T}{\n${compile_1.T}${compile_1.T}using Tuple = std::tuple<${this.classSource(meta, exportType, false)}>;\n`;
+        content += `\n${compile_1.T}struct ${meta.className} : public ${interfaceName}\n${compile_1.T}{\n${compile_1.T}${compile_1.T}using Tuple = std::tuple<${this.classSource(meta, exportType, false)}>;\n`;
         let fields = meta.fields;
         if (fields != null) {
             let index = 0;

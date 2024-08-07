@@ -20,8 +20,9 @@ function writeFileSync(path, data, options) {
     fs.writeFileSync(path, data, options);
 }
 class Configuration {
-    static init(namespace, indexSuffix, declaration, excelPath, scriptFile, jsonPath, objPath, assetPath, clientJsonPath) {
+    static init(namespace, interfaceName, indexSuffix, declaration, excelPath, scriptFile, jsonPath, objPath, assetPath, clientJsonPath) {
         this._namespace = namespace;
+        this._interfaceName = interfaceName;
         this._indexSuffix = indexSuffix;
         this._declaration = declaration;
         this._files = [];
@@ -138,7 +139,7 @@ class Configuration {
         {
             let langue = new (langueList.get(langueType))(this._namespace, path, `Server_configuration`);
             langue.precompile(this._declaration);
-            langue.compileDeclare(this._indexSuffix, 1);
+            langue.compileDeclare(this._indexSuffix, this._interfaceName, 1);
             langue.compileTypeNames(this._files, 1);
             langue.compileStruct(this._files, 1);
             langue.saveFile();
@@ -146,7 +147,7 @@ class Configuration {
         {
             let langue = new (langueList.get(langueType))(this._namespace, path, `Client_configuration`);
             langue.precompile(this._declaration);
-            langue.compileDeclare(this._indexSuffix, 2);
+            langue.compileDeclare(this._indexSuffix, this._interfaceName, 2);
             langue.compileTypeNames(this._files, 2);
             langue.compileStruct(this._files, 2);
             langue.saveFile();

@@ -4,7 +4,7 @@ const protocols_cpp_1 = require("../../feature/protocols/protocols_cpp");
 const protocols_cs_1 = require("../../feature/protocols/protocols_cs");
 const protocols_ts_1 = require("../../feature/protocols/protocols_ts");
 const protocols_1 = require("../../gen/protocols");
-protocols_1.Protocols.init("Protocols", "协议", "Types", "Rpcs", "Opcode", "Fields", "MsgFields", [
+protocols_1.Protocols.init("Protocols", "协议", "IMessage", "Types", "Rpcs", "Opcode", "Fields", "MsgFields", [
     [0, "Request", "请求"],
     [1, "Reply", "回应"],
 ], "ProtocolMask", [
@@ -22,10 +22,10 @@ protocols_1.Protocols.init("Protocols", "协议", "Types", "Rpcs", "Opcode", "Fi
     [20971520, "End", "End"]
 ], 1 << 20, Math.pow(2, 32) - 1);
 require("./cs/protocols_gateway");
-protocols_1.Protocols.add(1, protocols_cpp_1.ProtocolsCpp);
 protocols_1.Protocols.add(2, protocols_cs_1.ProtocolsCS);
+protocols_1.Protocols.add(1, protocols_cpp_1.ProtocolsCpp);
 protocols_1.Protocols.add(3, protocols_ts_1.ProtocolsTS);
-protocols_1.Protocols.compile("./export", 1);
 protocols_1.Protocols.compile("./export", 2);
+protocols_1.Protocols.compile("./export", 1);
 protocols_1.Protocols.compile("./export", 3);
 //# sourceMappingURL=protocols.js.map
