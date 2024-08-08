@@ -45,7 +45,7 @@ export class AccessCPP extends CPP implements AccessBase {
         for (const pair of channelDefine) {
             let channels: Array<RecordMeta> = group[pair[0]];
 
-            content += `\n\n${T}${T}namespace ${prefix}${pair[1]}${"Names"}\n${T}${T}{\n`;
+            content += `\n${T}${T}namespace ${prefix}${pair[1]}${"Names"}\n${T}${T}{\n`;
             if (channels != null) {
                 for (const record of channels) {
                     let comment = record.comment;

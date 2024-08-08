@@ -1,8 +1,8 @@
-/*枚举*/
 declare namespace Gen {
+    /*枚举*/
     namespace Enum {
 
-        /** TestA */
+        /** 枚举A */
         const enum TestA {
             /** TestA.a */
             a = 1,
@@ -10,7 +10,7 @@ declare namespace Gen {
             b = 2,
         }
 
-        /** TestB */
+        /** Enum B */
         const enum TestB {
             /** TestB.a */
             a = TestA.b,

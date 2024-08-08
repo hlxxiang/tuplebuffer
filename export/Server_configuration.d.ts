@@ -2,7 +2,7 @@ declare namespace Gen {
     /*配置*/
     namespace Configuration {
 
-            /** 测试 */
+        /** 测试 */
         const enum TestFields {
             /** id */
             id = 0,
@@ -10,7 +10,6 @@ declare namespace Gen {
             num = 1,
             /** 字符串 */
             str = 2,
-
         }
         interface TestTypes {
             [TestFields.id]: number;
@@ -20,13 +19,12 @@ declare namespace Gen {
         /** 测试 */
         type Test = [number, number, string];
 
-            /** 属性 */
+        /** 属性 */
         const enum AttrFields {
             /** 属性ID */
             attrId = 0,
             /** 属性值 */
             value = 1,
-
         }
         interface AttrTypes {
             [AttrFields.attrId]: number;
@@ -35,7 +33,7 @@ declare namespace Gen {
         /** 属性 */
         type Attr = [number, number];
 
-            /** 三维坐标 */
+        /** 三维坐标 */
         const enum Vector3Fields {
             /** 坐标X */
             x = 0,
@@ -43,7 +41,6 @@ declare namespace Gen {
             y = 1,
             /** 坐标Z */
             z = 2,
-
         }
         interface Vector3Types {
             [Vector3Fields.x]: number;
@@ -66,7 +63,6 @@ declare namespace Gen {
             skills = 4,
             /** 坐标 */
             pos = 5,
-
         }
         interface MonsterTypes {
             [MonsterFields.monsterId]: number;
@@ -77,6 +73,7 @@ declare namespace Gen {
             [MonsterFields.pos]: Vector3;
         }
         type Monster = [number, string, number, Attr[], number[], Vector3];
+
         const enum StructNames {
             /** G-怪物配置 */
             monster = "monster",

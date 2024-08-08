@@ -111,7 +111,7 @@ export abstract class CS extends TupleBase {
         let names: Table<boolean> = Object.create(null);
         let content = "";
         if (meta.comment != null) {
-            content += `\n${T}${T}/// <summary>\n${T}${T}/// ${meta.comment}\n${T}${T}/// </summary>*/`;
+            content += `\n${T}${T}/// <summary> ${meta.comment} </summary>`;
         }
         let fields = meta.fields;
         content += `\n${T}${T}[MessagePackObject(true)]\n${T}${T}public class ${meta.className} : ${interfaceName}\n${T}${T}{`;

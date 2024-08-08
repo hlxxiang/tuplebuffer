@@ -69,7 +69,7 @@ namespace Gen
         std::optional<Test2::Tuple> Test2Encode(std::optional<Test2>& obj);
         std::optional<Test2> Test2Decode(std::optional<Test2::Tuple>& t);
 
-        /* RPC返回:测试2 */
+        /* RPC请求:测试2 */
         struct Test2Reply : public IMessage
         {
             using Tuple = std::tuple<std::optional<int64>>;
@@ -89,7 +89,7 @@ namespace Gen
         std::optional<Test3::Tuple> Test3Encode(std::optional<Test3>& obj);
         std::optional<Test3> Test3Decode(std::optional<Test3::Tuple>& t);
 
-        /* RPC返回:测试3 */
+        /* RPC请求:测试3 */
         struct Test3Reply : public IMessage
         {
             using Tuple = std::tuple<std::optional<int64>>;
@@ -109,7 +109,7 @@ namespace Gen
         std::optional<Test4::Tuple> Test4Encode(std::optional<Test4>& obj);
         std::optional<Test4> Test4Decode(std::optional<Test4::Tuple>& t);
 
-        /* Client命令 */
+        /* Client 协议命令 */
         enum class ClientOpcode
         {
             /* 测试1 */
@@ -118,7 +118,7 @@ namespace Gen
             Test2 = 0x100001,
         };
 
-        /* System命令 */
+        /* System 协议命令 */
         enum class SystemOpcode
         {
             /* 测试3 */
@@ -127,26 +127,31 @@ namespace Gen
             Test4 = 0x1000001,
         };
 
-        /* BG命令 */
+        /* BG 协议命令 */
         enum class BGOpcode
         {
         };
 
 
-        /*    命令类型    */
+        /* 协议及结构 */
         namespace Types
         {
-            /* Client命令 */
+            /* Client 协议结构 */
             /* 测试1 */
             using Test1 = std::tuple<Test1>;
-            /* RPC返回:测试2 */
+            /* RPC请求:测试2 */
             using Test2 = std::tuple<Test2, Test2Reply>;
-            /* System命令 */
-            /* RPC返回:测试3 */
+            /* Client 协议结构 */
+
+            /* System 协议结构 */
+            /* RPC请求:测试3 */
             using Test3 = std::tuple<Test3, Test3Reply>;
             /* 测试4 */
             using Test4 = std::tuple<Test4>;
-            /* BG命令 */
+            /* System 协议结构 */
+
+            /* BG 协议结构 */
+            /* BG 协议结构 */
         }
     }
 }

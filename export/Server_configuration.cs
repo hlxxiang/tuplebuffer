@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 namespace Gen
 {
-    /*配置 */
+    /// <summary> 配置 </summary>
     namespace Configuration
     {
-        /// <summary>
-        /// 测试
-        /// </summary>*/
+        #region 自定义结构
+
+        /// <summary> 测试 </summary>
         [MessagePackObject(true)]
         public class Test : IConfiguration
         {
@@ -23,9 +23,7 @@ namespace Gen
             public string str { get; set; }
         }
 
-        /// <summary>
-        /// 属性
-        /// </summary>*/
+        /// <summary> 属性 </summary>
         [MessagePackObject(true)]
         public class Attr : IConfiguration
         {
@@ -37,9 +35,7 @@ namespace Gen
             public Int64 value { get; set; }
         }
 
-        /// <summary>
-        /// 三维坐标
-        /// </summary>*/
+        /// <summary> 三维坐标 </summary>
         [MessagePackObject(true)]
         public class Vector3 : IConfiguration
         {
@@ -77,6 +73,10 @@ namespace Gen
             public Vector3 pos { get; set; }
         }
 
+        #endregion
+
+        #region 表名及表结构
+
         public class TypeNames
         {
             /// <summary> G-怪物配置 </summary>
@@ -87,7 +87,8 @@ namespace Gen
         {
             /// <summary> G-怪物配置 </summary>
             public Dictionary<string, Monster>? monster;
-
         };
+
+        #endregion
     }
 }

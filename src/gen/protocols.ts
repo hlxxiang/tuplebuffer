@@ -177,7 +177,7 @@ export class Protocols {
             // }
             let nameReply = name + "Reply";
             if (fieldsReply instanceof Array) {
-                meta.metaRpc = tuple(nameReply, <Array<VarMeta>>fieldsReply, "RPC返回:" + comment);
+                meta.metaRpc = tuple(nameReply, <Array<VarMeta>>fieldsReply, "RPC请求:" + comment);
                 checkTupleNames.delete(nameReply);
             } else {
                 const typeMeta = <TypeMeta>fieldsReply;

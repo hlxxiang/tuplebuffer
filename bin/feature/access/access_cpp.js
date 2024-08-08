@@ -42,7 +42,7 @@ class AccessCPP extends cpp_1.CPP {
         let content = "";
         for (const pair of channelDefine) {
             let channels = group[pair[0]];
-            content += `\n\n${compile_1.T}${compile_1.T}namespace ${prefix}${pair[1]}${"Names"}\n${compile_1.T}${compile_1.T}{\n`;
+            content += `\n${compile_1.T}${compile_1.T}namespace ${prefix}${pair[1]}${"Names"}\n${compile_1.T}${compile_1.T}{\n`;
             if (channels != null) {
                 for (const record of channels) {
                     let comment = record.comment;

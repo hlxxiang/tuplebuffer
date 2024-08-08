@@ -14,7 +14,7 @@ export class ConfigurationTS extends TS implements ConfigurationBase {
     }
 
     public compileTypeNames(files: FileMeta[], exportType: ExportType): void {
-        let content: string = `${T}${T}const enum StructNames {\n`;
+        let content: string = `\n${T}${T}const enum StructNames {\n`;
         for (const meta of files) {
             if (meta.format & exportType) {
                 content += `${T}${T}${T}/** ${meta.name} */\n`;

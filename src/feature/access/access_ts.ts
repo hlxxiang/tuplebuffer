@@ -7,9 +7,9 @@ export class AccessTS extends TS implements AccessBase {
         super(namespace, path, fileName);
     }
     precompile(declaration: string): void {
-        let content: string = `declare namespace Gen {\n` +
-            `${T}/*${declaration}*/\n` +
-            `${T}namespace ${this.namespace} {\n`;
+        let content: string = `declare namespace Gen {` +
+            `\n${T}/* ${declaration} */` +
+            `\n${T}namespace ${this.namespace} {`;
         this.addContent(content);
     }
 

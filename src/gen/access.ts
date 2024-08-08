@@ -105,7 +105,7 @@ export class Access {
         {
             let langue = new (langueList.get(langueType))(this._namespace, path, `Client_Access`);
             langue.precompile(this._declaration);
-            langue.compileDeclare(this._indexSuffix,  this._interfaceName, ExportType.Client);
+            langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Client);
             for (const group of this._groupDefine) {
                 let list = this._groups[group[0]];
                 langue.compileGroupTypes(group[1], list, this._channelDefine);

@@ -13,9 +13,16 @@ export class ConfigurationCS extends CS implements ConfigurationBase {
             "\nusing System;" +
             "\nusing System.Collections.Generic;" +
             `\nnamespace Gen\n{` +
-            `\n${T}/*${declaration} */` +
+            `\n${T}/// <summary> ${declaration} </summary>` +
             `\n${T}namespace ${this.namespace}\n${T}{`;
         this.addContent(content);
+    }
+
+    public compileDeclare(indexSuffix: string, interfaceName: string, exportType: ExportType): void {
+        this.addContent(`\n${T}${T}#region 自定义结构\n`);
+        super.compileDeclare(indexSuffix, interfaceName, exportType);
+        this.addContent(`\n${T}${T}#endregion\n`);
+        this.addContent(`\n${T}${T}#region 表名及表结构\n`);
     }
 
     public compileTypeNames(files: FileMeta[], exportType: ExportType): void {
@@ -64,7 +71,12 @@ export class ConfigurationCS extends CS implements ConfigurationBase {
                 }
             }
         }
-        content += `\n${T}${T}};\n`;
+        content += `${T}${T}};\n`;
         this.addContent(content);
+    }
+
+    public saveFile(): void {
+        this.addContent(`\n${T}${T}#endregion\n`);
+        super.saveFile();
     }
 }

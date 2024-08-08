@@ -3,16 +3,12 @@ using System;
 using System.Collections.Generic;
 namespace Gen
 {
-/*    
-+----------+-----------+-----------+
-          .数据库记录结构定义.         
-+----------+-----------+-----------+
- */
+    /// <summary> 数据库记录结构定义 </summary>
     namespace Access
     {
-        /// <summary>
-        /// 三维坐标
-        /// </summary>*/
+        #region 自定义结构
+
+        /// <summary> 三维坐标 </summary>
         [MessagePackObject(true)]
         public class Vector3 : IAccess
         {
@@ -27,9 +23,7 @@ namespace Gen
             public float z { get; set; }
         }
 
-        /// <summary>
-        /// 场景信息
-        /// </summary>*/
+        /// <summary> 场景信息 </summary>
         [MessagePackObject(true)]
         public class SceneRecord : IAccess
         {
@@ -38,9 +32,7 @@ namespace Gen
             public Vector3 pos { get; set; }
         }
 
-        /// <summary>
-        /// Data
-        /// </summary>*/
+        /// <summary> Data </summary>
         [MessagePackObject(true)]
         public class DataRecord : IAccess
         {
@@ -49,9 +41,7 @@ namespace Gen
             public Vector3 pos { get; set; }
         }
 
-        /// <summary>
-        /// 账号
-        /// </summary>*/
+        /// <summary> 账号 </summary>
         [MessagePackObject(true)]
         public class AccountInfo : IAccess
         {
@@ -65,6 +55,13 @@ namespace Gen
             [Key(2)]
             public Int64 uid { get; set; }
         }
+
+        #endregion
+
+        #region 数据库表名及表结构
+
+        #region NativeKey
+
         public class NativeKeyNames
         {
             /// <summary> 角色自增id表 </summary>
@@ -77,6 +74,10 @@ namespace Gen
             Int64 ActorId;
         }
 
+        #endregion
+
+        #region NativeHash
+
         public class NativeHashNames
         {
         }
@@ -84,6 +85,10 @@ namespace Gen
         public class NativeHash
         {
         }
+
+        #endregion
+
+        #region NativeList
 
         public class NativeListNames
         {
@@ -93,6 +98,10 @@ namespace Gen
         {
         }
 
+        #endregion
+
+        #region Key
+
         public class KeyNames
         {
         }
@@ -100,6 +109,10 @@ namespace Gen
         public class Key
         {
         }
+
+        #endregion
+
+        #region Hash
 
         public class HashNames
         {
@@ -117,6 +130,10 @@ namespace Gen
             AccountInfo[] Account;
         }
 
+        #endregion
+
+        #region List
+
         public class ListNames
         {
             /// <summary> Data </summary>
@@ -129,5 +146,8 @@ namespace Gen
             DataRecord Data;
         }
 
+        #endregion
+
+        #endregion
     }
 }

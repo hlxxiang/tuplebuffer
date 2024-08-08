@@ -5,16 +5,16 @@ import { EnumBase } from "./enum_base";
 
 export class EnumCS extends EnumBase {
     precompile(declaration: string): void {
-        let content: string = `namespace Gen {`;
-        content += `\n${T}/* ${declaration} */\n`;
-        content += `\n${T}namespace ${this.namespace}\n${T}{`;
+        let content: string = `namespace Gen\n{` +
+            `\n${T}/// <summary> ${declaration} </summary>` +
+            `\n${T}namespace ${this.namespace}\n${T}{`;
         this.addContent(content);
     }
     protected override compileEnumIndex(meta: EnumTypeMeta): void {
         let names: Table<boolean> = Object.create(null);
         let content = ``;
         if (meta.comment != null) {
-            content += `\n${T}${T}/// <summary>\n${T}${T}/// ${meta.comment}\n${T}${T}/// </summary>`;
+            content += `\n${T}${T}/// <summary> ${meta.comment} </summary>`;
         }
         content += `\n${T}${T}public enum ${meta.className}\n${T}${T}{`;
         let fields = meta.fields;

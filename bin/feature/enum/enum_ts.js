@@ -7,8 +7,8 @@ const log_1 = require("../../utils/log");
 const enum_base_1 = require("./enum_base");
 class EnumTS extends enum_base_1.EnumBase {
     precompile(declaration) {
-        let content = `/*${declaration}*/\n` +
-            `declare namespace Gen {\n` +
+        let content = `declare namespace Gen {\n` +
+            `${compile_1.T}/*${declaration}*/\n` +
             `${compile_1.T}namespace ${this.namespace} {\n`;
         this.addContent(content);
     }

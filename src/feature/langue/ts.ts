@@ -115,10 +115,10 @@ export abstract class TS extends TupleBase {
         let names: Table<boolean> = Object.create(null);
         let content = "";
         if (meta.comment != null) {
-            content += `\n${T}${T}${T}/** ${meta.comment} */`;
+            content += `\n${T}${T}/** ${meta.comment} */`;
         }
         let fields = meta.fields;
-        content += `\n${T}${T}const enum ${meta.className}${indexSuffix} {\n`;
+        content += `\n${T}${T}const enum ${meta.className}${indexSuffix} {`;
         fields = meta.fields;
         if (fields != null) {
             let index = 0;
@@ -133,9 +133,9 @@ export abstract class TS extends TupleBase {
                 if (field.exportType & exportType) {
                     let comment = field.comment;
                     if (comment != null) {
-                        content += `${T}${T}${T}/** ${comment} */\n`;
+                        content += `\n${T}${T}${T}/** ${comment} */`;
                     }
-                    content += `${T}${T}${T}${name} = ${index++},\n`;
+                    content += `\n${T}${T}${T}${name} = ${index++},`;
                 }
             }
         }

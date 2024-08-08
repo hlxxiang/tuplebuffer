@@ -8,9 +8,9 @@ class AccessTS extends ts_1.TS {
         super(namespace, path, fileName);
     }
     precompile(declaration) {
-        let content = `declare namespace Gen {\n` +
-            `${compile_1.T}/*${declaration}*/\n` +
-            `${compile_1.T}namespace ${this.namespace} {\n`;
+        let content = `declare namespace Gen {` +
+            `\n${compile_1.T}/* ${declaration} */` +
+            `\n${compile_1.T}namespace ${this.namespace} {`;
         this.addContent(content);
     }
     compileGroupTypes(prefix, group, channelDefine) {

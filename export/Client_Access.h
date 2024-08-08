@@ -7,11 +7,7 @@
 
 namespace Gen
 {
-    /* 
-+----------+-----------+-----------+
-          .数据库记录结构定义.         
-+----------+-----------+-----------+
- */
+    /* 数据库记录结构定义 */
     namespace Access
     {
         using int64 = int64_t;
@@ -65,7 +61,6 @@ namespace Gen
         std::optional<AccountInfo::Tuple> AccountInfoEncode(std::optional<AccountInfo>& obj);
         std::optional<AccountInfo> AccountInfoDecode(std::optional<AccountInfo::Tuple>& t);
 
-
         namespace NativeKeyNames
         {
             /* 角色自增id表 */
@@ -78,7 +73,6 @@ namespace Gen
             using ActorId = std::optional<int64>;
         };
 
-
         namespace NativeHashNames
         {
         }
@@ -86,7 +80,6 @@ namespace Gen
         namespace NativeHash
         {
         };
-
 
         namespace NativeListNames
         {
@@ -96,7 +89,6 @@ namespace Gen
         {
         };
 
-
         namespace KeyNames
         {
         }
@@ -104,7 +96,6 @@ namespace Gen
         namespace Key
         {
         };
-
 
         namespace HashNames
         {
@@ -121,7 +112,6 @@ namespace Gen
             /* 帐号表 */
             using Account = std::optional<std::vector<std::optional<AccountInfo>>>;
         };
-
 
         namespace ListNames
         {

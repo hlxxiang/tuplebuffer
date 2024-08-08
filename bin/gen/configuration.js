@@ -20,7 +20,7 @@ function writeFileSync(path, data, options) {
     fs.writeFileSync(path, data, options);
 }
 class Configuration {
-    static init(namespace, interfaceName, indexSuffix, declaration, excelPath, scriptFile, jsonPath, objPath, assetPath, clientJsonPath) {
+    static init(namespace, declaration, interfaceName, indexSuffix, excelPath, scriptFile, jsonPath, objPath, assetPath, clientJsonPath) {
         this._namespace = namespace;
         this._interfaceName = interfaceName;
         this._indexSuffix = indexSuffix;

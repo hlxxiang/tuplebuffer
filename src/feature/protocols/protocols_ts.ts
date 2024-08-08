@@ -19,19 +19,19 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
     }
 
     public precompile(declaration: string): void {
-        let content: string = `/*${declaration}*/\n` +
-            `declare namespace Gen {\n` +
-            `${T}namespace ${this.namespace} {\n`;
+        let content: string = `declare namespace Gen {` +
+            `\n${T}/* ${declaration} */` +
+            `\n${T}namespace ${this.namespace} {`;
         this.addContent(content);
     }
 
     public compileEnum(name: string, elements: [number, string, string][]): void {
         let content: string = "";
-        content = `${T}${T}const enum ${name} {`;
+        content = `\n${T}${T}const enum ${name} {`;
         for (const pair of elements) {
-            content += `\n${T}${T}${T}${T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
+            content += `\n${T}${T}${T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
         }
-        content += `\n${T}${T}${T}}\n\n`;
+        content += `\n${T}${T}}\n`;
         this.addContent(content);
     }
 
@@ -39,7 +39,7 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
         let content: string = "";
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `${T}${T}/***************************************${v[1]}命令***************************************/\n\n`;
+            content += `\n${T}${T}/*************************************** ${v[1]} 协议命令 ***************************************/\n`;
             content += this.compileGroup(v[1], list, channelDefine);
         }
         this.addContent(content);
@@ -65,14 +65,14 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
                 s2s_result += this.compileCommand_s2s(channels, name, pair[1]);
             }
         }
-        content += `${T}${T}const enum ${this.commandSuffix} {\n`;
+        content += `\n${T}${T}const enum ${this.commandSuffix} {`;
         if (c2s_result.length > 0) {
             content += c2s_result;
         }
         if (s2c_result.length > 0) {
             content += s2c_result;
         }
-        content += `${T}${T}}\n\n`;
+        content += `\n${T}${T}}`;
         content += s2s_result;
         return content;
     }
@@ -100,11 +100,10 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
                     throw new Error("协议号超上限");
                 }
                 if (meta.comment != null) {
-                    content += `${T}${T}${T}/** ${meta.comment} */\n`
+                    content += `\n${T}${T}${T}/** ${meta.comment} */`
                 }
-                content += `${T}${T}${T}${meta.name} = 0x${opcode.toString(16)},\n`;
+                content += `\n${T}${T}${T}${meta.name} = 0x${opcode.toString(16)},`;
             }
-            content += `\n`;
         }
         return content;
     }
@@ -124,7 +123,7 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
             first = group;
             second = type;
         }
-        let content: string = `${T}${T}const enum ${first}${second}${this.commandSuffix} {\n`;
+        let content: string = `\n${T}${T}const enum ${first}${second}${this.commandSuffix} {`;
         for (let segment of channels) {
             let base = segment[0];
             for (let i = 0, size = segment[1].length; i < size; ++i) {
@@ -145,9 +144,9 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
                     throw new Error("协议号超上限");
                 }
                 if (meta.comment != null) {
-                    content += `${T}${T}${T}/** ${meta.comment} */\n`
+                    content += `\n${T}${T}${T}/** ${meta.comment} */`
                 }
-                content += `${T}${T}${T}${meta.name} = 0x${opcode.toString(16)},\n`;
+                content += `\n${T}${T}${T}${meta.name} = 0x${opcode.toString(16)},`;
             }
         }
         content += `${T}${T}}\n\n`;
@@ -157,14 +156,15 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
 
     public compileTypes(typesName: string, groups: ProtocolGroup[], groupDefines: [number, string, string][], channelDefine: [number, string, string][]): void {
         let content: string = "";
-        let result: string = `${T}${T}/***************************************命令类型***************************************/\n\n`;
-        result += `${T}${T}interface ${typesName} {\n`;
+        let result: string = `\n${T}${T}/** 协议及结构 */\n`;
+        result += `\n${T}${T}interface ${typesName} {`;
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            result += `${T}${T}/***************************************${v[1]}命令***************************************/\n\n`;
+            result += `\n${T}${T}${T}/** ${v[1]} 协议结构 */`;
             result += this.compileGroupTypes(v[1], list, channelDefine);
+            result += `\n${T}${T}${T}/** ${v[1]} 协议结构 */\n`;
         }
-        content += result + `${T}${T}\n`;
+        content += result + `${T}${T}}\n`;
         this.addContent(content);
     }
 
@@ -201,14 +201,13 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
                     for (let i = 0, size = segment[1].length; i < size; ++i) {
                         let meta = segment[1][i];
                         if (meta.metaRpc) {
-                            content += `${T}${T}${T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}, ${this.className(meta.metaRpc)}],\n`;
+                            content += `\n${T}${T}${T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}, ${this.className(meta.metaRpc)}],`;
                         }
                         else {
-                            content += `${T}${T}${T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}],\n`;
+                            content += `\n${T}${T}${T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}],`;
                         }
                     }
                 }
-                content += `\n`;
             }
         }
         return content;

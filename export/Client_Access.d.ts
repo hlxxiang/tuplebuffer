@@ -1,12 +1,7 @@
 declare namespace Gen {
-    /*
-+----------+-----------+-----------+
-          .数据库记录结构定义.         
-+----------+-----------+-----------+
-*/
+    /* 数据库记录结构定义 */
     namespace Access {
-
-            /** 三维坐标 */
+        /** 三维坐标 */
         const enum Vector3Fields {
             /** 坐标X */
             x = 0,
@@ -14,7 +9,6 @@ declare namespace Gen {
             y = 1,
             /** 坐标Z */
             z = 2,
-
         }
         interface Vector3Types {
             [Vector3Fields.x]: number;
@@ -24,11 +18,10 @@ declare namespace Gen {
         /** 三维坐标 */
         type Vector3 = [number, number, number];
 
-            /** 场景信息 */
+        /** 场景信息 */
         const enum SceneRecordFields {
             /** 坐标信息 */
             pos = 0,
-
         }
         interface SceneRecordTypes {
             [SceneRecordFields.pos]: Vector3;
@@ -36,11 +29,10 @@ declare namespace Gen {
         /** 场景信息 */
         type SceneRecord = [Vector3];
 
-            /** Data */
+        /** Data */
         const enum DataRecordFields {
             /** 坐标信息 */
             pos = 0,
-
         }
         interface DataRecordTypes {
             [DataRecordFields.pos]: Vector3;
@@ -48,7 +40,7 @@ declare namespace Gen {
         /** Data */
         type DataRecord = [Vector3];
 
-            /** 账号 */
+        /** 账号 */
         const enum AccountInfoFields {
             /** 帐号名 */
             account = 0,
@@ -56,7 +48,6 @@ declare namespace Gen {
             createTime = 1,
             /** 角色id */
             uid = 2,
-
         }
         interface AccountInfoTypes {
             [AccountInfoFields.account]: string;

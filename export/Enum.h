@@ -4,7 +4,7 @@ namespace Gen
     /* 枚举 */
     namespace Enum
     {
-        /* TestA */
+        /* 枚举A */
         enum class TestA
         {
             /* TestA.a */
@@ -13,7 +13,7 @@ namespace Gen
             b = 2,
         };
 
-        /* TestB */
+        /* Enum B */
         enum class TestB
         {
             /* TestB.a */

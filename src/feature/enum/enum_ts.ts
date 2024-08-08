@@ -5,9 +5,9 @@ import { EnumBase } from "./enum_base";
 
 export class EnumTS extends EnumBase {
     precompile(declaration: string): void {
-        let content: string = `/*${declaration}*/\n` +
-        `declare namespace Gen {\n` +
-        `${T}namespace ${this.namespace} {\n`;
+        let content: string = `declare namespace Gen {\n` +
+            `${T}/*${declaration}*/\n` +
+            `${T}namespace ${this.namespace} {\n`;
         this.addContent(content);
     }
     protected override compileEnumIndex(meta: EnumTypeMeta): void {

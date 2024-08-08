@@ -42,9 +42,9 @@ export class Configuration {
 
     public static init(
         namespace: string,
+        declaration: string,
         interfaceName: string,
         indexSuffix: string,
-        declaration: string,
         excelPath: string,
         scriptFile: string,
         jsonPath: string,

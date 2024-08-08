@@ -108,7 +108,7 @@ class Protocols {
         if (fieldsReply) {
             let nameReply = name + "Reply";
             if (fieldsReply instanceof Array) {
-                meta.metaRpc = (0, compile_1.tuple)(nameReply, fieldsReply, "RPC返回:" + comment);
+                meta.metaRpc = (0, compile_1.tuple)(nameReply, fieldsReply, "RPC请求:" + comment);
                 compile_1.checkTupleNames.delete(nameReply);
             }
             else {

@@ -7,16 +7,16 @@ const log_1 = require("../../utils/log");
 const enum_base_1 = require("./enum_base");
 class EnumCS extends enum_base_1.EnumBase {
     precompile(declaration) {
-        let content = `namespace Gen {`;
-        content += `\n${compile_1.T}/* ${declaration} */\n`;
-        content += `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{`;
+        let content = `namespace Gen\n{` +
+            `\n${compile_1.T}/// <summary> ${declaration} </summary>` +
+            `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{`;
         this.addContent(content);
     }
     compileEnumIndex(meta) {
         let names = Object.create(null);
         let content = ``;
         if (meta.comment != null) {
-            content += `\n${compile_1.T}${compile_1.T}/// <summary>\n${compile_1.T}${compile_1.T}/// ${meta.comment}\n${compile_1.T}${compile_1.T}/// </summary>`;
+            content += `\n${compile_1.T}${compile_1.T}/// <summary> ${meta.comment} </summary>`;
         }
         content += `\n${compile_1.T}${compile_1.T}public enum ${meta.className}\n${compile_1.T}${compile_1.T}{`;
         let fields = meta.fields;

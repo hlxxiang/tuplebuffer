@@ -23,9 +23,18 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
             "\nusing System;" +
             "\nusing System.Collections.Generic;" +
             `\nnamespace Gen\n{` +
-            `\n/*${T}${declaration} */` +
-            `\n${T}namespace ${this.namespace}\n${T}{`;
+            `\n${T}/// <summary> ${declaration} </summary>` +
+            `\n${T}namespace ${this.namespace}\n${T}{` +
+            `\n${T}${T}#region 基础定义\n`;
+
         this.addContent(content);
+    }
+
+    public compileDeclare(indexSuffix: string, interfaceName: string, exportType: ExportType): void {
+        this.addContent(`\n${T}${T}#endregion\n`);
+        this.addContent(`\n${T}${T}#region 自定义结构\n`);
+        super.compileDeclare(indexSuffix, interfaceName, exportType);
+        this.addContent(`\n${T}${T}#endregion\n`);
     }
 
     public compileEnum(name: string, elements: [number, string, string][]): void {
@@ -37,7 +46,7 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
             content += `\n${T}${T}public enum ${name} \n${T}${T}{`;
             for (const pair of elements) {
                 if (pair[2] && "" != pair[2]) {
-                    content += `\n${T}${T}${T}/// <summary>${pair[2]}</summary>`;
+                    content += `\n${T}${T}${T}/// <summary> ${pair[2]} </summary>`;
                 }
                 content += `\n${T}${T}${T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
             }
@@ -51,8 +60,9 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
         let content: string = "";
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${T}${T}/// <summary>   ${v[1]}命令   </summary>\n`;
+            content += `\n${T}${T}#region ${v[1]} 协议命令\n`;
             content += this.compileGroup(v[1], list, channelDefine);
+            content += `\n\n${T}${T}#endregion\n`;
         }
         this.addContent(content);
     }
@@ -167,16 +177,17 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
 
 
     public compileTypes(typesName: string, groups: ProtocolGroup[], groupDefines: [number, string, string][], channelDefine: [number, string, string][]): void {
-        let content: string = `\n\n${T}${T}/// <summary>${T}命令类型${T}</summary>`;
+        let content: string = `\n${T}${T}#region 协议及结构${T}\n`;
         content += `\n${T}${T}namespace ${typesName}`;
         content += `\n${T}${T}{`
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${T}${T}${T}/// <summary> ${v[1]}命令 </summary>`;
+            content += `\n${T}${T}${T}#region ${v[1]} 协议结构\n`;
             content += this.compileGroupTypes(v[1], list, channelDefine);
+            content += `\n\n${T}${T}${T}#endregion\n`;
         }
-        content += `\n${T}${T}}`;
-        content += `\n${T}}`;
+        content += `\n${T}${T}}\n`;
+        content += `\n${T}${T}#endregion\n`;
         this.addContent(content);
     }
 
@@ -188,19 +199,6 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
                 for (let segment of channels) {
                     for (let i = 0, size = segment[1].length; i < size; ++i) {
                         let meta = segment[1][i];
-                        // if (meta.metaRpc) {
-                        //     if (meta.metaRpc.comment) {
-                        //         content += `\n${T}${T}${T}/// <summary> ${meta.metaRpc.comment} </summary>`;
-                        //     }
-                        //     content += `\n${T}${T}${T}using ${this.className(meta.meta)} = Tuple<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}>;`;
-                        // }
-                        // else {
-                        //     if (meta.meta.comment) {
-                        //         content += `\n${T}${T}${T}/// <summary> ${meta.meta.comment} </summary>`;
-                        //     }
-                        //     content += `\n${T}${T}${T}using ${this.className(meta.meta)} = Tuple<${this.className(meta.meta)}>;`;
-                        // }
-
                         if (meta.metaRpc) {
                             if (meta.metaRpc.comment) {
                                 content += `\n${T}${T}${T}/// <summary> ${meta.metaRpc.comment} </summary>`;

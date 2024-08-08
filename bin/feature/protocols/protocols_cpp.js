@@ -65,7 +65,7 @@ class ProtocolsCpp extends cpp_1.CPP {
         let content = "";
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${compile_1.T}${compile_1.T}/* ${v[1]}命令 */\n`;
+            content += `\n${compile_1.T}${compile_1.T}/* ${v[1]} 协议命令 */\n`;
             content += this.compileGroup(v[1], list, channelDefine);
         }
         this.addHeadContent(content);
@@ -171,15 +171,16 @@ class ProtocolsCpp extends cpp_1.CPP {
         return content;
     }
     compileTypes(typesName, groups, groupDefines, channelDefine) {
-        let content = `\n\n${compile_1.T}${compile_1.T}/*${compile_1.T}命令类型${compile_1.T}*/`;
+        let content = `\n\n${compile_1.T}${compile_1.T}/* 协议及结构 */`;
         content += `\n${compile_1.T}${compile_1.T}namespace ${typesName}`;
         content += `\n${compile_1.T}${compile_1.T}{`;
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/* ${v[1]}命令 */`;
+            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/* ${v[1]} 协议结构 */`;
             content += this.compileGroupTypes(v[1], list, channelDefine);
+            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/* ${v[1]} 协议结构 */\n`;
         }
-        content += `\n${compile_1.T}${compile_1.T}}\n`;
+        content += `${compile_1.T}${compile_1.T}}\n`;
         this.addHeadContent(content);
     }
     compileGroupTypes(name, group, channelDefine) {

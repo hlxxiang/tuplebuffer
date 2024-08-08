@@ -12,9 +12,15 @@ class ConfigurationCS extends cs_1.CS {
             "\nusing System;" +
             "\nusing System.Collections.Generic;" +
             `\nnamespace Gen\n{` +
-            `\n${compile_1.T}/*${declaration} */` +
+            `\n${compile_1.T}/// <summary> ${declaration} </summary>` +
             `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{`;
         this.addContent(content);
+    }
+    compileDeclare(indexSuffix, interfaceName, exportType) {
+        this.addContent(`\n${compile_1.T}${compile_1.T}#region 自定义结构\n`);
+        super.compileDeclare(indexSuffix, interfaceName, exportType);
+        this.addContent(`\n${compile_1.T}${compile_1.T}#endregion\n`);
+        this.addContent(`\n${compile_1.T}${compile_1.T}#region 表名及表结构\n`);
     }
     compileTypeNames(files, exportType) {
         let content = `\n${compile_1.T}${compile_1.T}public class TypeNames\n${compile_1.T}${compile_1.T}{\n`;
@@ -59,8 +65,12 @@ class ConfigurationCS extends cs_1.CS {
                 }
             }
         }
-        content += `\n${compile_1.T}${compile_1.T}};\n`;
+        content += `${compile_1.T}${compile_1.T}};\n`;
         this.addContent(content);
+    }
+    saveFile() {
+        this.addContent(`\n${compile_1.T}${compile_1.T}#endregion\n`);
+        super.saveFile();
     }
 }
 exports.ConfigurationCS = ConfigurationCS;

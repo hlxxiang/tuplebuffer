@@ -5,9 +5,9 @@ import { Configuration } from "../../gen/configuration";
 
 Configuration.init(
     "Configuration",
+    "配置",
     "IConfiguration",
     "Fields",
-    "配置",
     "demo/config/excel",
     "src/",
     "demo/server/publish/configs",

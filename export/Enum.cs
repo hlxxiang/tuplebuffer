@@ -1,11 +1,9 @@
-namespace Gen {
-    /* 枚举 */
-
+namespace Gen
+{
+    /// <summary> 枚举 </summary>
     namespace Enum
     {
-        /// <summary>
-        /// TestA
-        /// </summary>
+        /// <summary> 枚举A </summary>
         public enum TestA
         {
             /// <summary> TestA.a </summary>
@@ -14,9 +12,7 @@ namespace Gen {
             b = 2,
         }
 
-        /// <summary>
-        /// TestB
-        /// </summary>
+        /// <summary> Enum B </summary>
         public enum TestB
         {
             /// <summary> TestB.a </summary>

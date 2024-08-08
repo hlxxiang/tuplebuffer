@@ -4,10 +4,7 @@ const access_cpp_1 = require("../../feature/access/access_cpp");
 const access_cs_1 = require("../../feature/access/access_cs");
 const access_ts_1 = require("../../feature/access/access_ts");
 const access_1 = require("../../gen/access");
-access_1.Access.init("Access", "\n" +
-    "+----------+-----------+-----------+\n" +
-    "          .数据库记录结构定义.         \n" +
-    "+----------+-----------+-----------+\n", "IAccess", "Fields", "Native", [
+access_1.Access.init("Access", "数据库记录结构定义", "IAccess", "Fields", "Native", [
     [0, "Key"],
     [1, "Hash"],
     [2, "List"],

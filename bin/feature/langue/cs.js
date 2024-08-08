@@ -109,7 +109,7 @@ class CS extends tuple_base_1.TupleBase {
         let names = Object.create(null);
         let content = "";
         if (meta.comment != null) {
-            content += `\n${compile_1.T}${compile_1.T}/// <summary>\n${compile_1.T}${compile_1.T}/// ${meta.comment}\n${compile_1.T}${compile_1.T}/// </summary>*/`;
+            content += `\n${compile_1.T}${compile_1.T}/// <summary> ${meta.comment} </summary>`;
         }
         let fields = meta.fields;
         content += `\n${compile_1.T}${compile_1.T}[MessagePackObject(true)]\n${compile_1.T}${compile_1.T}public class ${meta.className} : ${interfaceName}\n${compile_1.T}${compile_1.T}{`;

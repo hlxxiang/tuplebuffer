@@ -14,7 +14,7 @@ class ConfigurationTS extends ts_1.TS {
         this.addContent(content);
     }
     compileTypeNames(files, exportType) {
-        let content = `${compile_1.T}${compile_1.T}const enum StructNames {\n`;
+        let content = `\n${compile_1.T}${compile_1.T}const enum StructNames {\n`;
         for (const meta of files) {
             if (meta.format & exportType) {
                 content += `${compile_1.T}${compile_1.T}${compile_1.T}/** ${meta.name} */\n`;

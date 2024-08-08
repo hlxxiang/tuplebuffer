@@ -74,7 +74,7 @@ export class ProtocolsCpp extends CPP implements ProtocolsBase {
         let content: string = "";
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${T}${T}/* ${v[1]}命令 */\n`;
+            content += `\n${T}${T}/* ${v[1]} 协议命令 */\n`;
             content += this.compileGroup(v[1], list, channelDefine);
         }
         this.addHeadContent(content);
@@ -188,15 +188,16 @@ export class ProtocolsCpp extends CPP implements ProtocolsBase {
     }
 
     public compileTypes(typesName: string, groups: ProtocolGroup[], groupDefines: [number, string, string][], channelDefine: [number, string, string][]): void {
-        let content: string = `\n\n${T}${T}/*${T}命令类型${T}*/`;
+        let content: string = `\n\n${T}${T}/* 协议及结构 */`;
         content += `\n${T}${T}namespace ${typesName}`;
         content += `\n${T}${T}{`
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${T}${T}${T}/* ${v[1]}命令 */`;
+            content += `\n${T}${T}${T}/* ${v[1]} 协议结构 */`;
             content += this.compileGroupTypes(v[1], list, channelDefine);
+            content += `\n${T}${T}${T}/* ${v[1]} 协议结构 */\n`;
         }
-        content += `\n${T}${T}}\n`;
+        content += `${T}${T}}\n`;
         this.addHeadContent(content);
     }
 

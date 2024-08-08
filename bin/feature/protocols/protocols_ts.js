@@ -14,25 +14,25 @@ class ProtocolsTS extends ts_1.TS {
         this.commandSuffix = commandSuffix;
     }
     precompile(declaration) {
-        let content = `/*${declaration}*/\n` +
-            `declare namespace Gen {\n` +
-            `${compile_1.T}namespace ${this.namespace} {\n`;
+        let content = `declare namespace Gen {` +
+            `\n${compile_1.T}/* ${declaration} */` +
+            `\n${compile_1.T}namespace ${this.namespace} {`;
         this.addContent(content);
     }
     compileEnum(name, elements) {
         let content = "";
-        content = `${compile_1.T}${compile_1.T}const enum ${name} {`;
+        content = `\n${compile_1.T}${compile_1.T}const enum ${name} {`;
         for (const pair of elements) {
-            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
+            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
         }
-        content += `\n${compile_1.T}${compile_1.T}${compile_1.T}}\n\n`;
+        content += `\n${compile_1.T}${compile_1.T}}\n`;
         this.addContent(content);
     }
     compileGroups(groups, groupDefines, channelDefine) {
         let content = "";
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `${compile_1.T}${compile_1.T}/***************************************${v[1]}命令***************************************/\n\n`;
+            content += `\n${compile_1.T}${compile_1.T}/*************************************** ${v[1]} 协议命令 ***************************************/\n`;
             content += this.compileGroup(v[1], list, channelDefine);
         }
         this.addContent(content);
@@ -57,14 +57,14 @@ class ProtocolsTS extends ts_1.TS {
                 s2s_result += this.compileCommand_s2s(channels, name, pair[1]);
             }
         }
-        content += `${compile_1.T}${compile_1.T}const enum ${this.commandSuffix} {\n`;
+        content += `\n${compile_1.T}${compile_1.T}const enum ${this.commandSuffix} {`;
         if (c2s_result.length > 0) {
             content += c2s_result;
         }
         if (s2c_result.length > 0) {
             content += s2c_result;
         }
-        content += `${compile_1.T}${compile_1.T}}\n\n`;
+        content += `\n${compile_1.T}${compile_1.T}}`;
         content += s2s_result;
         return content;
     }
@@ -89,11 +89,10 @@ class ProtocolsTS extends ts_1.TS {
                     throw new Error("协议号超上限");
                 }
                 if (meta.comment != null) {
-                    content += `${compile_1.T}${compile_1.T}${compile_1.T}/** ${meta.comment} */\n`;
+                    content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/** ${meta.comment} */`;
                 }
-                content += `${compile_1.T}${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)},\n`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)},`;
             }
-            content += `\n`;
         }
         return content;
     }
@@ -112,7 +111,7 @@ class ProtocolsTS extends ts_1.TS {
             first = group;
             second = type;
         }
-        let content = `${compile_1.T}${compile_1.T}const enum ${first}${second}${this.commandSuffix} {\n`;
+        let content = `\n${compile_1.T}${compile_1.T}const enum ${first}${second}${this.commandSuffix} {`;
         for (let segment of channels) {
             let base = segment[0];
             for (let i = 0, size = segment[1].length; i < size; ++i) {
@@ -131,9 +130,9 @@ class ProtocolsTS extends ts_1.TS {
                     throw new Error("协议号超上限");
                 }
                 if (meta.comment != null) {
-                    content += `${compile_1.T}${compile_1.T}${compile_1.T}/** ${meta.comment} */\n`;
+                    content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/** ${meta.comment} */`;
                 }
-                content += `${compile_1.T}${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)},\n`;
+                content += `\n${compile_1.T}${compile_1.T}${compile_1.T}${meta.name} = 0x${opcode.toString(16)},`;
             }
         }
         content += `${compile_1.T}${compile_1.T}}\n\n`;
@@ -141,14 +140,15 @@ class ProtocolsTS extends ts_1.TS {
     }
     compileTypes(typesName, groups, groupDefines, channelDefine) {
         let content = "";
-        let result = `${compile_1.T}${compile_1.T}/***************************************命令类型***************************************/\n\n`;
-        result += `${compile_1.T}${compile_1.T}interface ${typesName} {\n`;
+        let result = `\n${compile_1.T}${compile_1.T}/** 协议及结构 */\n`;
+        result += `\n${compile_1.T}${compile_1.T}interface ${typesName} {`;
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            result += `${compile_1.T}${compile_1.T}/***************************************${v[1]}命令***************************************/\n\n`;
+            result += `\n${compile_1.T}${compile_1.T}${compile_1.T}/** ${v[1]} 协议结构 */`;
             result += this.compileGroupTypes(v[1], list, channelDefine);
+            result += `\n${compile_1.T}${compile_1.T}${compile_1.T}/** ${v[1]} 协议结构 */\n`;
         }
-        content += result + `${compile_1.T}${compile_1.T}\n`;
+        content += result + `${compile_1.T}${compile_1.T}}\n`;
         this.addContent(content);
     }
     compileGroupTypes(name, group, channelDefine) {
@@ -184,14 +184,13 @@ class ProtocolsTS extends ts_1.TS {
                     for (let i = 0, size = segment[1].length; i < size; ++i) {
                         let meta = segment[1][i];
                         if (meta.metaRpc) {
-                            content += `${compile_1.T}${compile_1.T}${compile_1.T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}, ${this.className(meta.metaRpc)}],\n`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}, ${this.className(meta.metaRpc)}],`;
                         }
                         else {
-                            content += `${compile_1.T}${compile_1.T}${compile_1.T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}],\n`;
+                            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}],`;
                         }
                     }
                 }
-                content += `\n`;
             }
         }
         return content;

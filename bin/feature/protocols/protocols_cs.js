@@ -18,9 +18,16 @@ class ProtocolsCS extends cs_1.CS {
             "\nusing System;" +
             "\nusing System.Collections.Generic;" +
             `\nnamespace Gen\n{` +
-            `\n/*${compile_1.T}${declaration} */` +
-            `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{`;
+            `\n${compile_1.T}/// <summary> ${declaration} </summary>` +
+            `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{` +
+            `\n${compile_1.T}${compile_1.T}#region 基础定义\n`;
         this.addContent(content);
+    }
+    compileDeclare(indexSuffix, interfaceName, exportType) {
+        this.addContent(`\n${compile_1.T}${compile_1.T}#endregion\n`);
+        this.addContent(`\n${compile_1.T}${compile_1.T}#region 自定义结构\n`);
+        super.compileDeclare(indexSuffix, interfaceName, exportType);
+        this.addContent(`\n${compile_1.T}${compile_1.T}#endregion\n`);
     }
     compileEnum(name, elements) {
         let content = "";
@@ -31,7 +38,7 @@ class ProtocolsCS extends cs_1.CS {
             content += `\n${compile_1.T}${compile_1.T}public enum ${name} \n${compile_1.T}${compile_1.T}{`;
             for (const pair of elements) {
                 if (pair[2] && "" != pair[2]) {
-                    content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/// <summary>${pair[2]}</summary>`;
+                    content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/// <summary> ${pair[2]} </summary>`;
                 }
                 content += `\n${compile_1.T}${compile_1.T}${compile_1.T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
             }
@@ -43,8 +50,9 @@ class ProtocolsCS extends cs_1.CS {
         let content = "";
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${compile_1.T}${compile_1.T}/// <summary>   ${v[1]}命令   </summary>\n`;
+            content += `\n${compile_1.T}${compile_1.T}#region ${v[1]} 协议命令\n`;
             content += this.compileGroup(v[1], list, channelDefine);
+            content += `\n\n${compile_1.T}${compile_1.T}#endregion\n`;
         }
         this.addContent(content);
     }
@@ -149,16 +157,17 @@ class ProtocolsCS extends cs_1.CS {
         return content;
     }
     compileTypes(typesName, groups, groupDefines, channelDefine) {
-        let content = `\n\n${compile_1.T}${compile_1.T}/// <summary>${compile_1.T}命令类型${compile_1.T}</summary>`;
+        let content = `\n${compile_1.T}${compile_1.T}#region 协议及结构${compile_1.T}\n`;
         content += `\n${compile_1.T}${compile_1.T}namespace ${typesName}`;
         content += `\n${compile_1.T}${compile_1.T}{`;
         for (const v of groupDefines) {
             let list = groups[v[0]];
-            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}/// <summary> ${v[1]}命令 </summary>`;
+            content += `\n${compile_1.T}${compile_1.T}${compile_1.T}#region ${v[1]} 协议结构\n`;
             content += this.compileGroupTypes(v[1], list, channelDefine);
+            content += `\n\n${compile_1.T}${compile_1.T}${compile_1.T}#endregion\n`;
         }
-        content += `\n${compile_1.T}${compile_1.T}}`;
-        content += `\n${compile_1.T}}`;
+        content += `\n${compile_1.T}${compile_1.T}}\n`;
+        content += `\n${compile_1.T}${compile_1.T}#endregion\n`;
         this.addContent(content);
     }
     compileGroupTypes(name, group, channelDefine) {
