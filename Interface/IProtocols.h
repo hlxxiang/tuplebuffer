@@ -1,9 +1,17 @@
 #pragma once
 
-namespace Protocols 
+namespace Gen
 {
-    /* 自定义接口 */
-    struct IMessage
+    namespace Protocols
     {
-    };
+        /* 协议接口 */
+        struct IProtocols
+        {
+        };
+
+        /* 协议结构 */
+        struct IMessage
+        {
+        };
+    }
 }
