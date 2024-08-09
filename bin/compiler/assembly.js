@@ -67,18 +67,24 @@ function nullValue(meta, assignType) {
                 return 0;
             }
             case 4: {
-                return 0.0;
+                return 0;
             }
             case 5: {
-                return 0.0;
+                return 0;
             }
             case 6: {
-                return false;
+                return 0.0;
+            }
+            case 7: {
+                return 0.0;
             }
             case 8: {
+                return false;
+            }
+            case 10: {
                 return [];
             }
-            case 9: {
+            case 11: {
                 return {};
             }
         }
@@ -136,9 +142,9 @@ function transform(path, row, meta, exportType) {
             try {
                 let value = getCellValue(cell);
                 switch (field.metaType) {
-                    case 9:
-                    case 8:
-                    case 10: {
+                    case 11:
+                    case 10:
+                    case 12: {
                         value = `[${value}]`;
                         break;
                     }
@@ -317,7 +323,7 @@ function transformElement(path, field, meta, data, assignType, exportType, check
                 result = nullValue(meta, assignType);
             }
             else {
-                let value = parseFloat(data);
+                let value = parseInt(data);
                 if (isNaN(value)) {
                     throw Error(`${data}不是一个有效的${meta.metaType}`);
                 }
@@ -330,7 +336,7 @@ function transformElement(path, field, meta, data, assignType, exportType, check
                 result = nullValue(meta, assignType);
             }
             else {
-                let value = parseFloat(data);
+                let value = parseInt(data);
                 if (isNaN(value)) {
                     throw Error(`${data}不是一个有效的${meta.metaType}`);
                 }
@@ -339,6 +345,32 @@ function transformElement(path, field, meta, data, assignType, exportType, check
             break;
         }
         case 6: {
+            if (data == "") {
+                result = nullValue(meta, assignType);
+            }
+            else {
+                let value = parseFloat(data);
+                if (isNaN(value)) {
+                    throw Error(`${data}不是一个有效的${meta.metaType}`);
+                }
+                result = value;
+            }
+            break;
+        }
+        case 7: {
+            if (data == "") {
+                result = nullValue(meta, assignType);
+            }
+            else {
+                let value = parseFloat(data);
+                if (isNaN(value)) {
+                    throw Error(`${data}不是一个有效的${meta.metaType}`);
+                }
+                result = value;
+            }
+            break;
+        }
+        case 8: {
             if (data == "true") {
                 result = true;
             }
@@ -353,15 +385,15 @@ function transformElement(path, field, meta, data, assignType, exportType, check
             }
             break;
         }
-        case 8: {
+        case 10: {
             result = transformArray(path, field, data, assignType, meta, exportType);
             break;
         }
-        case 9: {
+        case 11: {
             result = transformTable(path, field, data, assignType, meta, exportType);
             break;
         }
-        case 10: {
+        case 12: {
             result = transformTuple(path, field, data, assignType, meta, exportType);
             break;
         }
@@ -420,7 +452,9 @@ function toHashJson(index, sheet, meta, path, field, keyName) {
             if (field.metaType == 2 ||
                 field.metaType == 3 ||
                 field.metaType == 4 ||
-                field.metaType == 5) {
+                field.metaType == 5 ||
+                field.metaType == 6 ||
+                field.metaType == 7) {
                 if (key == null || isNaN(key)) {
                     log_1.Log.instance.error(`元类型的KEY(${keyName}:${key})不是有效值， ${i}:${row.getCell(cellIndex).address})`);
                     throw Error(`元类型的KEY(${keyName}:${key})不是有效值， ${i}:${row.getCell(cellIndex).address})`);
@@ -461,7 +495,9 @@ function toHashBin(index, sheet, meta, path, field, keyName) {
             if (field.metaType == 2 ||
                 field.metaType == 3 ||
                 field.metaType == 4 ||
-                field.metaType == 5) {
+                field.metaType == 5 ||
+                field.metaType == 6 ||
+                field.metaType == 7) {
                 if (key == null || isNaN(key)) {
                     log_1.Log.instance.error(`元类型的KEY(${keyName}:${key})不是有效值， ${i}:${row.getCell(cellIndex).address})`);
                     throw Error(`元类型的KEY(${keyName}:${key})不是有效值， ${i}:${row.getCell(cellIndex).address})`);
@@ -498,7 +534,9 @@ async function hashFile(exportFile, format, path, keyName, meta) {
         field.metaType != 2 &&
         field.metaType != 3 &&
         field.metaType != 4 &&
-        field.metaType != 5) {
+        field.metaType != 5 &&
+        field.metaType != 6 &&
+        field.metaType != 7) {
         log_1.Log.instance.error(`文件${path}的元类型的KEY(${keyName})不是整形或者字符串)`);
         throw Error(`文件${path}的元类型的KEY(${keyName})不是整形或者字符串)`);
     }

@@ -25,7 +25,9 @@ class CPP extends tuple_base_1.TupleBase {
             5 == metaType ||
             6 == metaType ||
             7 == metaType ||
-            8 == metaType) {
+            8 == metaType ||
+            9 == metaType ||
+            10 == metaType) {
             return true;
         }
         return false;
@@ -40,34 +42,40 @@ class CPP extends tuple_base_1.TupleBase {
             content = `${"int32"}`;
         }
         else if (3 == metaType) {
-            content = `${"int64"}`;
+            content = `${"uint32"}`;
         }
         else if (4 == metaType) {
-            content = `${"float"}`;
+            content = `${"int64"}`;
         }
         else if (5 == metaType) {
-            content = `${"double"}`;
+            content = `${"uint64"}`;
         }
         else if (6 == metaType) {
-            content = `${"bool"}`;
+            content = `${"float"}`;
         }
         else if (7 == metaType) {
-            content = `${"std::vector<unsigned char>"}`;
+            content = `${"double"}`;
         }
         else if (8 == metaType) {
-            content = `std::vector<${this.tuple(typeMeta.element)}>`;
+            content = `${"bool"}`;
         }
         else if (9 == metaType) {
-            content = `std::unordered_map<std::sting, ${typeMeta.className}::Tuple>`;
+            content = `${"std::vector<unsigned char>"}`;
         }
         else if (10 == metaType) {
+            content = `std::vector<${this.tuple(typeMeta.element)}>`;
+        }
+        else if (11 == metaType) {
+            content = `std::unordered_map<std::sting, ${typeMeta.className}::Tuple>`;
+        }
+        else if (12 == metaType) {
             exportType = exportType == null ? 3 : exportType;
             const fields = typeMeta.fields;
             if (fields != null && fields.length != 0) {
                 let source = "";
                 let first = true;
                 for (const field of fields) {
-                    if (10 == field.meta.metaType) {
+                    if (12 == field.meta.metaType) {
                         compile_1.checkTupleNames.set(field.meta.className, compile_1.checkTupleNames.get(field.meta.className) + 1);
                     }
                     if ((field.exportType & exportType)) {
@@ -106,27 +114,33 @@ class CPP extends tuple_base_1.TupleBase {
             content = `${"int32"}`;
         }
         else if (3 == metaType) {
-            content = `${"int64"}`;
+            content = `${"uint32"}`;
         }
         else if (4 == metaType) {
-            content = `${"float"}`;
+            content = `${"int64"}`;
         }
         else if (5 == metaType) {
-            content = `${"double"}`;
+            content = `${"uint64"}`;
         }
         else if (6 == metaType) {
-            content = `${"bool"}`;
+            content = `${"float"}`;
         }
         else if (7 == metaType) {
-            content = `${"std::vector<unsigned char>"}`;
+            content = `${"double"}`;
         }
         else if (8 == metaType) {
-            content = `std::vector<${this.tuple(typeMeta.element)}>`;
+            content = `${"bool"}`;
         }
         else if (9 == metaType) {
-            content = `std::unordered_map<std::sting, ${typeMeta.className}::Tuple>`;
+            content = `${"std::vector<unsigned char>"}`;
         }
         else if (10 == metaType) {
+            content = `std::vector<${this.tuple(typeMeta.element)}>`;
+        }
+        else if (11 == metaType) {
+            content = `std::unordered_map<std::sting, ${typeMeta.className}::Tuple>`;
+        }
+        else if (12 == metaType) {
             content = `${typeMeta.className}::Tuple`;
         }
         else {
@@ -144,27 +158,33 @@ class CPP extends tuple_base_1.TupleBase {
             content = `${"int32"}`;
         }
         else if (3 == metaType) {
-            content = `${"int64"}`;
+            content = `${"uint32"}`;
         }
         else if (4 == metaType) {
-            content = `${"float"}`;
+            content = `${"int64"}`;
         }
         else if (5 == metaType) {
-            content = `${"double"}`;
+            content = `${"uint64"}`;
         }
         else if (6 == metaType) {
-            content = `${"bool"}`;
+            content = `${"float"}`;
         }
         else if (7 == metaType) {
-            content = `${"std::vector<unsigned char>"}`;
+            content = `${"double"}`;
         }
         else if (8 == metaType) {
-            content = `std::vector<${this.className(typeMeta.element, true)}>`;
+            content = `${"bool"}`;
         }
         else if (9 == metaType) {
-            content = `std::unordered_map<std::sting, ${typeMeta.className}::Tuple>`;
+            content = `${"std::vector<unsigned char>"}`;
         }
         else if (10 == metaType) {
+            content = `std::vector<${this.className(typeMeta.element, true)}>`;
+        }
+        else if (11 == metaType) {
+            content = `std::unordered_map<std::sting, ${typeMeta.className}::Tuple>`;
+        }
+        else if (12 == metaType) {
             content = `${typeMeta.className}`;
         }
         if (addOptional) {
@@ -184,27 +204,33 @@ class CPP extends tuple_base_1.TupleBase {
             content = `${"int32"}`;
         }
         else if (3 == metaType) {
-            content = `${"int64"}`;
+            content = `${"uint32"}`;
         }
         else if (4 == metaType) {
-            content = `${"float"}`;
+            content = `${"int64"}`;
         }
         else if (5 == metaType) {
-            content = `${"double"}`;
+            content = `${"uint64"}`;
         }
         else if (6 == metaType) {
-            content = `${"bool"}`;
+            content = `${"float"}`;
         }
         else if (7 == metaType) {
-            content = `${"std::vector<unsigned char>"}()`;
+            content = `${"double"}`;
         }
         else if (8 == metaType) {
-            content = `std::vector<${this.tuple(typeMeta.element)}>`;
+            content = `${"bool"}`;
         }
         else if (9 == metaType) {
-            content = `std::unordered_map<std::sting, ${typeMeta.className}::Tuple>`;
+            content = `${"std::vector<unsigned char>"}()`;
         }
         else if (10 == metaType) {
+            content = `std::vector<${this.tuple(typeMeta.element)}>`;
+        }
+        else if (11 == metaType) {
+            content = `std::unordered_map<std::sting, ${typeMeta.className}::Tuple>`;
+        }
+        else if (12 == metaType) {
             content = `${typeMeta.className}::Tuple`;
         }
         if (addOptional) {
@@ -223,7 +249,9 @@ class CPP extends tuple_base_1.TupleBase {
             4 == metaType ||
             5 == metaType ||
             6 == metaType ||
-            7 == metaType) {
+            7 == metaType ||
+            8 == metaType ||
+            9 == metaType) {
             if (i == undefined) {
                 content = `oValue.${name}`;
             }
@@ -231,7 +259,7 @@ class CPP extends tuple_base_1.TupleBase {
                 content = `oValue.${name}[i]`;
             }
         }
-        else if (8 == metaType) {
+        else if (10 == metaType) {
             if (i == undefined) {
                 if (this.hasArrayBuiltinElement(typeMeta.element.metaType)) {
                     content = `${name}`;
@@ -249,10 +277,10 @@ class CPP extends tuple_base_1.TupleBase {
                 }
             }
         }
-        else if (9 == metaType) {
+        else if (11 == metaType) {
             content = `std::unordered_map<std::sting, ${typeMeta.className}::Tuple>`;
         }
-        else if (10 == metaType) {
+        else if (12 == metaType) {
             if (i == undefined) {
                 content = `${typeMeta.className}Encode(oValue.${name})`;
             }
@@ -271,10 +299,12 @@ class CPP extends tuple_base_1.TupleBase {
             4 == metaType ||
             5 == metaType ||
             6 == metaType ||
-            7 == metaType) {
+            7 == metaType ||
+            8 == metaType ||
+            9 == metaType) {
             content = `std::get<${i}>(tValue)`;
         }
-        else if (8 == metaType) {
+        else if (10 == metaType) {
             if (this.hasArrayBuiltinElement(typeMeta.element.metaType)) {
                 content = `${name}[i]`;
             }
@@ -282,10 +312,10 @@ class CPP extends tuple_base_1.TupleBase {
                 content = `${typeMeta.element.className}Decode(${name}[i])`;
             }
         }
-        else if (9 == metaType) {
+        else if (11 == metaType) {
             content = `std::unordered_map<std::sting, ${typeMeta.className}::Tuple>`;
         }
-        else if (10 == metaType) {
+        else if (12 == metaType) {
             content = `${typeMeta.className}Decode(std::get<${i}>(tValue))`;
         }
         return content;
@@ -343,9 +373,9 @@ class CPP extends tuple_base_1.TupleBase {
                 let field = fields[i];
                 let name = field.name;
                 if (field.exportType & exportType) {
-                    if (8 == field.meta.metaType) {
+                    if (10 == field.meta.metaType) {
                         arrSize++;
-                        if (field.metaType == 8 || field.metaType == 10) {
+                        if (field.metaType == 10 || field.metaType == 12) {
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}${this.classTuple(field.meta, exportType, true)} ${name}Arr;`;
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}if (oValue.${name}.has_value())`;
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}{`;
@@ -394,7 +424,7 @@ class CPP extends tuple_base_1.TupleBase {
                                 ret += ", ";
                             }
                             let comment = field.comment;
-                            if (8 == field.meta.metaType) {
+                            if (10 == field.meta.metaType) {
                                 ret += `${name}Arr`;
                             }
                             else {
@@ -442,8 +472,8 @@ class CPP extends tuple_base_1.TupleBase {
                 let name = field.name;
                 if (field.exportType & exportType) {
                     let comment = field.comment;
-                    if (8 == field.meta.metaType) {
-                        if (field.metaType == 8 || field.metaType == 10) {
+                    if (10 == field.meta.metaType) {
+                        if (field.metaType == 10 || field.metaType == 12) {
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}auto& ${name}_t = std::get<${index}>(tValue);`;
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}if (${name}_t.has_value())`;
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}{`;
@@ -487,7 +517,7 @@ class CPP extends tuple_base_1.TupleBase {
                     let name = field.name;
                     if (field.exportType & exportType) {
                         let comment = field.comment;
-                        if (8 != field.meta.metaType) {
+                        if (10 != field.meta.metaType) {
                             ret += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}oValue.${field.name} = ${this.decode(field.meta, exportType, name, index)};`;
                         }
                         index++;

@@ -32,18 +32,24 @@ class TS extends tuple_base_1.TupleBase {
             content = `${"number"}`;
         }
         else if (6 == metaType) {
-            content = `${"boolean"}`;
+            content = `${"number"}`;
         }
         else if (7 == metaType) {
-            content = `${"Uint8Array"}`;
+            content = `${"number"}`;
         }
         else if (8 == metaType) {
-            content = `${typeMeta.className}[]`;
+            content = `${"boolean"}`;
         }
         else if (9 == metaType) {
-            content = `Table<${typeMeta.className}>`;
+            content = `${"Uint8Array"}`;
         }
         else if (10 == metaType) {
+            content = `${typeMeta.className}[]`;
+        }
+        else if (11 == metaType) {
+            content = `Table<${typeMeta.className}>`;
+        }
+        else if (12 == metaType) {
             exportType = exportType == null ? 3 : exportType;
             const fields = typeMeta.fields;
             exportType = exportType == null ? 3 : exportType;
@@ -87,19 +93,25 @@ class TS extends tuple_base_1.TupleBase {
             content = `${"number"}`;
         }
         else if (6 == metaType) {
-            content = `${"boolean"}`;
+            content = `${"number"}`;
         }
         else if (7 == metaType) {
-            content = `${"Uint8Array"}`;
+            content = `${"number"}`;
         }
         else if (8 == metaType) {
+            content = `${"boolean"}`;
+        }
+        else if (9 == metaType) {
+            content = `${"Uint8Array"}`;
+        }
+        else if (10 == metaType) {
             let element = typeMeta.element;
             content = `${this.className(element)}[]`;
         }
-        else if (9 == metaType) {
+        else if (11 == metaType) {
             content = `Table<${typeMeta.className}>`;
         }
-        else if (10 == metaType) {
+        else if (12 == metaType) {
             content = typeMeta.className;
         }
         return content;

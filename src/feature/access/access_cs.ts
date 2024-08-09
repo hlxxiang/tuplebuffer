@@ -25,9 +25,13 @@ export class AccessCS extends CS implements AccessBase {
 
     public compileGroupTypes(prefix: string, group: RecordMeta[][], channelDefine: [number, string][]): void {
         let content: string = "";
+        let typeContent: string = "";
+        typeContent += `\n${T}${T}#region Types`
+        typeContent += `\n${T}${T}namespace Types\n${T}${T}{`
         for (const pair of channelDefine) {
             let channels: Array<RecordMeta> = group[pair[0]];
-            content += `\n${T}${T}#region ${prefix}${pair[1]}\n`
+            content += `\n${T}${T}#region ${prefix}${pair[1]}\n\n`
+            typeContent += `\n${T}${T}${T}#region ${pair[1]}`
             content += `\n${T}${T}public class ${prefix}${pair[1]}${"Names"}\n${T}${T}{\n`;
             if (channels != null) {
                 for (const record of channels) {
@@ -35,25 +39,32 @@ export class AccessCS extends CS implements AccessBase {
                     if (comment != null) {
                         content += `${T}${T}${T}/// <summary> ${comment} </summary>\n`;
                     }
-                    content += `${T}${T}${T}public static string ${record.name} = \"${record.name}\";\n`;
+                    content += `${T}${T}${T}public const string ${record.name} = \"${record.name}\";\n`;
+
+                    typeContent += `\n${T}${T}${T}public class ${record.name}RecordOper : RecordOper<${record.name}Record>\n${T}${T}${T}{`
+                    typeContent += `\n${T}${T}${T}${T}public override string Key { get; set; } = ${pair[1]}Names.${record.name};\n${T}${T}${T}}`
                 }
             }
+            typeContent += `\n${T}${T}${T}#endregion\n`
             content += `${T}${T}}\n`;
 
-            content += `\n${T}${T}public class ${prefix}${pair[1]}\n${T}${T}{\n`;
-            if (channels != null) {
-                for (const record of channels) {
-                    let meta = record.meta;
-                    let comment = record.comment;
-                    if (comment != null) {
-                        content += `${T}${T}${T}/// <summary> ${comment} </summary>\n`;
-                    }
-                    content += `${T}${T}${T}${this.className(meta)} ${record.name};\n`;
-                }
-            }
-            content += `${T}${T}}\n`;
+            // content += `\n${T}${T}public class ${prefix}${pair[1]}\n${T}${T}{\n`;
+            // if (channels != null) {
+            //     for (const record of channels) {
+            //         let meta = record.meta;
+            //         let comment = record.comment;
+            //         if (comment != null) {
+            //             content += `${T}${T}${T}/// <summary> ${comment} </summary>\n`;
+            //         }
+            //         content += `${T}${T}${T}${this.className(meta)} ${record.name};\n`;
+            //     }
+            // }
+            // content += `${T}${T}}\n`;
             content += `\n${T}${T}#endregion\n`
         }
+        typeContent += `\n${T}${T}}`
+         typeContent += `\n${T}${T}#endregion\n`
+        content += typeContent;
         this.addContent(content);
     }
 

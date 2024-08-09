@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkTupleNames = exports.declareTypes = exports.buffer = exports.boolean = exports.double = exports.float = exports.int64 = exports.int32 = exports.string = exports.T = void 0;
+exports.checkTupleNames = exports.declareTypes = exports.buffer = exports.boolean = exports.double = exports.float = exports.uint64 = exports.int64 = exports.uint32 = exports.int32 = exports.string = exports.T = void 0;
 exports.array = array;
 exports.table = table;
 exports.tuple = tuple;
@@ -28,25 +28,31 @@ exports.string = (() => {
 exports.int32 = (() => {
     return builtinCommon(2, "int32");
 })();
+exports.uint32 = (() => {
+    return builtinCommon(3, "uint32");
+})();
 exports.int64 = (() => {
-    return builtinCommon(3, "int64");
+    return builtinCommon(4, "int64");
+})();
+exports.uint64 = (() => {
+    return builtinCommon(5, "uint64");
 })();
 exports.float = (() => {
-    return builtinCommon(4, "float");
+    return builtinCommon(6, "float");
 })();
 exports.double = (() => {
-    return builtinCommon(5, "double");
+    return builtinCommon(7, "double");
 })();
 exports.boolean = (() => {
-    return builtinCommon(6, "boolean");
+    return builtinCommon(8, "boolean");
 })();
 exports.buffer = (() => {
-    return builtinCommon(7, "buffer");
+    return builtinCommon(9, "buffer");
 })();
 function array(varType) {
     let result = function (name, comment, exportType = 3, check = null, assignType = 1) {
         return {
-            metaType: 8,
+            metaType: 10,
             name: name,
             comment: comment,
             meta: result,
@@ -55,10 +61,10 @@ function array(varType) {
             assignType: assignType,
         };
     };
-    if (10 == varType.metaType) {
+    if (12 == varType.metaType) {
         exports.checkTupleNames.set(varType.className, exports.checkTupleNames.get(varType.className) + 1);
     }
-    result.metaType = 8;
+    result.metaType = 10;
     result.className = "array";
     result.element = varType;
     return result;
@@ -66,7 +72,7 @@ function array(varType) {
 function table(varType) {
     let result = function (name, comment, exportType = 3, check = null, assignType = 1) {
         return {
-            metaType: 9,
+            metaType: 11,
             name: name,
             comment: comment,
             meta: result,
@@ -75,10 +81,10 @@ function table(varType) {
             assignType: assignType,
         };
     };
-    if (10 == varType.metaType) {
+    if (12 == varType.metaType) {
         exports.checkTupleNames.set(varType.className, exports.checkTupleNames.get(varType.className) + 1);
     }
-    result.metaType = 9;
+    result.metaType = 11;
     result.className = "table";
     result.value = varType;
     return result;
@@ -93,7 +99,7 @@ function tuple(className, fields, comment) {
     exports.checkTupleNames.set(className, 0);
     let result = function (name, comment, exportType = 3, check = null, assignType = 1) {
         return {
-            metaType: 10,
+            metaType: 12,
             name: name,
             comment: comment,
             meta: result,
@@ -102,7 +108,7 @@ function tuple(className, fields, comment) {
             assignType: assignType,
         };
     };
-    result.metaType = 10;
+    result.metaType = 12;
     result.className = className;
     result.fields = fields;
     result.comment = comment;

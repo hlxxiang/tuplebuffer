@@ -24,9 +24,13 @@ class AccessCS extends cs_1.CS {
     }
     compileGroupTypes(prefix, group, channelDefine) {
         let content = "";
+        let typeContent = "";
+        typeContent += `\n${compile_1.T}${compile_1.T}#region Types`;
+        typeContent += `\n${compile_1.T}${compile_1.T}namespace Types\n${compile_1.T}${compile_1.T}{`;
         for (const pair of channelDefine) {
             let channels = group[pair[0]];
-            content += `\n${compile_1.T}${compile_1.T}#region ${prefix}${pair[1]}\n`;
+            content += `\n${compile_1.T}${compile_1.T}#region ${prefix}${pair[1]}\n\n`;
+            typeContent += `\n${compile_1.T}${compile_1.T}${compile_1.T}#region ${pair[1]}`;
             content += `\n${compile_1.T}${compile_1.T}public class ${prefix}${pair[1]}${"Names"}\n${compile_1.T}${compile_1.T}{\n`;
             if (channels != null) {
                 for (const record of channels) {
@@ -34,24 +38,18 @@ class AccessCS extends cs_1.CS {
                     if (comment != null) {
                         content += `${compile_1.T}${compile_1.T}${compile_1.T}/// <summary> ${comment} </summary>\n`;
                     }
-                    content += `${compile_1.T}${compile_1.T}${compile_1.T}public static string ${record.name} = \"${record.name}\";\n`;
+                    content += `${compile_1.T}${compile_1.T}${compile_1.T}public const string ${record.name} = \"${record.name}\";\n`;
+                    typeContent += `\n${compile_1.T}${compile_1.T}${compile_1.T}public class ${record.name}RecordOper : RecordOper<${record.name}Record>\n${compile_1.T}${compile_1.T}${compile_1.T}{`;
+                    typeContent += `\n${compile_1.T}${compile_1.T}${compile_1.T}${compile_1.T}public override string Key { get; set; } = ${pair[1]}Names.${record.name};\n${compile_1.T}${compile_1.T}${compile_1.T}}`;
                 }
             }
-            content += `${compile_1.T}${compile_1.T}}\n`;
-            content += `\n${compile_1.T}${compile_1.T}public class ${prefix}${pair[1]}\n${compile_1.T}${compile_1.T}{\n`;
-            if (channels != null) {
-                for (const record of channels) {
-                    let meta = record.meta;
-                    let comment = record.comment;
-                    if (comment != null) {
-                        content += `${compile_1.T}${compile_1.T}${compile_1.T}/// <summary> ${comment} </summary>\n`;
-                    }
-                    content += `${compile_1.T}${compile_1.T}${compile_1.T}${this.className(meta)} ${record.name};\n`;
-                }
-            }
+            typeContent += `\n${compile_1.T}${compile_1.T}${compile_1.T}#endregion\n`;
             content += `${compile_1.T}${compile_1.T}}\n`;
             content += `\n${compile_1.T}${compile_1.T}#endregion\n`;
         }
+        typeContent += `\n${compile_1.T}${compile_1.T}}`;
+        typeContent += `\n${compile_1.T}${compile_1.T}#endregion\n`;
+        content += typeContent;
         this.addContent(content);
     }
     saveFile() {

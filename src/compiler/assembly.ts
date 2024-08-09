@@ -67,7 +67,13 @@ function nullValue(meta: TypeMeta, assignType: AssignType): any {
             case MetaType.int32: {
                 return 0;
             }
+            case MetaType.uint32: {
+                return 0;
+            }
             case MetaType.int64: {
+                return 0;
+            }
+            case MetaType.uint64: {
                 return 0;
             }
             case MetaType.float: {
@@ -305,7 +311,31 @@ function transformElement(path: string, field: string, meta: TypeMeta, data: str
             }
             break;
         }
+        case MetaType.uint32: {
+            if (data == "") {
+                result = nullValue(meta, assignType);
+            } else {
+                let value: number = parseInt(data);
+                if (isNaN(value)) {
+                    throw Error(`${data}不是一个有效的${meta.metaType}`);
+                }
+                result = value;
+            }
+            break;
+        }
         case MetaType.int64: {
+            if (data == "") {
+                result = nullValue(meta, assignType);
+            } else {
+                let value = parseInt(data);
+                if (isNaN(value)) {
+                    throw Error(`${data}不是一个有效的${meta.metaType}`);
+                }
+                result = value;
+            }
+            break;
+        }
+        case MetaType.uint64: {
             if (data == "") {
                 result = nullValue(meta, assignType);
             } else {
@@ -431,7 +461,9 @@ function toHashJson(index: number, sheet: Worksheet, meta: Array<VarMeta>, path:
             let key = element[index];
 
             if (field.metaType == MetaType.int32 ||
+                field.metaType == MetaType.uint32 ||
                 field.metaType == MetaType.int64 ||
+                field.metaType == MetaType.uint64 ||
                 field.metaType == MetaType.float ||
                 field.metaType == MetaType.double
             ) {
@@ -474,7 +506,9 @@ function toHashBin(index: number, sheet: Worksheet, meta: Array<VarMeta>, path: 
             let key = element[index];
 
             if (field.metaType == MetaType.int32 ||
+                field.metaType == MetaType.uint32 ||
                 field.metaType == MetaType.int64 ||
+                field.metaType == MetaType.uint64 ||
                 field.metaType == MetaType.float ||
                 field.metaType == MetaType.double
             ) {
@@ -513,7 +547,9 @@ export async function hashFile(exportFile: string, format: number, path: string,
 
     if (field.metaType != MetaType.string &&
         field.metaType != MetaType.int32 &&
+        field.metaType != MetaType.uint32 &&
         field.metaType != MetaType.int64 &&
+        field.metaType != MetaType.uint64 &&
         field.metaType != MetaType.float &&
         field.metaType != MetaType.double) {
         Log.instance.error(`文件${path}的元类型的KEY(${keyName})不是整形或者字符串)`);

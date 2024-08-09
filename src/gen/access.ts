@@ -42,7 +42,7 @@ export class Access {
         langueList.set(langueType, constructor);
     }
 
-    public static record(key: string, type: number, args: Array<VarMeta> | TypeMeta, comment?: string): void {
+    public static record(key: string, type: number, args: Array<VarMeta>, comment?: string): void {
         if (this._keys[key] != null) {
             Log.instance.error(`表名${key}已经存在`);
             throw new Error(`表名${key}已经存在`);
@@ -66,7 +66,9 @@ export class Access {
             switch (typeMeta.metaType) {
                 case MetaType.string:
                 case MetaType.int32:
+                case MetaType.uint32:
                 case MetaType.int64:
+                case MetaType.uint64:
                 case MetaType.float:
                 case MetaType.double:
                 case MetaType.boolean:
@@ -93,7 +95,7 @@ export class Access {
 
     public static compile(path: string, langueType: LangueType): void {
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `Server_Access`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ServerAccess`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Server);
             for (const group of this._groupDefine) {
@@ -103,7 +105,7 @@ export class Access {
             langue.saveFile();
         }
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `Client_Access`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ClientAccess`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Client);
             for (const group of this._groupDefine) {

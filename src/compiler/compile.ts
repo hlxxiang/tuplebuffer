@@ -27,8 +27,16 @@ export const int32: BuiltinMeta = (() => {
     return builtinCommon(MetaType.int32, MetaName.int32);
 })();
 
+export const uint32: BuiltinMeta = (() => {
+    return builtinCommon(MetaType.uint32, MetaName.uint32);
+})();
+
 export const int64: BuiltinMeta = (() => {
     return builtinCommon(MetaType.int64, MetaName.int64);
+})();
+
+export const uint64: BuiltinMeta = (() => {
+    return builtinCommon(MetaType.uint64, MetaName.uint64);
 })();
 
 export const float: BuiltinMeta = (() => {

@@ -39,13 +39,13 @@ class Configuration {
     }
     static hasInvalidType(meta) {
         switch (meta.metaType) {
-            case 9: {
+            case 11: {
                 return this.hasInvalidType(meta.value);
             }
-            case 8: {
+            case 10: {
                 return this.hasInvalidType(meta.element);
             }
-            case 10: {
+            case 12: {
                 for (const field of (meta.fields)) {
                     if (this.hasInvalidType(field.meta)) {
                         return true;
@@ -53,7 +53,7 @@ class Configuration {
                 }
                 break;
             }
-            case 7: {
+            case 9: {
                 return true;
             }
         }
@@ -118,7 +118,9 @@ class Configuration {
             field.metaType != 2 &&
             field.metaType != 3 &&
             field.metaType != 4 &&
-            field.metaType != 5) {
+            field.metaType != 5 &&
+            field.metaType != 6 &&
+            field.metaType != 7) {
             log_1.Log.instance.error(`${path} ${type.className}的属性${key}不是string或者number类型`);
             throw new Error(`${path} ${type.className}的属性${key}不是string或者number类型`);
         }
@@ -137,7 +139,7 @@ class Configuration {
     }
     static compile(path, langueType) {
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `Server_configuration`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ServerConfiguration`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, 1);
             langue.compileTypeNames(this._files, 1);
@@ -145,7 +147,7 @@ class Configuration {
             langue.saveFile();
         }
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `Client_configuration`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ClientConfiguration`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, 2);
             langue.compileTypeNames(this._files, 2);
@@ -232,21 +234,27 @@ class Configuration {
                     types = "int32";
                     break;
                 case 3:
-                    types = "int64";
+                    types = "uint32";
                     break;
                 case 4:
-                    types = "float";
+                    types = "int64";
                     break;
                 case 5:
-                    types = "double";
+                    types = "uint64";
                     break;
                 case 6:
-                    types = "boolean";
+                    types = "float";
                     break;
-                case 10:
-                    types = "struct";
+                case 7:
+                    types = "double";
                     break;
                 case 8:
+                    types = "boolean";
+                    break;
+                case 12:
+                    types = "struct";
+                    break;
+                case 10:
                     types = "array";
                     break;
                 default:
@@ -323,9 +331,15 @@ class Configuration {
                             rowData.push(parseInt(value));
                         }
                         else if (4 == metaType) {
-                            rowData.push(parseFloat(value));
+                            rowData.push(parseInt(value));
                         }
                         else if (5 == metaType) {
+                            rowData.push(parseInt(value));
+                        }
+                        else if (6 == metaType) {
+                            rowData.push(parseFloat(value));
+                        }
+                        else if (7 == metaType) {
                             rowData.push(parseFloat(value));
                         }
                     }
@@ -414,7 +428,7 @@ class Configuration {
     }
     static generateScript(environment, transform) {
         let result = `import * as compile from "./compiler/compile";\n`;
-        result += `import { string, int32, int64, float, double, boolean, buffer, array, table, tuple } from "./compiler/compile";`;
+        result += `import { string, int32, uint32, int64, uint64, float, double, boolean, buffer, array, table, tuple } from "./compiler/compile";`;
         result += `import * as assembly from "./compiler/assembly";\n`;
         result += `import { Log } from "./utils/log";\n`;
         result += `require("./${environment}");\n`;
@@ -517,32 +531,40 @@ class Configuration {
                 break;
             }
             case 3: {
-                result += `${"int64"}`;
+                result += `${"uint32"}`;
                 break;
             }
             case 4: {
-                result += `${"float"}`;
+                result += `${"int64"}`;
                 break;
             }
             case 5: {
-                result += `${"double"}`;
+                result += `${"uint64"}`;
                 break;
             }
             case 6: {
-                result += `${"boolean"}`;
+                result += `${"float"}`;
+                break;
+            }
+            case 7: {
+                result += `${"double"}`;
                 break;
             }
             case 8: {
+                result += `${"boolean"}`;
+                break;
+            }
+            case 10: {
                 let arrayTypeMeta = meta;
                 result += `array(${this.parseTypeMeta(arrayTypeMeta.element)})`;
                 break;
             }
-            case 9: {
+            case 11: {
                 let hashTypeMeta = meta;
                 result += `table(${this.parseTypeMeta(hashTypeMeta.value)})`;
                 break;
             }
-            case 10: {
+            case 12: {
                 let tupleTypeMeta = meta;
                 result += `tuple("${tupleTypeMeta.className}",${this.parseTupleTypeMeta(tupleTypeMeta)})`;
             }

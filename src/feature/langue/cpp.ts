@@ -18,7 +18,9 @@ export abstract class CPP extends TupleBase {
     protected hasArrayBuiltinElement(metaType: MetaType): boolean {
         if (MetaType.string == metaType ||
             MetaType.int32 == metaType ||
+            MetaType.uint32 == metaType ||
             MetaType.int64 == metaType ||
+            MetaType.uint64 == metaType ||
             MetaType.float == metaType ||
             MetaType.double == metaType ||
             MetaType.boolean == metaType ||
@@ -38,8 +40,14 @@ export abstract class CPP extends TupleBase {
         else if (MetaType.int32 == metaType) {
             content = `${TypeName_CPP.int32}`;
         }
+        else if (MetaType.uint32 == metaType) {
+            content = `${TypeName_CPP.uint32}`;
+        }
         else if (MetaType.int64 == metaType) {
             content = `${TypeName_CPP.int64}`;
+        }
+        else if (MetaType.uint64 == metaType) {
+            content = `${TypeName_CPP.uint64}`;
         }
         else if (MetaType.float == metaType) {
             content = `${TypeName_CPP.float}`;
@@ -106,8 +114,14 @@ export abstract class CPP extends TupleBase {
         else if (MetaType.int32 == metaType) {
             content = `${TypeName_CPP.int32}`;
         }
+        else if (MetaType.uint32 == metaType) {
+            content = `${TypeName_CPP.uint32}`;
+        }
         else if (MetaType.int64 == metaType) {
             content = `${TypeName_CPP.int64}`;
+        }
+        else if (MetaType.uint64 == metaType) {
+            content = `${TypeName_CPP.uint64}`;
         }
         else if (MetaType.float == metaType) {
             content = `${TypeName_CPP.float}`;
@@ -146,8 +160,14 @@ export abstract class CPP extends TupleBase {
         else if (MetaType.int32 == metaType) {
             content = `${TypeName_CPP.int32}`;
         }
+        else if (MetaType.uint32 == metaType) {
+            content = `${TypeName_CPP.uint32}`;
+        }
         else if (MetaType.int64 == metaType) {
             content = `${TypeName_CPP.int64}`;
+        }
+        else if (MetaType.uint64 == metaType) {
+            content = `${TypeName_CPP.uint64}`;
         }
         else if (MetaType.float == metaType) {
             content = `${TypeName_CPP.float}`;
@@ -188,8 +208,14 @@ export abstract class CPP extends TupleBase {
         else if (MetaType.int32 == metaType) {
             content = `${TypeName_CPP.int32}`;
         }
+        else if (MetaType.uint32 == metaType) {
+            content = `${TypeName_CPP.uint32}`;
+        }
         else if (MetaType.int64 == metaType) {
             content = `${TypeName_CPP.int64}`;
+        }
+        else if (MetaType.uint64 == metaType) {
+            content = `${TypeName_CPP.uint64}`;
         }
         else if (MetaType.float == metaType) {
             content = `${TypeName_CPP.float}`;
@@ -226,7 +252,9 @@ export abstract class CPP extends TupleBase {
         let content = "";
         if (MetaType.string == metaType ||
             MetaType.int32 == metaType ||
+            MetaType.uint32 == metaType ||
             MetaType.int64 == metaType ||
+            MetaType.uint64 == metaType ||
             MetaType.float == metaType ||
             MetaType.double == metaType ||
             MetaType.boolean == metaType ||
@@ -275,7 +303,9 @@ export abstract class CPP extends TupleBase {
         let content = "";
         if (MetaType.string == metaType ||
             MetaType.int32 == metaType ||
+            MetaType.uint32 == metaType ||
             MetaType.int64 == metaType ||
+            MetaType.uint64 == metaType ||
             MetaType.float == metaType ||
             MetaType.double == metaType ||
             MetaType.boolean == metaType ||

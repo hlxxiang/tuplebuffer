@@ -19,8 +19,14 @@ export abstract class TS extends TupleBase {
         else if (MetaType.int32 == metaType) {
             content = `${TypeName_TS.int32}`;
         }
+        else if (MetaType.uint32 == metaType) {
+            content = `${TypeName_TS.uint32}`;
+        }
         else if (MetaType.int64 == metaType) {
             content = `${TypeName_TS.int64}`;
+        }
+        else if (MetaType.uint64 == metaType) {
+            content = `${TypeName_TS.uint64}`;
         }
         else if (MetaType.float == metaType) {
             content = `${TypeName_TS.float}`;
@@ -76,8 +82,14 @@ export abstract class TS extends TupleBase {
         else if (MetaType.int32 == metaType) {
             content = `${TypeName_TS.int32}`;
         }
+        else if (MetaType.uint32 == metaType) {
+            content = `${TypeName_TS.uint32}`;
+        }
         else if (MetaType.int64 == metaType) {
             content = `${TypeName_TS.int64}`;
+        }
+        else if (MetaType.uint64 == metaType) {
+            content = `${TypeName_TS.uint64}`;
         }
         else if (MetaType.float == metaType) {
             content = `${TypeName_TS.float}`;

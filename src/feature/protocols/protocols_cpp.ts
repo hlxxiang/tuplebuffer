@@ -30,8 +30,10 @@ export class ProtocolsCpp extends CPP implements ProtocolsBase {
                 `\nnamespace Gen\n{` +
                 `\n${T}/* ${declaration} */` +
                 `\n${T}namespace ${this.namespace}\n${T}{` +
-                `\n${T}${T}using int64 = int64_t;` +
                 `\n${T}${T}using int32 = int32_t;` +
+                `\n${T}${T}using uint32 = uint32_t;` +
+                `\n${T}${T}using int64 = int64_t;` +
+                `\n${T}${T}using uint64 = uint64_t;` +
                 `\n${T}${T}using namespace std;`;
             this.addHeadContent(content);
         }

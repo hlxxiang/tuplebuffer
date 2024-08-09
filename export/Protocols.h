@@ -10,8 +10,10 @@ namespace Gen
     /* 协议 */
     namespace Protocols
     {
-        using int64 = int64_t;
         using int32 = int32_t;
+        using uint32 = uint32_t;
+        using int64 = int64_t;
+        using uint64 = uint64_t;
         using namespace std;
         enum class MsgFields
         {
@@ -50,6 +52,14 @@ namespace Gen
             /* End */
             End = 0x1400000,
         };
+        /* 心跳 */
+        struct Ping : public IMessage
+        {
+            using Tuple = std::tuple<std::nullopt_t>;
+        };
+        std::optional<Ping::Tuple> PingEncode(std::optional<Ping>& obj);
+        std::optional<Ping> PingDecode(std::optional<Ping::Tuple>& t);
+
         /* 测试1 */
         struct Test1 : public IMessage
         {
@@ -112,19 +122,21 @@ namespace Gen
         /* Client 协议命令 */
         enum class ClientOpcode
         {
+            /* 心跳 */
+            Ping = 0x100000,
             /* 测试1 */
-            Test1 = 0x100000,
+            Test1 = 0x100064,
             /* 测试2 */
-            Test2 = 0x100001,
+            Test2 = 0x100065,
         };
 
         /* System 协议命令 */
         enum class SystemOpcode
         {
             /* 测试3 */
-            Test3 = 0x1000000,
+            Test3 = 0x1000064,
             /* 测试4 */
-            Test4 = 0x1000001,
+            Test4 = 0x1000065,
         };
 
         /* BG 协议命令 */
@@ -137,6 +149,8 @@ namespace Gen
         namespace Types
         {
             /* Client 协议结构 */
+            /* 心跳 */
+            using Ping = std::tuple<Ping>;
             /* 测试1 */
             using Test1 = std::tuple<Test1>;
             /* RPC请求:测试2 */

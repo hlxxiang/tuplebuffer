@@ -18,8 +18,10 @@ class ConfigurationCPP extends cpp_1.CPP {
                 `\nnamespace Gen\n{` +
                 `\n${compile_1.T}/* ${declaration} */` +
                 `\n${compile_1.T}namespace ${this.namespace}\n${compile_1.T}{` +
-                `\n${compile_1.T}${compile_1.T}using int64 = int64_t;` +
                 `\n${compile_1.T}${compile_1.T}using int32 = int32_t;` +
+                `\n${compile_1.T}${compile_1.T}using uint32 = uint32_t;` +
+                `\n${compile_1.T}${compile_1.T}using int64 = int64_t;` +
+                `\n${compile_1.T}${compile_1.T}using uint64 = uint64_t;` +
                 `\n${compile_1.T}${compile_1.T}using namespace std;`;
             this.addHeadContent(content);
         }

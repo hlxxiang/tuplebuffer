@@ -95,7 +95,7 @@ class Protocols {
         else {
             const typeMeta = fields;
             switch (typeMeta.metaType) {
-                case 10: {
+                case 12: {
                     meta.meta = typeMeta;
                     break;
                 }
@@ -114,7 +114,7 @@ class Protocols {
             else {
                 const typeMeta = fieldsReply;
                 switch (typeMeta.metaType) {
-                    case 10: {
+                    case 12: {
                         meta.metaRpc = typeMeta;
                         break;
                     }

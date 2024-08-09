@@ -27,7 +27,9 @@ declare const enum AssignType {
 declare const enum MetaType {
     string = 1,
     int32,
+    uint32,
     int64,
+    uint64,
     float,
     double,
     boolean,
@@ -41,7 +43,9 @@ declare const enum MetaType {
 declare const enum MetaName {
     string = "string",
     int32 = "int32",
+    uint32 = "uint32",
     int64 = "int64",
+    uint64 = "uint64",
     float = "float",
     double = "double",
     boolean = "boolean",
@@ -55,7 +59,9 @@ declare const enum MetaName {
 declare const enum TypeName_TS {
     string = "string",
     int32 = "number",
+    uint32 = "number",
     int64 = "number",
+    uint64 = "number",
     float = "number",
     double = "number",
     boolean = "boolean",
@@ -66,7 +72,9 @@ declare const enum TypeName_TS {
 declare const enum TypeName_CS {
     string = "string",
     int32 = "Int32",
+    uint32 = "UInt32",
     int64 = "Int64",
+    uint64 = "UInt64",
     float = "float",
     double = "double",
     boolean = "bool",
@@ -77,7 +85,9 @@ declare const enum TypeName_CS {
 declare const enum TypeName_CPP {
     string = "string",
     int32 = "int32",
+    uint32 = "uint32",
     int64 = "int64",
+    uint64 = "uint64",
     float = "float",
     double = "double",
     boolean = "bool",

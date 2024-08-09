@@ -1,5 +1,5 @@
 import * as compile from "./compiler/compile";
-import { string, int32, int64, float, double, boolean, buffer, array, table, tuple } from "./compiler/compile";import * as assembly from "./compiler/assembly";
+import { string, int32, uint32, int64, uint64, float, double, boolean, buffer, array, table, tuple } from "./compiler/compile";import * as assembly from "./compiler/assembly";
 import { Log } from "./utils/log";
 require("./environment");
 let pri_all: Array<Promise<void>> = [];

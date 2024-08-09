@@ -23,27 +23,33 @@ class CS extends tuple_base_1.TupleBase {
             content = `${"Int32"}`;
         }
         else if (3 == metaType) {
-            content = `${"Int64"}`;
+            content = `${"UInt32"}`;
         }
         else if (4 == metaType) {
-            content = `${"float"}`;
+            content = `${"Int64"}`;
         }
         else if (5 == metaType) {
-            content = `${"double"}`;
+            content = `${"UInt64"}`;
         }
         else if (6 == metaType) {
-            content = `${"bool"}`;
+            content = `${"float"}`;
         }
         else if (7 == metaType) {
-            content = `${"byte[]"}`;
+            content = `${"double"}`;
         }
         else if (8 == metaType) {
-            content = `${typeMeta.className}[]`;
+            content = `${"bool"}`;
         }
         else if (9 == metaType) {
-            content = `Table<${typeMeta.className}>`;
+            content = `${"byte[]"}`;
         }
         else if (10 == metaType) {
+            content = `${typeMeta.className}[]`;
+        }
+        else if (11 == metaType) {
+            content = `Table<${typeMeta.className}>`;
+        }
+        else if (12 == metaType) {
             exportType = exportType == null ? 3 : exportType;
             const fields = typeMeta.fields;
             exportType = exportType == null ? 3 : exportType;
@@ -76,28 +82,34 @@ class CS extends tuple_base_1.TupleBase {
             content = `${"Int32"}`;
         }
         else if (3 == metaType) {
-            content = `${"Int64"}`;
+            content = `${"UInt32"}`;
         }
         else if (4 == metaType) {
-            content = `${"float"}`;
+            content = `${"Int64"}`;
         }
         else if (5 == metaType) {
-            content = `${"double"}`;
+            content = `${"UInt64"}`;
         }
         else if (6 == metaType) {
-            content = `${"bool"}`;
+            content = `${"float"}`;
         }
         else if (7 == metaType) {
-            content = `${"byte[]"}`;
+            content = `${"double"}`;
         }
         else if (8 == metaType) {
+            content = `${"bool"}`;
+        }
+        else if (9 == metaType) {
+            content = `${"byte[]"}`;
+        }
+        else if (10 == metaType) {
             let element = typeMeta.element;
             content = `${this.className(element)}[]`;
         }
-        else if (9 == metaType) {
+        else if (11 == metaType) {
             content = `Table<${typeMeta.className}>`;
         }
-        else if (10 == metaType) {
+        else if (12 == metaType) {
             content = typeMeta.className;
         }
         return content;

@@ -7,8 +7,10 @@ class GatewaySegment {
 exports.GatewaySegment = GatewaySegment;
 GatewaySegment.Common_s = protocols_1.Protocols.segment(16777216, 1048576, null, 100);
 GatewaySegment.Common = protocols_1.Protocols.segment(0, 1048576, null, 100);
+GatewaySegment.Test = protocols_1.Protocols.segment(0, 1048576, GatewaySegment.Common, 100);
 class ClientSegment {
 }
 exports.ClientSegment = ClientSegment;
 ClientSegment.Common = protocols_1.Protocols.segment(16777216, 0, null, 100);
+ClientSegment.Test = protocols_1.Protocols.segment(16777216, 0, ClientSegment.Common, 100);
 //# sourceMappingURL=segment.js.map

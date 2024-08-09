@@ -6,7 +6,7 @@ const log_1 = require("../utils/log");
 function builtinEnum() {
     let result = function (name, comment, value, otherItem, check) {
         return {
-            metaType: 11,
+            metaType: 13,
             name: name,
             value: value,
             otherItem: otherItem,
@@ -17,7 +17,7 @@ function builtinEnum() {
             check: check,
         };
     };
-    result.metaType = 11;
+    result.metaType = 13;
     result.className = "enum";
     return result;
 }
@@ -32,7 +32,7 @@ function enums(className, fields, comment) {
     }
     let result = function (name, comment, value, otherItem, check) {
         return {
-            metaType: 3,
+            metaType: 4,
             value: value,
             otherItem: otherItem,
             name: name,
@@ -43,7 +43,7 @@ function enums(className, fields, comment) {
             check: check,
         };
     };
-    result.metaType = 10;
+    result.metaType = 12;
     result.fields = fields;
     result.comment = comment;
     result.className = className;

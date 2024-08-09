@@ -161,7 +161,9 @@ export class Configuration {
 
         if (field.metaType != MetaType.string &&
             field.metaType != MetaType.int32 &&
+            field.metaType != MetaType.uint32 &&
             field.metaType != MetaType.int64 &&
+            field.metaType != MetaType.uint64 &&
             field.metaType != MetaType.float &&
             field.metaType != MetaType.double
         ) {
@@ -185,7 +187,7 @@ export class Configuration {
 
     public static compile(path: string, langueType: LangueType): void {
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `Server_configuration`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ServerConfiguration`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Server);
             langue.compileTypeNames(this._files, ExportType.Server);
@@ -196,7 +198,7 @@ export class Configuration {
             langue.saveFile();
         }
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `Client_configuration`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ClientConfiguration`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Client);
             langue.compileTypeNames(this._files, ExportType.Client);
@@ -291,8 +293,14 @@ export class Configuration {
                 case MetaType.int32:
                     types = "int32";
                     break;
+                case MetaType.uint32:
+                    types = "uint32";
+                    break;
                 case MetaType.int64:
                     types = "int64";
+                    break;
+                case MetaType.uint64:
+                    types = "uint64";
                     break;
                 case MetaType.float:
                     types = "float";
@@ -387,7 +395,13 @@ export class Configuration {
                         if (MetaType.int32 == metaType) {
                             rowData.push(parseInt(value));
                         }
+                        else if (MetaType.uint32 == metaType) {
+                            rowData.push(parseInt(value));
+                        }
                         else if (MetaType.int64 == metaType) {
+                            rowData.push(parseInt(value));
+                        }
+                        else if (MetaType.uint64 == metaType) {
                             rowData.push(parseInt(value));
                         }
                         else if (MetaType.float == metaType) {
@@ -490,7 +504,7 @@ export class Configuration {
 
     public static generateScript(environment: string, transform: string): void {
         let result: string = `import * as compile from "./compiler/compile";\n`;
-        result += `import { string, int32, int64, float, double, boolean, buffer, array, table, tuple } from "./compiler/compile";`
+        result += `import { string, int32, uint32, int64, uint64, float, double, boolean, buffer, array, table, tuple } from "./compiler/compile";`
         result += `import * as assembly from "./compiler/assembly";\n`;
         result += `import { Log } from "./utils/log";\n`;
         result += `require("./${environment}");\n`;
@@ -596,8 +610,16 @@ export class Configuration {
                 result += `${MetaName.int32}`;
                 break;
             }
+            case MetaType.uint32: {
+                result += `${MetaName.uint32}`;
+                break;
+            }
             case MetaType.int64: {
                 result += `${MetaName.int64}`;
+                break;
+            }
+            case MetaType.uint64: {
+                result += `${MetaName.uint64}`;
                 break;
             }
             case MetaType.float: {

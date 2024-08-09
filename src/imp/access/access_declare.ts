@@ -1,27 +1,33 @@
-import { array, int64, string, tuple } from "../../compiler/compile";
+import { array, int32, int64, string, tuple, uint32, uint64 } from "../../compiler/compile";
 import { Access } from "../../gen/access";
 import { Util } from "./access_util";
 
 Access.record(
     "ActorId",
     DataType.Key,
-    int64,
+    [
+        uint64("objId"),
+    ],
     "角色自增id表"
 );
 
 Access.record(
-    "Scene",
+    "Test",
     DataType.Hash,
     [
-        Util.Vector3("pos", "坐标信息")
+        Util.Test("test", "测试")
     ],
-    "场景信息"
+    "测试"
 );
 
 Access.record(
     "Data",
-    DataType.List,
+    DataType.Hash,
     [
+        uint64("objId"),
+        int64("a"),
+        int32("b"),
+        uint32("c"),
         Util.Vector3("pos", "坐标信息")
     ],
     "Data"
@@ -30,12 +36,17 @@ Access.record(
 Access.record(
     "Account",
     DataType.Hash,
-    array(
-        tuple("AccountInfo", [
-            string("account", "帐号名"),
-            int64("createTime", "创建时间"),
-            int64("uid", "角色id"),
-        ], "账号")
-    ),
+    [
+        array(Util.AccountInfo)("info"),
+    ],
     "帐号表"
+);
+
+Access.record(
+    "TestList",
+    DataType.Hash,
+    [
+        uint64("objId"),
+    ],
+    "测试"
 );

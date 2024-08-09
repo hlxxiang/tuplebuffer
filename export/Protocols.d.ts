@@ -27,6 +27,14 @@ declare namespace Gen {
             End = 0x1400000,
         }
 
+        /** 心跳 */
+        const enum PingFields {
+        }
+        interface PingTypes {
+        }
+        /** 心跳 */
+        type Ping = null;
+
         /** 测试1 */
         const enum Test1Fields {
             test = 0,
@@ -95,18 +103,20 @@ declare namespace Gen {
         /*************************************** Client 协议命令 ***************************************/
 
         const enum Opcode {
+            /** 心跳 */
+            Ping = 0x100000,
             /** 测试1 */
-            Test1 = 0x100000,
+            Test1 = 0x100064,
             /** 测试2 */
-            Test2 = 0x100001,
+            Test2 = 0x100065,
         }
         /*************************************** System 协议命令 ***************************************/
 
         const enum Opcode {
             /** 测试3 */
-            Test3 = 0x1000000,
+            Test3 = 0x1000064,
             /** 测试4 */
-            Test4 = 0x1000001,
+            Test4 = 0x1000065,
         }
         /*************************************** BG 协议命令 ***************************************/
 
@@ -116,6 +126,7 @@ declare namespace Gen {
 
         interface Types {
             /** Client 协议结构 */
+            [Opcode.Ping]: [Ping],
             [Opcode.Test1]: [Test1],
             [Opcode.Test2]: [Test2, Test2Reply],
             /** Client 协议结构 */

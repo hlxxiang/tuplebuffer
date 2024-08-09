@@ -54,6 +54,12 @@ namespace Gen
 
         #region 自定义结构
 
+        /// <summary> 心跳 </summary>
+        [MessagePackObject(true)]
+        public class Ping : IMessage
+        {
+        }
+
         /// <summary> 测试1 </summary>
         [MessagePackObject(true)]
         public class Test1 : IMessage
@@ -113,10 +119,12 @@ namespace Gen
 
         public enum ClientOpcode
         {
+            /// <summary> 心跳 </summary>
+            Ping = 0x100000,
             /// <summary> 测试1 </summary>
-            Test1 = 0x100000,
+            Test1 = 0x100064,
             /// <summary> 测试2 </summary>
-            Test2 = 0x100001,
+            Test2 = 0x100065,
         }
 
         #endregion
@@ -126,9 +134,9 @@ namespace Gen
         public enum SystemOpcode
         {
             /// <summary> 测试3 </summary>
-            Test3 = 0x1000000,
+            Test3 = 0x1000064,
             /// <summary> 测试4 </summary>
-            Test4 = 0x1000001,
+            Test4 = 0x1000065,
         }
 
         #endregion
@@ -147,6 +155,11 @@ namespace Gen
         {
             #region Client 协议结构
 
+            /// <summary> 心跳 </summary>
+            public class PingOper : Send<Ping, ClientOpcode>
+            {
+                public const ClientOpcode Opcode = ClientOpcode.Ping;
+            }
             /// <summary> 测试1 </summary>
             public class Test1Oper : Send<Test1, ClientOpcode>
             {

@@ -1,12 +1,14 @@
-import { array, boolean, float, int64, string, tuple } from "../../compiler/compile";
+import { float, int32, int64, string, tuple, uint32, uint64 } from "../../compiler/compile";
 
 export namespace Util {
     export const Test = tuple("Test", [
-        int64("id", "id"),
-        int64("num", "数值"),
+        int32("num32", "id"),
+        uint32("uNum32", "数值"),
+        int64("id64", "id"),
+        uint64("uId64", "数值"),
         string("str", "字符串"),
     ], "测试");
-    
+
     export const Attr = tuple("Attr", [
         int64("attrId", "属性ID"),
         int64("value", "属性值"),

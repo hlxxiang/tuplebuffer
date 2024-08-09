@@ -13,6 +13,15 @@ namespace Gen
     namespace Protocols
     {
         using namespace std;
+        std::optional<Ping::Tuple> PingEncode(std::optional<Ping>& obj)
+        {
+            return std::nullopt;
+        }
+        std::optional<Ping> PingDecode(std::optional<Ping::Tuple>& t)
+        {
+            return std::nullopt;
+        }
+
         std::optional<Test1::Tuple> Test1Encode(std::optional<Test1>& obj)
         {
             if (obj.has_value()) {

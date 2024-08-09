@@ -35,7 +35,7 @@ class Access {
         }
         else {
             let typeMeta = args;
-            if (10 == typeMeta.metaType) {
+            if (12 == typeMeta.metaType) {
                 compile_1.checkTupleNames.delete(typeMeta.className);
             }
             switch (typeMeta.metaType) {
@@ -46,6 +46,8 @@ class Access {
                 case 5:
                 case 6:
                 case 7:
+                case 8:
+                case 9:
                     group = 0;
                     break;
             }
@@ -65,7 +67,7 @@ class Access {
     }
     static compile(path, langueType) {
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `Server_Access`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ServerAccess`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, 1);
             for (const group of this._groupDefine) {
@@ -75,7 +77,7 @@ class Access {
             langue.saveFile();
         }
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `Client_Access`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ClientAccess`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, 2);
             for (const group of this._groupDefine) {
