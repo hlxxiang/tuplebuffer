@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkTupleNames = exports.declareTypes = exports.buffer = exports.boolean = exports.double = exports.float = exports.uint64 = exports.int64 = exports.uint32 = exports.int32 = exports.string = exports.T = void 0;
-exports.array = array;
-exports.table = table;
-exports.tuple = tuple;
+exports.tuple = exports.checkTupleNames = exports.declareTypes = exports.table = exports.array = exports.buffer = exports.boolean = exports.double = exports.float = exports.uint64 = exports.int64 = exports.uint32 = exports.int32 = exports.string = exports.T = void 0;
 const log_1 = require("../utils/log");
 exports.T = "    ";
 function builtinCommon(metaType, className) {
@@ -69,6 +66,7 @@ function array(varType) {
     result.element = varType;
     return result;
 }
+exports.array = array;
 function table(varType) {
     let result = function (name, comment, exportType = 3, check = null, assignType = 1) {
         return {
@@ -89,6 +87,7 @@ function table(varType) {
     result.value = varType;
     return result;
 }
+exports.table = table;
 exports.declareTypes = [];
 exports.checkTupleNames = new Map();
 function tuple(className, fields, comment) {
@@ -115,4 +114,5 @@ function tuple(className, fields, comment) {
     exports.declareTypes.push(result);
     return result;
 }
+exports.tuple = tuple;
 //# sourceMappingURL=compile.js.map

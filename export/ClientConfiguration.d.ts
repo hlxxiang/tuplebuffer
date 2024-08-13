@@ -5,19 +5,25 @@ declare namespace Gen {
         /** 测试 */
         const enum TestFields {
             /** id */
-            id = 0,
+            num32 = 0,
             /** 数值 */
-            num = 1,
+            uNum32 = 1,
+            /** id */
+            id64 = 2,
+            /** 数值 */
+            uId64 = 3,
             /** 字符串 */
-            str = 2,
+            str = 4,
         }
         interface TestTypes {
-            [TestFields.id]: number;
-            [TestFields.num]: number;
+            [TestFields.num32]: number;
+            [TestFields.uNum32]: number;
+            [TestFields.id64]: number;
+            [TestFields.uId64]: number;
             [TestFields.str]: string;
         }
         /** 测试 */
-        type Test = [number, number, string];
+        type Test = [number, number, number, number, string];
 
         /** 属性 */
         const enum AttrFields {

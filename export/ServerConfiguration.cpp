@@ -5,7 +5,7 @@
 #include <optional>
 #include <unordered_map>
 
-#include "Server_configuration.h"
+#include "ServerConfiguration.h"
 
 namespace Gen
 {
@@ -17,7 +17,7 @@ namespace Gen
         {
             if (obj.has_value()) {
                 auto& oValue = obj.value();
-                return Test::Tuple(oValue.id, oValue.num, oValue.str);
+                return Test::Tuple(oValue.num32, oValue.uNum32, oValue.id64, oValue.uId64, oValue.str);
             }
             else {
                 return std::nullopt;
@@ -31,9 +31,11 @@ namespace Gen
                 obj = Test();
                 auto& oValue = obj.value();
                 auto& tValue = t.value();
-                oValue.id = std::get<0>(tValue);
-                oValue.num = std::get<1>(tValue);
-                oValue.str = std::get<2>(tValue);
+                oValue.num32 = std::get<0>(tValue);
+                oValue.uNum32 = std::get<1>(tValue);
+                oValue.id64 = std::get<2>(tValue);
+                oValue.uId64 = std::get<3>(tValue);
+                oValue.str = std::get<4>(tValue);
             }
             return obj;
         }

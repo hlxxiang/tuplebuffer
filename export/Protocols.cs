@@ -55,13 +55,13 @@ namespace Gen
         #region 自定义结构
 
         /// <summary> 心跳 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Ping : IMessage
         {
         }
 
         /// <summary> 测试1 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Test1 : IMessage
         {
             [Key(0)]
@@ -69,7 +69,7 @@ namespace Gen
         }
 
         /// <summary> 测试2 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Test2 : IMessage
         {
             /// <summary> 账号 </summary>
@@ -78,7 +78,7 @@ namespace Gen
         }
 
         /// <summary> RPC请求:测试2 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Test2Reply : IMessage
         {
             /// <summary> 错误码 </summary>
@@ -87,7 +87,7 @@ namespace Gen
         }
 
         /// <summary> 测试3 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Test3 : IMessage
         {
             /// <summary> 账号 </summary>
@@ -96,7 +96,7 @@ namespace Gen
         }
 
         /// <summary> RPC请求:测试3 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Test3Reply : IMessage
         {
             /// <summary> 错误码 </summary>
@@ -105,7 +105,7 @@ namespace Gen
         }
 
         /// <summary> 测试4 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Test4 : IMessage
         {
             /// <summary> test </summary>

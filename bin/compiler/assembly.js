@@ -1,11 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.exportPath = void 0;
-exports.getCellValue = getCellValue;
-exports.init = init;
-exports.hashFile = hashFile;
-exports.arrayFile = arrayFile;
-exports.tupleFile = tupleFile;
+exports.tupleFile = exports.arrayFile = exports.hashFile = exports.init = exports.exportPath = exports.getCellValue = void 0;
 const Excel = require("exceljs");
 const fs = require("fs");
 const filepath = require("path");
@@ -123,6 +118,7 @@ function getCellValue(cell) {
         }
     }
 }
+exports.getCellValue = getCellValue;
 function isEmptyRow(row, meta) {
     for (let i = 0; i < meta.length; ++i) {
         let cell = row.getCell(i + 1);
@@ -411,6 +407,7 @@ function init(excelPath, jsonPath, objPath, assetPath, clientJsonPath) {
     importPath = excelPath;
     exports.exportPath = [jsonPath, objPath, assetPath, clientJsonPath];
 }
+exports.init = init;
 async function saveFile(exportFile, format, content, dir = "") {
     if ((format & 1) != 0) {
         await writeFile(dir ? filepath.join(exports.exportPath[0], ".json", dir, exportFile
@@ -571,6 +568,7 @@ async function hashFile(exportFile, format, path, keyName, meta) {
         await saveFile(exportFile, 2, content);
     }
 }
+exports.hashFile = hashFile;
 function toArrayJson(sheet, meta, path) {
     let content = [];
     for (let i = 3; i < sheet.rowCount; ++i) {
@@ -623,6 +621,7 @@ async function arrayFile(exportFile, format, path, meta) {
         await saveFile(exportFile, 2, content);
     }
 }
+exports.arrayFile = arrayFile;
 function toTupleJson(sheet, meta, path) {
     let content;
     try {
@@ -671,4 +670,5 @@ async function tupleFile(exportFile, format, path, meta) {
         await saveFile(exportFile, 2, content);
     }
 }
+exports.tupleFile = tupleFile;
 //# sourceMappingURL=assembly.js.map

@@ -9,22 +9,28 @@ namespace Gen
         #region 自定义结构
 
         /// <summary> 测试 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Test : IConfiguration
         {
             /// <summary> id </summary>
             [Key(0)]
-            public Int64 id { get; set; }
+            public Int32 num32 { get; set; }
             /// <summary> 数值 </summary>
             [Key(1)]
-            public Int64 num { get; set; }
-            /// <summary> 字符串 </summary>
+            public UInt32 uNum32 { get; set; }
+            /// <summary> id </summary>
             [Key(2)]
+            public Int64 id64 { get; set; }
+            /// <summary> 数值 </summary>
+            [Key(3)]
+            public UInt64 uId64 { get; set; }
+            /// <summary> 字符串 </summary>
+            [Key(4)]
             public string str { get; set; }
         }
 
         /// <summary> 属性 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Attr : IConfiguration
         {
             /// <summary> 属性ID </summary>
@@ -36,7 +42,7 @@ namespace Gen
         }
 
         /// <summary> 三维坐标 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Vector3 : IConfiguration
         {
             /// <summary> 坐标X </summary>
@@ -50,7 +56,7 @@ namespace Gen
             public float z { get; set; }
         }
 
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Monster : IConfiguration
         {
             /// <summary> 怪物Id </summary>
@@ -62,15 +68,18 @@ namespace Gen
             /// <summary> 怪物等级 </summary>
             [Key(2)]
             public Int64 level { get; set; }
-            /// <summary> 属性 </summary>
-            [Key(3)]
-            public Attr[] attrs { get; set; }
             /// <summary> 技能列表 id#id </summary>
-            [Key(4)]
+            [Key(3)]
             public Int64[] skills { get; set; }
+            /// <summary> 怪物模型 </summary>
+            [Key(4)]
+            public string model { get; set; }
             /// <summary> 坐标 </summary>
             [Key(5)]
             public Vector3 pos { get; set; }
+            /// <summary> 头像 </summary>
+            [Key(6)]
+            public string head { get; set; }
         }
 
         #endregion

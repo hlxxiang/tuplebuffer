@@ -10,17 +10,23 @@ namespace Gen
     /* 配置 */
     namespace Configuration
     {
-        using int64 = int64_t;
         using int32 = int32_t;
+        using uint32 = uint32_t;
+        using int64 = int64_t;
+        using uint64 = uint64_t;
         using namespace std;
         /* 测试 */
         struct Test : public IConfiguration
         {
-            using Tuple = std::tuple<std::optional<int64>, std::optional<int64>, std::optional<string>>;
+            using Tuple = std::tuple<std::optional<int32>, std::optional<uint32>, std::optional<int64>, std::optional<uint64>, std::optional<string>>;
             /* id */
-            std::optional<int64> id;
+            std::optional<int32> num32;
             /* 数值 */
-            std::optional<int64> num;
+            std::optional<uint32> uNum32;
+            /* id */
+            std::optional<int64> id64;
+            /* 数值 */
+            std::optional<uint64> uId64;
             /* 字符串 */
             std::optional<string> str;
         };
@@ -55,21 +61,19 @@ namespace Gen
 
         struct Monster : public IConfiguration
         {
-            using Tuple = std::tuple<std::optional<int64>, std::optional<string>, std::optional<int64>, std::optional<std::vector<std::optional<int64>>>, std::optional<string>, std::optional<Vector3::Tuple>, std::optional<string>>;
+            using Tuple = std::tuple<std::optional<int64>, std::optional<string>, std::optional<int64>, std::optional<std::vector<std::optional<Attr::Tuple>>>, std::optional<std::vector<std::optional<int64>>>, std::optional<Vector3::Tuple>>;
             /* 怪物Id */
             std::optional<int64> monsterId;
             /* 怪物名 */
             std::optional<string> name;
             /* 怪物等级 */
             std::optional<int64> level;
+            /* 属性 */
+            std::optional<std::vector<std::optional<Attr>>> attrs;
             /* 技能列表 id#id */
             std::optional<std::vector<std::optional<int64>>> skills;
-            /* 怪物模型 */
-            std::optional<string> model;
             /* 坐标 */
             std::optional<Vector3> pos;
-            /* 头像 */
-            std::optional<string> head;
         };
         std::optional<Monster::Tuple> MonsterEncode(std::optional<Monster>& obj);
         std::optional<Monster> MonsterDecode(std::optional<Monster::Tuple>& t);

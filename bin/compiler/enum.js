@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.declareEnums = exports.enumItem = void 0;
-exports.enums = enums;
+exports.enums = exports.declareEnums = exports.enumItem = void 0;
 const log_1 = require("../utils/log");
 function builtinEnum() {
     let result = function (name, comment, value, otherItem, check) {
@@ -50,4 +49,5 @@ function enums(className, fields, comment) {
     exports.declareEnums.push(result);
     return result;
 }
+exports.enums = enums;
 //# sourceMappingURL=enum.js.map

@@ -9,7 +9,7 @@ namespace Gen
         #region 自定义结构
 
         /// <summary> 三维坐标 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Vector3 : IAccess
         {
             /// <summary> 坐标X </summary>
@@ -24,7 +24,7 @@ namespace Gen
         }
 
         /// <summary> 测试 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class Test : IAccess
         {
             /// <summary> id </summary>
@@ -45,7 +45,7 @@ namespace Gen
         }
 
         /// <summary> 账号 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class AccountInfo : IAccess
         {
             /// <summary> 帐号名 </summary>
@@ -60,7 +60,7 @@ namespace Gen
         }
 
         /// <summary> 角色自增id表 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class ActorIdRecord : IAccess
         {
             [Key(0)]
@@ -68,7 +68,7 @@ namespace Gen
         }
 
         /// <summary> 测试 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class TestRecord : IAccess
         {
             /// <summary> 测试 </summary>
@@ -77,7 +77,7 @@ namespace Gen
         }
 
         /// <summary> Data </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class DataRecord : IAccess
         {
             [Key(0)]
@@ -94,7 +94,7 @@ namespace Gen
         }
 
         /// <summary> 帐号表 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class AccountRecord : IAccess
         {
             [Key(0)]
@@ -102,7 +102,7 @@ namespace Gen
         }
 
         /// <summary> 测试 </summary>
-        [MessagePackObject(true)]
+        [MessagePackObject]
         public class TestListRecord : IAccess
         {
             [Key(0)]

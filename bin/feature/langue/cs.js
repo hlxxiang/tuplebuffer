@@ -124,7 +124,7 @@ class CS extends tuple_base_1.TupleBase {
             content += `\n${compile_1.T}${compile_1.T}/// <summary> ${meta.comment} </summary>`;
         }
         let fields = meta.fields;
-        content += `\n${compile_1.T}${compile_1.T}[MessagePackObject(true)]\n${compile_1.T}${compile_1.T}public class ${meta.className} : ${interfaceName}\n${compile_1.T}${compile_1.T}{`;
+        content += `\n${compile_1.T}${compile_1.T}[MessagePackObject]\n${compile_1.T}${compile_1.T}public class ${meta.className} : ${interfaceName}\n${compile_1.T}${compile_1.T}{`;
         fields = meta.fields;
         if (fields != null) {
             let index = 0;
