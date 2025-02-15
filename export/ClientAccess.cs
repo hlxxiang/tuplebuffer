@@ -6,10 +6,11 @@ namespace Gen
     /// <summary> 数据库记录结构定义 </summary>
     namespace Access
     {
+#if CLIENT
         #region 自定义结构
 
         /// <summary> 三维坐标 </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class Vector3 : IAccess
         {
             /// <summary> 坐标X </summary>
@@ -24,7 +25,7 @@ namespace Gen
         }
 
         /// <summary> 测试 </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class Test : IAccess
         {
             /// <summary> id </summary>
@@ -45,7 +46,7 @@ namespace Gen
         }
 
         /// <summary> 账号 </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class AccountInfo : IAccess
         {
             /// <summary> 帐号名 </summary>
@@ -60,7 +61,7 @@ namespace Gen
         }
 
         /// <summary> 角色自增id表 </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class ActorIdRecord : IAccess
         {
             [Key(0)]
@@ -68,7 +69,7 @@ namespace Gen
         }
 
         /// <summary> 测试 </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class TestRecord : IAccess
         {
             /// <summary> 测试 </summary>
@@ -77,7 +78,7 @@ namespace Gen
         }
 
         /// <summary> Data </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class DataRecord : IAccess
         {
             [Key(0)]
@@ -94,7 +95,7 @@ namespace Gen
         }
 
         /// <summary> 帐号表 </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class AccountRecord : IAccess
         {
             [Key(0)]
@@ -102,7 +103,7 @@ namespace Gen
         }
 
         /// <summary> 测试 </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class TestListRecord : IAccess
         {
             [Key(0)]
@@ -228,5 +229,6 @@ namespace Gen
         #endregion
 
         #endregion
+#endif
     }
 }

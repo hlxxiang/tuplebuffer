@@ -12,7 +12,7 @@
 ### 二、安装
 ```
 1. 安装 nodejs
-2. 安装 typescript: npm install -g typescript 或者指定版本 npm install -g typescript@x.x.x
+2. 安装 typescript: npm install -g typescript 或者指定版本 npm install -g typescript@5.5.4
 3. 从package.json安装依赖: npm install
 ```
 
@@ -51,15 +51,10 @@
     protocols.ts：引用需要生成协议的源码文件
 
     协议号组成
-        协议号 = GroupType << 24 | ServiceType << 20 | i，即：消息发送给 group 的 service 服务
+        协议号 = SoureGroup << 24 | TargetGroup << 20 | i，即：组 SoureGroup 给 TargetGroup 发送消息
     自定义组类型 GroupType
         0：客户端
         1: 服务器
-        ...
-        
-    自定义服务类型 ServiceType
-        0：客户端(客户端看成一个服务)
-        1: Gateway服务
         ...
     
     支持自定义 RPC 协议，RPC 服务器框架未给出相关代码，待定
@@ -67,7 +62,7 @@
          `
          Protocols.protocol(
             "AuthClient", "客户端验证",
-            GroupType.Client, ServiceType.Gateway, GatewaySegment.Common,
+            GroupType.Client, GroupType.System, Segment.Common,
             [
                 //第一个结构里面是请求的数据
                 string("account", "账号"),
@@ -82,16 +77,16 @@
         `
         Protocols.protocol(
             "Ping", "客户端心跳",
-            GroupType.Client, ServiceType.Gateway, GatewaySegment.Common
+            GroupType.Client, GroupType.System, Segment.Common,
         );
         `
     解析协议
-        如: 协议号 opcode: AuthClient = 0x100000
-          groupType = opcode & Protocols.ProtocolMask.ServiceMask;
-          serviceType = opcode & Protocols.ProtocolMask.ServiceMask;
+        如: 协议号 opcode: AuthClient = 0x100065
+          soureGroup = opcode & Protocols.ProtocolMask.SourceGroupMask >> Protocols.BitMask.SourceGroup;
+          targetGroup = opcode & Protocols.ProtocolMask.TargetGroupMask >> Protocols.BitMask.TargetGroup;
         此时:
-          groupType == Protocols.GroupType.Client;
-          serviceType == Protocols.ServiceType.Gateway;
+          soureGroup == Protocols.GroupType.Client;
+          targetGroup == Protocols.GroupType.System;
 ```
 
 #### 3. 数据库

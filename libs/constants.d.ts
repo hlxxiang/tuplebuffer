@@ -106,24 +106,31 @@ declare const enum MsgFields {
     Reply = 1,
 }
 
+declare const enum BitMask {
+    SourceGroup = 20,
+    TargetGroup = 24,
+}
+
 declare const enum ProtocolMask {
-    GroupMask = 7 << 24,
-    ServiceMask = 0xF << 20
+    SourceGroupMask = 7 << BitMask.SourceGroup,
+    TargetGroupMask = 0xF << BitMask.TargetGroup
 }
 
 declare const enum GroupType {
-    Client = 0 << 24,
-    System = 1 << 24,
-    Bg = 2 << 24,
-}
-
-declare const enum BitMask {
-    ServiceType = 20,
+    Client = 0,
+    System = 1,
+    Bg = 2,
 }
 
 /** 不同服务的协议掩码, 可扩展 */
-declare const enum ServiceType {
-    Client = 0 << BitMask.ServiceType,
-    Gateway = 1 << BitMask.ServiceType,
-    End = 20 << BitMask.ServiceType
+declare const enum ServerType {
+    Client = 0,
+    CenterServer = 1,
+    DBServer = 2,
+    HttpServer = 3,
+    LoginServer = 4,
+    MapServer = 5,
+    MatchServer = 6,
+    UserServer = 7,
+    End = 20
 }

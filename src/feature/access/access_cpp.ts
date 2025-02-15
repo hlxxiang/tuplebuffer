@@ -3,9 +3,14 @@ import { CPP } from "../langue/cpp";
 import { AccessBase } from "./access_base";
 
 export class AccessCPP extends CPP implements AccessBase {
-    constructor(namespace: string, path: string, fileName: string) {
+
+    private defineName: string
+
+    constructor(namespace: string, path: string, fileName: string, defineName: string) {
         super(namespace, path, fileName);
+        this.defineName = defineName;
     }
+
     public precompile(declaration: string): void {
         {
             let content: string = `#pragma once` +
@@ -22,7 +27,8 @@ export class AccessCPP extends CPP implements AccessBase {
                 `\n${T}${T}using uint32 = uint32_t;` +
                 `\n${T}${T}using int64 = int64_t;` +
                 `\n${T}${T}using uint64 = uint64_t;` +
-                `\n${T}${T}using namespace std;`;
+                `\n${T}${T}using namespace std;` +
+                `\n#ifdef ${this.defineName}`
             this.addHeadContent(content);
         }
         {
@@ -37,7 +43,8 @@ export class AccessCPP extends CPP implements AccessBase {
                 `\nnamespace Gen\n{` +
                 `\n${T}/* ${declaration} */` +
                 `\n${T}namespace ${this.namespace}\n${T}{` +
-                `\n${T}${T}using namespace std;`;
+                `\n${T}${T}using namespace std;` +
+                `\n#ifdef ${this.defineName}`
             this.addSourceContent(content);
         }
     }
@@ -73,5 +80,11 @@ export class AccessCPP extends CPP implements AccessBase {
             content += `${T}${T}};\n`;
         }
         this.addHeadContent(content);
+    }
+
+    public override saveFile(): void {
+        this.addHeadContent(`\n#endif // ${this.defineName}`)
+        this.addSourceContent(`\n#endif // ${this.defineName}`)
+        super.saveFile();
     }
 }

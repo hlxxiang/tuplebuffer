@@ -18,12 +18,13 @@ Protocols.init(
     ],
     "ProtocolMask",
     [
-        [ProtocolMask.GroupMask, "GroupMask", "高字节位 Group 类型"],
-        [ProtocolMask.ServiceMask, "ServiceMask", "中字节 Service 类型"],
+        [ProtocolMask.SourceGroupMask, "SourceGroupMask", "高字节位 SourceGroup 类型"],
+        [ProtocolMask.TargetGroupMask, "TargetGroupMask", "中字节 TargetGroup 类型"],
     ],
     "BitMask",
     [
-        [BitMask.ServiceType, "ServiceType", "Service 类型"],
+        [BitMask.SourceGroup, "SourceGroup", "SourceGroup 类型"],
+        [BitMask.TargetGroup, "TargetGroup", "TargetGroup 类型"],
     ],
     "GroupType",
     [
@@ -31,18 +32,24 @@ Protocols.init(
         [GroupType.System, "System", "Group 类型: System"],
         [GroupType.Bg, "BG", "Group 类型: BG"],
     ],
-    "ServiceType",
+    "ServerType",
     [
-        [ServiceType.Client, "Client", "Service 类型: Client"],
-        [ServiceType.Gateway, "Gateway", "Service 类型: Gateway"],
-        [ServiceType.End, "End", "End"]
+        [ServerType.Client, "Client", "Client:客户端"],
+        [ServerType.CenterServer, "CenterServer", "CenterServer:中心服务,单个"],
+        [ServerType.DBServer, "DBServer", "DBServer:DB服务,可多个"],
+        [ServerType.HttpServer, "HttpServer", "HttpServer:Http服务,单个"],
+        [ServerType.LoginServer, "LoginServer", "LoginServer:登录服务,可多个"],
+        [ServerType.MapServer, "MapServer", "MapServer:战斗服务,可多个"],
+        [ServerType.MatchServer, "MatchServer", "MatchServer:匹配服务,可多个"],
+        [ServerType.UserServer, "UserServer", "UserServer:玩家数据,可多个"],
+        [ServerType.End, "End", "End"]
     ],
-    1 << BitMask.ServiceType,
+    1 << BitMask.TargetGroup,
     Math.pow(2, 32) - 1,
 );
 
 /**************************************************协议声明**************************************************/
-require("./cs/protocols_gateway");
+require("./cs/protocols_login");
 
 
 Protocols.add(LangueType.CS, ProtocolsCS);

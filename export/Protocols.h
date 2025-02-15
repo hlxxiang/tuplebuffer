@@ -15,6 +15,7 @@ namespace Gen
         using int64 = int64_t;
         using uint64 = uint64_t;
         using namespace std;
+
         enum class MsgFields
         {
             /* 请求 */
@@ -22,72 +23,70 @@ namespace Gen
             /* 回应 */
             Reply = 0x1,
         };
+
         enum class ProtocolMask
         {
-            /* 高字节位 Group 类型 */
-            GroupMask = 0x7000000,
-            /* 中字节 Service 类型 */
-            ServiceMask = 0xf00000,
+            /* 高字节位 SourceGroup 类型 */
+            SourceGroupMask = 0x700000,
+            /* 中字节 TargetGroup 类型 */
+            TargetGroupMask = 0xf000000,
         };
+
         enum class BitMask
         {
-            /* Service 类型 */
-            ServiceType = 0x14,
+            /* SourceGroup 类型 */
+            SourceGroup = 0x14,
+            /* TargetGroup 类型 */
+            TargetGroup = 0x18,
         };
+
         enum class GroupType
         {
             /* Group 类型: Client */
             Client = 0x0,
             /* Group 类型: System */
-            System = 0x1000000,
+            System = 0x1,
             /* Group 类型: BG */
-            BG = 0x2000000,
+            BG = 0x2,
         };
-        enum class ServiceType
+
+        enum class ServerType
         {
-            /* Service 类型: Client */
+            /* Client:客户端 */
             Client = 0x0,
-            /* Service 类型: Gateway */
-            Gateway = 0x100000,
+            /* CenterServer:中心服务,单个 */
+            CenterServer = 0x1,
+            /* DBServer:DB服务,可多个 */
+            DBServer = 0x2,
+            /* HttpServer:Http服务,单个 */
+            HttpServer = 0x3,
+            /* LoginServer:登录服务,可多个 */
+            LoginServer = 0x4,
+            /* MapServer:战斗服务,可多个 */
+            MapServer = 0x5,
+            /* MatchServer:匹配服务,可多个 */
+            MatchServer = 0x6,
+            /* UserServer:玩家数据,可多个 */
+            UserServer = 0x7,
             /* End */
-            End = 0x1400000,
+            End = 0x14,
         };
+
         /* 心跳 */
         struct Ping : public IMessage
         {
             using Tuple = std::tuple<std::nullopt_t>;
         };
-        std::optional<Ping::Tuple> PingEncode(std::optional<Ping>& obj);
-        std::optional<Ping> PingDecode(std::optional<Ping::Tuple>& t);
+        std::optional<Ping::Tuple> PingEncode(std::optional<Ping> &obj);
+        std::optional<Ping> PingDecode(std::optional<Ping::Tuple> &t);
 
-        /* 测试1 */
-        struct Test1 : public IMessage
+        /* 心跳 */
+        struct Pong : public IMessage
         {
-            using Tuple = std::tuple<std::optional<string>>;
-            std::optional<string> test;
+            using Tuple = std::tuple<std::nullopt_t>;
         };
-        std::optional<Test1::Tuple> Test1Encode(std::optional<Test1>& obj);
-        std::optional<Test1> Test1Decode(std::optional<Test1::Tuple>& t);
-
-        /* 测试2 */
-        struct Test2 : public IMessage
-        {
-            using Tuple = std::tuple<std::optional<string>>;
-            /* 账号 */
-            std::optional<string> account;
-        };
-        std::optional<Test2::Tuple> Test2Encode(std::optional<Test2>& obj);
-        std::optional<Test2> Test2Decode(std::optional<Test2::Tuple>& t);
-
-        /* RPC请求:测试2 */
-        struct Test2Reply : public IMessage
-        {
-            using Tuple = std::tuple<std::optional<int64>>;
-            /* 错误码 */
-            std::optional<int64> code;
-        };
-        std::optional<Test2Reply::Tuple> Test2ReplyEncode(std::optional<Test2Reply>& obj);
-        std::optional<Test2Reply> Test2ReplyDecode(std::optional<Test2Reply::Tuple>& t);
+        std::optional<Pong::Tuple> PongEncode(std::optional<Pong> &obj);
+        std::optional<Pong> PongDecode(std::optional<Pong::Tuple> &t);
 
         /* 测试3 */
         struct Test3 : public IMessage
@@ -96,8 +95,8 @@ namespace Gen
             /* 账号 */
             std::optional<string> account;
         };
-        std::optional<Test3::Tuple> Test3Encode(std::optional<Test3>& obj);
-        std::optional<Test3> Test3Decode(std::optional<Test3::Tuple>& t);
+        std::optional<Test3::Tuple> Test3Encode(std::optional<Test3> &obj);
+        std::optional<Test3> Test3Decode(std::optional<Test3::Tuple> &t);
 
         /* RPC请求:测试3 */
         struct Test3Reply : public IMessage
@@ -106,66 +105,88 @@ namespace Gen
             /* 错误码 */
             std::optional<int64> code;
         };
-        std::optional<Test3Reply::Tuple> Test3ReplyEncode(std::optional<Test3Reply>& obj);
-        std::optional<Test3Reply> Test3ReplyDecode(std::optional<Test3Reply::Tuple>& t);
+        std::optional<Test3Reply::Tuple> Test3ReplyEncode(std::optional<Test3Reply> &obj);
+        std::optional<Test3Reply> Test3ReplyDecode(std::optional<Test3Reply::Tuple> &t);
 
-        /* 测试4 */
-        struct Test4 : public IMessage
+        /* 测试1 */
+        struct Test1 : public IMessage
         {
             using Tuple = std::tuple<std::optional<string>>;
-            /* test */
             std::optional<string> test;
         };
-        std::optional<Test4::Tuple> Test4Encode(std::optional<Test4>& obj);
-        std::optional<Test4> Test4Decode(std::optional<Test4::Tuple>& t);
+        std::optional<Test1::Tuple> Test1Encode(std::optional<Test1> &obj);
+        std::optional<Test1> Test1Decode(std::optional<Test1::Tuple> &t);
 
-        /* Client 协议命令 */
-        enum class ClientOpcode
+        /* 测试2 */
+        struct Test2 : public IMessage
         {
-            /* 心跳 */
-            Ping = 0x100000,
-            /* 测试1 */
-            Test1 = 0x100064,
-            /* 测试2 */
-            Test2 = 0x100065,
+            using Tuple = std::tuple<std::optional<string>>;
+            /* 账号 */
+            std::optional<string> account;
         };
+        std::optional<Test2::Tuple> Test2Encode(std::optional<Test2> &obj);
+        std::optional<Test2> Test2Decode(std::optional<Test2::Tuple> &t);
 
-        /* System 协议命令 */
-        enum class SystemOpcode
+        /* RPC请求:测试2 */
+        struct Test2Reply : public IMessage
         {
-            /* 测试3 */
-            Test3 = 0x1000064,
-            /* 测试4 */
-            Test4 = 0x1000065,
+            using Tuple = std::tuple<std::optional<int64>>;
+            /* 错误码 */
+            std::optional<int64> code;
         };
+        std::optional<Test2Reply::Tuple> Test2ReplyEncode(std::optional<Test2Reply> &obj);
+        std::optional<Test2Reply> Test2ReplyDecode(std::optional<Test2Reply::Tuple> &t);
 
-        /* BG 协议命令 */
-        enum class BGOpcode
+        /* C to S 协议命令 */
+        enum class C2SOpcode
         {
-        };
-
-
-        /* 协议及结构 */
-        namespace Types
-        {
-            /* Client 协议结构 */
-            /* 心跳 */
-            using Ping = std::tuple<Ping>;
-            /* 测试1 */
-            using Test1 = std::tuple<Test1>;
-            /* RPC请求:测试2 */
-            using Test2 = std::tuple<Test2, Test2Reply>;
-            /* Client 协议结构 */
-
-            /* System 协议结构 */
-            /* RPC请求:测试3 */
-            using Test3 = std::tuple<Test3, Test3Reply>;
-            /* 测试4 */
-            using Test4 = std::tuple<Test4>;
-            /* System 协议结构 */
-
-            /* BG 协议结构 */
-            /* BG 协议结构 */
         }
+
+        /* S to C 协议命令 */
+        enum class S2COpcode
+        {
+            /* 心跳 */
+            Pong = 0x100000,
+        }
+        /* C to S  协议 */
+        namespace C2SProtocols
+        {
+            /* 心跳 */
+            class PingOper : Send<Ping, C2SOpcode>
+            {
+            public:
+                static constexpr C2SOpcode Opcode = C2SOpcode.Ping;
+            }
+            /* RPC请求:测试3 */
+            class Test3Oper : Call<Test3, Test3Reply, C2SOpcode>
+            {
+            public:
+                static constexpr C2SOpcode Opcode = C2SOpcode.Test3;
+            }
+            /* 测试1 */
+            class Test1Oper : Send<Test1, C2SOpcode>
+            {
+            public:
+                static constexpr C2SOpcode Opcode = C2SOpcode.Test1;
+            }
+            /* RPC请求:测试2 */
+            class Test2Oper : Call<Test2, Test2Reply, C2SOpcode>
+            {
+            public:
+                static constexpr C2SOpcode Opcode = C2SOpcode.Test2;
+            }
+        }
+
+        /* S to C 协议 */
+        namespace S2CProtocols
+        {
+            /* 心跳 */
+            class PongOper : Send<Pong, S2COpcode>
+            {
+            public:
+                static constexpr S2COpcode Opcode = S2COpcode.Pong;
+            }
+        }
+
     }
 }

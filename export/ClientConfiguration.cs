@@ -6,10 +6,11 @@ namespace Gen
     /// <summary> 配置 </summary>
     namespace Configuration
     {
+#if CLIENT
         #region 自定义结构
 
         /// <summary> 测试 </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class Test : IConfiguration
         {
             /// <summary> id </summary>
@@ -30,7 +31,7 @@ namespace Gen
         }
 
         /// <summary> 属性 </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class Attr : IConfiguration
         {
             /// <summary> 属性ID </summary>
@@ -42,7 +43,7 @@ namespace Gen
         }
 
         /// <summary> 三维坐标 </summary>
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class Vector3 : IConfiguration
         {
             /// <summary> 坐标X </summary>
@@ -56,7 +57,7 @@ namespace Gen
             public float z { get; set; }
         }
 
-        [MessagePackObject]
+        [MessagePackObject(true)]
         public class Monster : IConfiguration
         {
             /// <summary> 怪物Id </summary>
@@ -95,9 +96,10 @@ namespace Gen
         public class Struct
         {
             /// <summary> G-怪物配置 </summary>
-            public Dictionary<string, Monster>? monster;
+            public Dictionary<string, Monster> monster;
         };
 
         #endregion
+#endif
     }
 }

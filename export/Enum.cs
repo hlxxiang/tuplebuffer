@@ -21,5 +21,24 @@ namespace Gen
             b = 3,
         }
 
+        /// <summary> Specifies the day of the week. </summary>
+        public enum DayOfWeek
+        {
+            /// <summary>  </summary>
+            Sunday = 0,
+            /// <summary>  </summary>
+            Monday = 1,
+            /// <summary>  </summary>
+            Tuesday = 2,
+            /// <summary>  </summary>
+            Wednesday = 3,
+            /// <summary>  </summary>
+            Thursday = 4,
+            /// <summary>  </summary>
+            Friday = 5,
+            /// <summary>  </summary>
+            Saturday = 6,
+        }
+
     }
 }

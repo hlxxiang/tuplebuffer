@@ -75,14 +75,15 @@ interface FileMeta {
 
 declare interface ProtocolMeta {
     name: string,
-    group: number;
-    channel: number;
+    source: GroupType;
+    target: GroupType;
     meta: TupleTypeMeta;
     comment: string;
     metaRpc: TupleTypeMeta;
 }
 
 declare type ProtocolArray = ProtocolMeta[];
-declare type ProtocolSegment = [number, number, number, number];
-declare type ProtocolChannel = [ProtocolSegment, Array<ProtocolMeta>][];
-declare type ProtocolGroup = ProtocolChannel[];
+declare type ProtocolSegment = [number, number, GroupType, GroupType];
+declare type ProtocolChannel = [ProtocolSegment, ProtocolMeta[]];
+declare type ProtocolGroupChannel = ProtocolChannel[];
+declare type ProtocolGroup = Map<GroupType, ProtocolGroupChannel>;

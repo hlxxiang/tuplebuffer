@@ -126,7 +126,7 @@ export abstract class CS extends TupleBase {
             content += `\n${T}${T}/// <summary> ${meta.comment} </summary>`;
         }
         let fields = meta.fields;
-        content += `\n${T}${T}[MessagePackObject]\n${T}${T}public class ${meta.className} : ${interfaceName}\n${T}${T}{`;
+        content += `\n${T}${T}[MessagePackObject(true)]\n${T}${T}public class ${meta.className} : ${interfaceName}\n${T}${T}{`;
         fields = meta.fields;
         if (fields != null) {
             let index = 0;
@@ -153,7 +153,7 @@ export abstract class CS extends TupleBase {
     }
 
     public override saveFile(): void {
-        this.addContent(`${T}}\n}`);
+        this.addContent(`\n${T}}\n}`);
         {
             let file = `${this.path}/${this.fileName}.cs`;
             fs.writeFileSync(file, this.content, { encoding: 'utf8' });

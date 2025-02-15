@@ -4,8 +4,11 @@ import { ConfigurationBase } from "./configuration_base";
 
 export class ConfigurationCPP extends CPP implements ConfigurationBase {
 
-    constructor(namespace: string, path: string, fileName: string) {
+    private defineName: string
+
+    constructor(namespace: string, path: string, fileName: string, defineName: string) {
         super(namespace, path, fileName);
+        this.defineName = defineName;
     }
 
     public precompile(declaration: string): void {
@@ -24,7 +27,8 @@ export class ConfigurationCPP extends CPP implements ConfigurationBase {
                 `\n${T}${T}using uint32 = uint32_t;` +
                 `\n${T}${T}using int64 = int64_t;` +
                 `\n${T}${T}using uint64 = uint64_t;` +
-                `\n${T}${T}using namespace std;`;
+                `\n${T}${T}using namespace std;` +
+                `\n#ifdef ${this.defineName}`
             this.addHeadContent(content);
         }
         {
@@ -39,7 +43,8 @@ export class ConfigurationCPP extends CPP implements ConfigurationBase {
                 `\nnamespace Gen\n{` +
                 `\n${T}/* ${declaration} */` +
                 `\n${T}namespace ${this.namespace}\n${T}{` +
-                `\n${T}${T}using namespace std;`;
+                `\n${T}${T}using namespace std;` +
+                `\n#ifdef ${this.defineName}`
             this.addSourceContent(content);
         }
     }
@@ -91,5 +96,11 @@ export class ConfigurationCPP extends CPP implements ConfigurationBase {
         }
         content += `\n${T}${T}};\n`;
         this.addHeadContent(content);
+    }
+
+    public override saveFile(): void {
+        this.addHeadContent(`\n#endif // ${this.defineName}`)
+        this.addSourceContent(`\n#endif // ${this.defineName}`)
+        super.saveFile();
     }
 }

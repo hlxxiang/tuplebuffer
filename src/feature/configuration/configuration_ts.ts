@@ -3,9 +3,14 @@ import { TS } from "../langue/ts";
 import { ConfigurationBase } from "./configuration_base";
 
 export class ConfigurationTS extends TS implements ConfigurationBase {
-    constructor(namespace: string, path: string, fileName: string) {
+    
+    private defineName: string
+
+    constructor(namespace: string, path: string, fileName: string, defineName: string) {
         super(namespace, path, fileName);
+        this.defineName = defineName;
     }
+    
     precompile(declaration: string): void {
         let content: string = `declare namespace Gen {\n` +
             `${T}/*${declaration}*/\n` +

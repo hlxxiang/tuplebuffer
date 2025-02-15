@@ -11,9 +11,9 @@ Enum.init(
 require("./enum_util");
 
 Enum.add(LangueType.CS, EnumCS);
-Enum.add(LangueType.CPP, EnumCPP);
-Enum.add(LangueType.TS, EnumTS);
+// Enum.add(LangueType.CPP, EnumCPP);
+// Enum.add(LangueType.TS, EnumTS);
 
 Enum.compile("./export", LangueType.CS);
-Enum.compile("./export", LangueType.CPP);
-Enum.compile("./export", LangueType.TS);
+// Enum.compile("./export", LangueType.CPP);
+// Enum.compile("./export", LangueType.TS);

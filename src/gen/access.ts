@@ -2,7 +2,7 @@ import { checkTupleNames, tuple } from "../compiler/compile";
 import { AccessBase } from "../feature/access/access_base";
 import { Log } from "../utils/log";
 
-type AccessConstructor = new (namespace: string, path: string, fileName: string) => AccessBase;
+type AccessConstructor = new (namespace: string, path: string, fileName: string, defineName: string) => AccessBase;
 let langueList = new Map<LangueType, AccessConstructor>();
 
 export class Access {
@@ -95,7 +95,7 @@ export class Access {
 
     public static compile(path: string, langueType: LangueType): void {
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `ServerAccess`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ServerAccess`, `SERVER`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Server);
             for (const group of this._groupDefine) {
@@ -105,7 +105,7 @@ export class Access {
             langue.saveFile();
         }
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `ClientAccess`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ClientAccess`, `CLIENT`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Client);
             for (const group of this._groupDefine) {

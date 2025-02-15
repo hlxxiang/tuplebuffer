@@ -1,4 +1,4 @@
-import { float, int32, int64, string, tuple, uint32, uint64 } from "../../compiler/compile";
+import { array, boolean, float, int32, int64, string, tuple, uint32, uint64 } from "../../compiler/compile";
 
 export namespace Util {
     export const Vector3 = tuple("Vector3", [

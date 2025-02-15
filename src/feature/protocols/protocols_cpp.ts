@@ -1,7 +1,7 @@
 import { T } from "../../compiler/compile";
 import { Log } from "../../utils/log";
 import { CPP } from "../langue/cpp";
-import { ProtocolsBase } from "./protocols_base";
+import { GroupOpcodeNames, ProtocolsBase } from "./protocols_base";
 
 export class ProtocolsCpp extends CPP implements ProtocolsBase {
     protected maxOpcode: number;
@@ -34,7 +34,7 @@ export class ProtocolsCpp extends CPP implements ProtocolsBase {
                 `\n${T}${T}using uint32 = uint32_t;` +
                 `\n${T}${T}using int64 = int64_t;` +
                 `\n${T}${T}using uint64 = uint64_t;` +
-                `\n${T}${T}using namespace std;`;
+                `\n${T}${T}using namespace std;\n`;
             this.addHeadContent(content);
         }
         {
@@ -49,7 +49,7 @@ export class ProtocolsCpp extends CPP implements ProtocolsBase {
                 `\nnamespace Gen\n{` +
                 `\n${T}/* ${declaration} */` +
                 `\n${T}namespace ${this.namespace}\n${T}{` +
-                `\n${T}${T}using namespace std;`;
+                `\n${T}${T}using namespace std;\n`;
             this.addSourceContent(content);
         }
     }
@@ -67,195 +67,162 @@ export class ProtocolsCpp extends CPP implements ProtocolsBase {
                 }
                 content += `\n${T}${T}${T}` + `${pair[1]} = 0x${pair[0].toString(16)},`;
             }
-            content += `\n${T}${T}};`;
+            content += `\n${T}${T}};\n`;
         }
         this.addHeadContent(content);
     }
 
-    public compileGroups(groups: ProtocolGroup[], groupDefines: [number, string, string][], channelDefine: [number, string, string][]): void {
+    public compileGroups(groups: Map<GroupType, ProtocolGroup>, groupDefines: [number, string, string][]): void {
         let content: string = "";
         for (const v of groupDefines) {
-            let list = groups[v[0]];
-            content += `\n${T}${T}/* ${v[1]} 协议命令 */\n`;
-            content += this.compileGroup(v[1], list, channelDefine);
+            const groupType = v[0];
+            const groupName = v[1];
+            let group = groups.get(groupType);
+            content += this.compileGroup(groupType, groupName, group);
         }
         this.addHeadContent(content);
     }
 
-    private compileGroup(name: string, group: ProtocolGroup, channelDefine: [number, string, string][]): string {
+    private compileGroup(groupType: GroupType, groupName: string, group: ProtocolGroup): string {
         let content = "";
-        let c2s_result = "";
-        let s2c_result = "";
-        let s2s_result = ""
-        for (const pair of channelDefine) {
-            let channels = group[pair[0]];
-            if (channels == null) {
-                continue;
-            }
-            if (name == "Client") {
-                c2s_result += this.compileCommand(channels, name, pair[1]);
-            }
-            else if (pair[1] == "Client") {
-                s2c_result += this.compileCommand(channels, name, pair[1]);
-            }
-            else {
-                s2s_result += this.compileCommand_s2s(channels, name, pair[1]);
-            }
-        }
-        content += `${T}${T}enum class ${name}${this.commandSuffix}\n${T}${T}{\n`;
-        if (c2s_result.length > 0) {
-            content += c2s_result;
-        }
-        if (s2c_result.length > 0) {
-            content += s2c_result;
-        }
-        content += `${T}${T}};\n`;
-        content += s2s_result;
-        return content;
-    }
-
-    private compileCommand(channels: ProtocolChannel, group: string, type: string): string {
-        let content: string = "";
-        for (let segment of channels) {
-            let base = segment[0];
-            for (let i = 0, size = segment[1].length; i < size; ++i) {
-                let meta = segment[1][i];
-                if (i >= base[1]) {
-                    Log.instance.error(`超过当前段上限`);
-                    throw new Error("超过当前段上限");
+        let to_c_result = "";
+        let to_s_result = "";
+        let to_b_result = "";
+        for (const groupChannel of group) {
+            for (const channel of groupChannel[1]) {
+                if (channel[0][3] == GroupType.Client) {
+                    to_c_result += this.compileCommand(groupType, groupName, channel);
                 }
-
-                if ((base[0] + i) >= this.channelLimit) {
-                    Log.instance.error(`超过频道上限`);
-                    throw new Error("超过频道上限");
-                }
-
-                let opcode = meta.group | meta.channel | (base[0] + i);
-                if (opcode > this.maxOpcode) {
-                    Log.instance.error(`opcode(${opcode}) max(${this.maxOpcode})`)
-                    throw new Error("协议号超上限");
-                }
-                if (meta.comment != null) {
-                    content += `${T}${T}${T}/* ${meta.comment} */\n`;
-                }
-                content += `${T}${T}${T}${meta.name} = 0x${opcode.toString(16)},\n`;
-            }
-        }
-        return content;
-    }
-
-    private compileCommand_s2s(channels: ProtocolChannel, group: string, type: string): string {
-        let first = "S";
-        let second = "S";
-        if (group == "System") {
-            first = "S";
-            second = type;
-        }
-        else if (type == "System") {
-            first = group;
-            second = "S";
-        }
-        else {
-            first = group;
-            second = type;
-        }
-        let content: string = `\n${T}${T}enum class ${first}${second}${this.commandSuffix}\n${T}${T}{\n`;
-        for (let segment of channels) {
-            let base = segment[0];
-            for (let i = 0, size = segment[1].length; i < size; ++i) {
-                let meta = segment[1][i];
-                if (i >= base[1]) {
-                    Log.instance.error(`超过当前段上限`);
-                    throw new Error("超过当前段上限");
-                }
-
-                if ((base[0] + i) >= this.channelLimit) {
-                    Log.instance.error(`超过频道上限`);
-                    throw new Error("超过频道上限");
-                }
-
-                let opcode = meta.group | meta.channel | (base[0] + i);
-                if (opcode > this.maxOpcode) {
-                    Log.instance.error(`opcode(${opcode}) max(${this.maxOpcode})`)
-                    throw new Error("协议号超上限");
-                }
-                if (meta.comment != null) {
-                    content += `${T}${T}/* ${meta.comment} */\n`;
-                }
-                content += `${T}${T}${meta.name} = 0x${opcode.toString(16)},\n`;
-            }
-        }
-        content += `${T}};`;
-        return content;
-    }
-
-    public compileTypes(typesName: string, groups: ProtocolGroup[], groupDefines: [number, string, string][], channelDefine: [number, string, string][]): void {
-        let content: string = `\n\n${T}${T}/* 协议及结构 */`;
-        content += `\n${T}${T}namespace ${typesName}`;
-        content += `\n${T}${T}{`
-        for (const v of groupDefines) {
-            let list = groups[v[0]];
-            content += `\n${T}${T}${T}/* ${v[1]} 协议结构 */`;
-            content += this.compileGroupTypes(v[1], list, channelDefine);
-            content += `\n${T}${T}${T}/* ${v[1]} 协议结构 */\n`;
-        }
-        content += `${T}${T}}\n`;
-        this.addHeadContent(content);
-    }
-
-    private compileGroupTypes(name: string, group: ProtocolGroup, channelDefine: [number, string, string][]): string {
-        let content: string = "";
-        let first = "C";
-        let second = "S";
-        for (const pair of channelDefine) {
-            let channels = group[pair[0]];
-            if (channels != null) {
-                if (name == "Client") {
-                    first = "";
-                    second = "";
-                }
-                else if (pair[1] == "Client") {
-                    first = "";
-                    second = "";
+                else if (channel[0][3] == GroupType.System) {
+                    to_s_result += this.compileCommand(groupType, groupName, channel);
                 }
                 else {
-                    if (name == "System") {
-                        first = "S";
-                        second = pair[1];
-                    }
-                    else if (pair[1] == "System") {
-                        first = name;
-                        second = "S";
-                    }
-                    else {
-                        first = name;
-                        second = pair[1];
-                    }
+                    to_b_result += this.compileCommand(groupType, groupName, channel);
                 }
-                // result += `${T}${T}//${first}${Second}${this._commandSuffix}\n`;
-                for (let segment of channels) {
-                    for (let i = 0, size = segment[1].length; i < size; ++i) {
-                        let meta = segment[1][i];
-                        // if (meta.metaRpc) {
-                        //     result += `\n${T}${T}${T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}, ${this.className(meta.metaRpc)}],`;
-                        // }
-                        // else {
-                        //     result += `\n${T}${T}${T}[${first}${second}${this.commandSuffix}.${this.className(meta.meta)}]: [${this.className(meta.meta)}],`;
-                        // }
-                        if (meta.metaRpc) {
-                            if (meta.metaRpc.comment) {
-                                content += `\n${T}${T}${T}/* ${meta.metaRpc.comment} */`;
-                            }
-                            content += `\n${T}${T}${T}using ${this.className(meta.meta)} = std::tuple<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}>;`;
-                        }
-                        else {
-                            if (meta.meta.comment) {
-                                content += `\n${T}${T}${T}/* ${meta.meta.comment} */`;
-                            }
-                            content += `\n${T}${T}${T}using ${this.className(meta.meta)} = std::tuple<${this.className(meta.meta)}>;`;
-                        }
-                    }
+            }
+        }
+        if (to_c_result.length > 0) {
+            content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Client]} 协议命令 */`;
+            content += `\n${T}${T}enum class ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Client]}${this.commandSuffix}\n${T}${T}{`;
+            content += to_c_result;
+            content += `\n${T}${T}}`;
+        }
+        if (to_s_result.length > 0) {
+            content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.System]} 协议命令 */`;
+            content += `\n${T}${T}enum class ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.System]}${this.commandSuffix}\n${T}${T}{`;
+            content += to_c_result;
+            content += `\n${T}${T}}\n`;
+        }
+        if (to_b_result.length > 0) {
+            content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Bg]} 协议命令 */`;
+            content += `\n${T}${T}enum class ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Bg]}${this.commandSuffix}\n${T}${T}{`;
+            content += to_c_result;
+            content += `\n${T}${T}}\n`;
+        }
+        return content;
+    }
+
+    private compileCommand(groupType: GroupType, groupName: string, channel: ProtocolChannel): string {
+        let content: string = ``;
+        let base = channel[0];
+        for (let i = 0; i < channel[1].length; i++) {
+            const meta = channel[1][i];
+            if (i >= base[1]) {
+                Log.instance.error(`超过当前段上限`);
+                throw new Error("超过当前段上限");
+            }
+
+            if ((base[0] + i) >= this.channelLimit) {
+                Log.instance.error(`超过频道上限`);
+                throw new Error("超过频道上限");
+            }
+            let opcode = meta.source << BitMask.SourceGroup | meta.target << BitMask.TargetGroup | (base[0] + i);
+            if (opcode > this.maxOpcode) {
+                Log.instance.error(`opcode(${opcode}) max(${this.maxOpcode})`)
+                throw new Error("协议号超上限");
+            }
+            if (meta.comment != null) {
+                content += `\n${T}${T}${T}/* ${meta.comment} */`;
+            }
+            content += `\n${T}${T}${T}${meta.name} = 0x${opcode.toString(16)},`;
+        }
+        return content;
+    }
+
+    public compileTypes(typesName: string, groups: Map<GroupType, ProtocolGroup>, groupDefines: [number, string, string][]): void {
+        let content: string = "";
+        for (const v of groupDefines) {
+            const groupType = v[0];
+            const groupName = v[1];
+            let group = groups.get(groupType);
+            content += this.compileGroupTypes(typesName, groupType, groupName, group);
+        }
+        content += `\n`;
+        this.addHeadContent(content);
+    }
+
+    private compileGroupTypes(typesName: string, groupType: GroupType, groupName: string, group: ProtocolGroup): string {
+        let content: string = "";
+        let to_c_result = "";
+        let to_s_result = "";
+        let to_b_result = "";
+        for (const groupChannel of group) {
+            for (const channel of groupChannel[1]) {
+                if (channel[0][3] == GroupType.Client) {
+                    to_c_result += this.compileGroupType(groupType, groupName, channel);
                 }
+                else if (channel[0][3] == GroupType.System) {
+                    to_s_result += this.compileGroupType(groupType, groupName, channel);
+                }
+                else {
+                    to_b_result += this.compileGroupType(groupType, groupName, channel);
+                }
+            }
+        }
+        if (to_c_result.length > 0) {
+            content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Client]} 协议 */`;
+            content += `\n${T}${T}namespace ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Client]}${typesName}\n${T}${T}{`;
+            content += to_c_result;
+            content += `\n${T}${T}}\n`;
+        }
+        if (to_s_result.length > 0) {
+            content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.System]}  协议 */`;
+            content += `\n${T}${T}namespace ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.System]}${typesName}\n${T}${T}{`;
+            content += to_s_result;
+            content += `\n${T}${T}}\n`;
+        }
+        if (to_b_result.length > 0) {
+            content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Bg]}  协议 */`;
+            content += `\n${T}${T}namespace ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Bg]}${typesName}\n${T}${T}{`;
+            content += to_b_result;
+            content += `\n${T}${T}}\n`;
+        }
+        return content;
+    }
+
+    private compileGroupType(groupType: GroupType, groupName: string, channel: ProtocolChannel): string {
+        let content: string = ``;
+        for (let i = 0, size = channel[1].length; i < size; ++i) {
+            let meta = channel[1][i];
+            if (meta.metaRpc) {
+                if (meta.metaRpc.comment) {
+                    content += `\n${T}${T}${T}/* ${meta.metaRpc.comment} */`;
+                }
+                content += `\n${T}${T}${T}class ${this.className(meta.meta)}Oper : Call<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}, ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}>`;
+                content += `\n${T}${T}${T}{`;
+                content += `\n${T}${T}${T}public:`;
+                content += `\n${T}${T}${T}${T}static constexpr ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix} Opcode = ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}.${this.className(meta.meta)};`;
+                content += `\n${T}${T}${T}}`;
+            }
+            else {
+                if (meta.meta.comment) {
+                    content += `\n${T}${T}${T}/* ${meta.meta.comment} */`;
+                }
+                content += `\n${T}${T}${T}class ${this.className(meta.meta)}Oper : Send<${this.className(meta.meta)}, ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}>`;
+                content += `\n${T}${T}${T}{`;
+                content += `\n${T}${T}${T}public:`;
+                content += `\n${T}${T}${T}${T}static constexpr ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix} Opcode = ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}.${this.className(meta.meta)};`;
+                content += `\n${T}${T}${T}}`;
             }
         }
         return content;

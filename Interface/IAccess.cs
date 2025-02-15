@@ -9,16 +9,5 @@ namespace Gen
         public interface IAccess
         {
         }
-
-        public interface IRecordOper
-        {
-
-        }
-
-        public class RecordOper<T> : IRecordOper
-            where T : IAccess
-        {
-            public virtual string Key { get; set; }
-        }
     }
 }

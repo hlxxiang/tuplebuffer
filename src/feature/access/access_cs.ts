@@ -3,16 +3,23 @@ import { CS } from "../langue/cs";
 import { AccessBase } from "./access_base";
 
 export class AccessCS extends CS implements AccessBase {
-    constructor(namespace: string, path: string, fileName: string) {
+    
+    private defineName: string
+
+    constructor(namespace: string, path: string, fileName: string, defineName: string) {
         super(namespace, path, fileName);
+        this.defineName = defineName;
     }
+
     public precompile(declaration: string): void {
         let content: string = "using MessagePack;" +
             "\nusing System;" +
             "\nusing System.Collections.Generic;" +
             `\nnamespace Gen\n{` +
             `\n${T}/// <summary> ${declaration} </summary>` +
-            `\n${T}namespace ${this.namespace}\n${T}{`;
+            `\n${T}namespace ${this.namespace}\n${T}{` + 
+            `\n#if ${this.defineName}`
+            ;
         this.addContent(content);
     }
 
@@ -69,7 +76,8 @@ export class AccessCS extends CS implements AccessBase {
     }
 
     public saveFile(): void {
-        this.addContent(`\n${T}${T}#endregion\n`);
+        this.addContent(`\n${T}${T}#endregion`);
+        this.addContent(`\n#endif`)
         super.saveFile();
     }
 }

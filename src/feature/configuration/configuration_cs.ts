@@ -4,8 +4,11 @@ import { ConfigurationBase } from "./configuration_base";
 
 export class ConfigurationCS extends CS implements ConfigurationBase {
 
-    constructor(namespace: string, path: string, fileName: string) {
+    private defineName: string
+
+    constructor(namespace: string, path: string, fileName: string, defineName: string) {
         super(namespace, path, fileName);
+        this.defineName = defineName;
     }
 
     public precompile(declaration: string): void {
@@ -14,7 +17,8 @@ export class ConfigurationCS extends CS implements ConfigurationBase {
             "\nusing System.Collections.Generic;" +
             `\nnamespace Gen\n{` +
             `\n${T}/// <summary> ${declaration} </summary>` +
-            `\n${T}namespace ${this.namespace}\n${T}{`;
+            `\n${T}namespace ${this.namespace}\n${T}{` + 
+            `\n#if ${this.defineName}`;
         this.addContent(content);
     }
 
@@ -42,7 +46,7 @@ export class ConfigurationCS extends CS implements ConfigurationBase {
         for (const meta of files) {
             if (meta.format & exportType) {
                 content += `${T}${T}${T}/// <summary> ${meta.name} </summary>\n`;
-                content += `${T}${T}${T}public ${this.className(meta.element)}? ${meta.jsonName};\n`;
+                content += `${T}${T}${T}public ${this.className(meta.element)} ${meta.jsonName};\n`;
             }
         }
         content += `\n${T}${T}};\n`;
@@ -57,15 +61,15 @@ export class ConfigurationCS extends CS implements ConfigurationBase {
                 switch (meta.type) {
                     case FileType.tuple: {
 
-                        content += `${T}${T}${T}public ${this.className(meta.element)}? ${meta.jsonName};\n`;
+                        content += `${T}${T}${T}public ${this.className(meta.element)} ${meta.jsonName};\n`;
                         break;
                     }
                     case FileType.array: {
-                        content += `${T}${T}${T}public ${this.className(meta.element)}[]? ${meta.jsonName};\n`;
+                        content += `${T}${T}${T}public ${this.className(meta.element)}[] ${meta.jsonName};\n`;
                         break;
                     }
                     case FileType.hash: {
-                        content += `${T}${T}${T}public Dictionary<string, ${this.className(meta.element)}>? ${meta.jsonName};\n`;
+                        content += `${T}${T}${T}public Dictionary<string, ${this.className(meta.element)}> ${meta.jsonName};\n`;
                         break;
                     }
                 }
@@ -76,7 +80,8 @@ export class ConfigurationCS extends CS implements ConfigurationBase {
     }
 
     public saveFile(): void {
-        this.addContent(`\n${T}${T}#endregion\n`);
+        this.addContent(`\n${T}${T}#endregion`);
+        this.addContent(`\n#endif`)
         super.saveFile();
     }
 }

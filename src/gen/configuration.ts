@@ -7,7 +7,7 @@ import { checkTupleNames } from "../compiler/compile";
 import { ConfigurationBase } from "../feature/configuration/configuration_base";
 import { Log } from "../utils/log";
 
-type ConfigurationConstructor = new (namespace: string, path: string, fileName: string) => ConfigurationBase;
+type ConfigurationConstructor = new (namespace: string, path: string, fileName: string, defineName: string) => ConfigurationBase;
 let langueList = new Map<LangueType, ConfigurationConstructor>();
 
 function mkdirSyncEx(path: string): void {
@@ -187,7 +187,7 @@ export class Configuration {
 
     public static compile(path: string, langueType: LangueType): void {
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `ServerConfiguration`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ServerConfiguration`, `SERVER`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Server);
             langue.compileTypeNames(this._files, ExportType.Server);
@@ -198,7 +198,7 @@ export class Configuration {
             langue.saveFile();
         }
         {
-            let langue = new (langueList.get(langueType))(this._namespace, path, `ClientConfiguration`);
+            let langue = new (langueList.get(langueType))(this._namespace, path, `ClientConfiguration`, `CLIENT`);
             langue.precompile(this._declaration);
             langue.compileDeclare(this._indexSuffix, this._interfaceName, ExportType.Client);
             langue.compileTypeNames(this._files, ExportType.Client);
