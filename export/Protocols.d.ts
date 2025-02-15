@@ -77,27 +77,27 @@ declare namespace Gen {
         /** 测试1 */
         type Test1 = [string];
 
-        /** 测试2 */
-        const enum Test2Fields {
+        /** 客户端验证 */
+        const enum AuthClientFields {
             /** 账号 */
             account = 0,
         }
-        interface Test2Types {
-            [Test2Fields.account]: string;
+        interface AuthClientTypes {
+            [AuthClientFields.account]: string;
         }
-        /** 测试2 */
-        type Test2 = [string];
+        /** 客户端验证 */
+        type AuthClient = [string];
 
-        /** RPC请求:测试2 */
-        const enum Test2ReplyFields {
+        /** RPC请求:客户端验证 */
+        const enum AuthClientReplyFields {
             /** 错误码 */
             code = 0,
         }
-        interface Test2ReplyTypes {
-            [Test2ReplyFields.code]: number;
+        interface AuthClientReplyTypes {
+            [AuthClientReplyFields.code]: number;
         }
-        /** RPC请求:测试2 */
-        type Test2Reply = [number];
+        /** RPC请求:客户端验证 */
+        type AuthClientReply = [number];
 
         /*************************************** Client 协议命令 ***************************************/
 
@@ -109,8 +109,8 @@ declare namespace Gen {
             Test3 = 0x1000001,
             /** 测试1 */
             Test1 = 0x1000064,
-            /** 测试2 */
-            Test2 = 0x1000065,
+            /** 客户端验证 */
+            AuthClient = 0x1000065,
         }
 
         /*************************************** System 协议命令 ***************************************/
@@ -128,7 +128,7 @@ declare namespace Gen {
             [C2SOpcode.Ping]: [Ping],
             [C2SOpcode.Test3]: [Test3, Test3Reply],
             [C2SOpcode.Test1]: [Test1],
-            [C2SOpcode.Test2]: [Test2, Test2Reply],
+            [C2SOpcode.AuthClient]: [AuthClient, AuthClientReply],
         }
 
         /* S to C 协议 */

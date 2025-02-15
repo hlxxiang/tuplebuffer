@@ -110,25 +110,25 @@ namespace Gen
             return obj;
         }
 
-        std::optional<Test2::Tuple> Test2Encode(std::optional<Test2> &obj)
+        std::optional<AuthClient::Tuple> AuthClientEncode(std::optional<AuthClient> &obj)
         {
             if (obj.has_value())
             {
 
                 auto &oValue = obj.value();
-                return Test2::Tuple(oValue.account);
+                return AuthClient::Tuple(oValue.account);
             }
             else
             {
                 return std::nullopt;
             }
         }
-        std::optional<Test2> Test2Decode(std::optional<Test2::Tuple> &t)
+        std::optional<AuthClient> AuthClientDecode(std::optional<AuthClient::Tuple> &t)
         {
-            std::optional<Test2> obj;
+            std::optional<AuthClient> obj;
             if (t.has_value())
             {
-                obj = Test2();
+                obj = AuthClient();
                 auto &oValue = obj.value();
                 auto &tValue = t.value();
                 oValue.account = std::get<0>(tValue);
@@ -136,25 +136,25 @@ namespace Gen
             return obj;
         }
 
-        std::optional<Test2Reply::Tuple> Test2ReplyEncode(std::optional<Test2Reply> &obj)
+        std::optional<AuthClientReply::Tuple> AuthClientReplyEncode(std::optional<AuthClientReply> &obj)
         {
             if (obj.has_value())
             {
 
                 auto &oValue = obj.value();
-                return Test2Reply::Tuple(oValue.code);
+                return AuthClientReply::Tuple(oValue.code);
             }
             else
             {
                 return std::nullopt;
             }
         }
-        std::optional<Test2Reply> Test2ReplyDecode(std::optional<Test2Reply::Tuple> &t)
+        std::optional<AuthClientReply> AuthClientReplyDecode(std::optional<AuthClientReply::Tuple> &t)
         {
-            std::optional<Test2Reply> obj;
+            std::optional<AuthClientReply> obj;
             if (t.has_value())
             {
-                obj = Test2Reply();
+                obj = AuthClientReply();
                 auto &oValue = obj.value();
                 auto &tValue = t.value();
                 oValue.code = std::get<0>(tValue);

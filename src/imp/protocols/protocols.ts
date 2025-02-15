@@ -43,7 +43,7 @@ Protocols.init(
 );
 
 /**************************************************协议声明**************************************************/
-require("./cs/protocols_login");
+require("./cs/protocols_test");
 
 
 Protocols.add(LangueType.CS, ProtocolsCS);

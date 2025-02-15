@@ -94,18 +94,18 @@ namespace Gen
             public string test { get; set; }
         }
 
-        /// <summary> 测试2 </summary>
+        /// <summary> 客户端验证 </summary>
         [MessagePackObject(true)]
-        public class Test2 : IMessage
+        public class AuthClient : IMessage
         {
             /// <summary> 账号 </summary>
             [Key(0)]
             public string account { get; set; }
         }
 
-        /// <summary> RPC请求:测试2 </summary>
+        /// <summary> RPC请求:客户端验证 </summary>
         [MessagePackObject(true)]
-        public class Test2Reply : IMessage
+        public class AuthClientReply : IMessage
         {
             /// <summary> 错误码 </summary>
             [Key(0)]
@@ -124,8 +124,8 @@ namespace Gen
             Test3 = 0x1000001,
             /// <summary> 测试1 </summary>
             Test1 = 0x1000064,
-            /// <summary> 测试2 </summary>
-            Test2 = 0x1000065,
+            /// <summary> 客户端验证 </summary>
+            AuthClient = 0x1000065,
         }
 
         #endregion
@@ -159,10 +159,10 @@ namespace Gen
             {
                 public const C2SOpcode Opcode = C2SOpcode.Test1;
             }
-            /// <summary> RPC请求:测试2 </summary>
-            public class Test2Oper : Call<Test2, Test2Reply, C2SOpcode>
+            /// <summary> RPC请求:客户端验证 </summary>
+            public class AuthClientOper : Call<AuthClient, AuthClientReply, C2SOpcode>
             {
-                public const C2SOpcode Opcode = C2SOpcode.Test2;
+                public const C2SOpcode Opcode = C2SOpcode.AuthClient;
             }
         }
 

@@ -105,25 +105,25 @@ namespace Gen
         std::optional<Test1::Tuple> Test1Encode(std::optional<Test1> &obj);
         std::optional<Test1> Test1Decode(std::optional<Test1::Tuple> &t);
 
-        /* 测试2 */
-        struct Test2 : public IMessage
+        /* 客户端验证 */
+        struct AuthClient : public IMessage
         {
             using Tuple = std::tuple<std::optional<string>>;
             /* 账号 */
             std::optional<string> account;
         };
-        std::optional<Test2::Tuple> Test2Encode(std::optional<Test2> &obj);
-        std::optional<Test2> Test2Decode(std::optional<Test2::Tuple> &t);
+        std::optional<AuthClient::Tuple> AuthClientEncode(std::optional<AuthClient> &obj);
+        std::optional<AuthClient> AuthClientDecode(std::optional<AuthClient::Tuple> &t);
 
-        /* RPC请求:测试2 */
-        struct Test2Reply : public IMessage
+        /* RPC请求:客户端验证 */
+        struct AuthClientReply : public IMessage
         {
             using Tuple = std::tuple<std::optional<int64>>;
             /* 错误码 */
             std::optional<int64> code;
         };
-        std::optional<Test2Reply::Tuple> Test2ReplyEncode(std::optional<Test2Reply> &obj);
-        std::optional<Test2Reply> Test2ReplyDecode(std::optional<Test2Reply::Tuple> &t);
+        std::optional<AuthClientReply::Tuple> AuthClientReplyEncode(std::optional<AuthClientReply> &obj);
+        std::optional<AuthClientReply> AuthClientReplyDecode(std::optional<AuthClientReply::Tuple> &t);
 
         /* C to S 协议命令 */
         enum class C2SOpcode
@@ -157,11 +157,11 @@ namespace Gen
             public:
                 static constexpr C2SOpcode Opcode = C2SOpcode.Test1;
             }
-            /* RPC请求:测试2 */
-            class Test2Oper : Call<Test2, Test2Reply, C2SOpcode>
+            /* RPC请求:客户端验证 */
+            class AuthClientOper : Call<AuthClient, AuthClientReply, C2SOpcode>
             {
             public:
-                static constexpr C2SOpcode Opcode = C2SOpcode.Test2;
+                static constexpr C2SOpcode Opcode = C2SOpcode.AuthClient;
             }
         }
 
