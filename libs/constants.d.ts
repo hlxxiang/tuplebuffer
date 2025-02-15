@@ -125,12 +125,6 @@ declare const enum GroupType {
 /** 不同服务的协议掩码, 可扩展 */
 declare const enum ServerType {
     Client = 0,
-    CenterServer = 1,
-    DBServer = 2,
-    HttpServer = 3,
-    LoginServer = 4,
-    MapServer = 5,
-    MatchServer = 6,
-    UserServer = 7,
+    Gateway = 1,
     End = 20
 }

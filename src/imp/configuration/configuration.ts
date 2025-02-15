@@ -19,9 +19,9 @@ Configuration.init(
 require("./configuration_declare");
 
 Configuration.add(LangueType.CS, ConfigurationCS);
-// Configuration.add(LangueType.CPP, ConfigurationCPP);
-// Configuration.add(LangueType.TS, ConfigurationTS);
+Configuration.add(LangueType.CPP, ConfigurationCPP);
+Configuration.add(LangueType.TS, ConfigurationTS);
 
 Configuration.compile("./export", LangueType.CS);
-// Configuration.compile("./export", LangueType.CPP);
-// Configuration.compile("./export", LangueType.TS);
+Configuration.compile("./export", LangueType.CPP);
+Configuration.compile("./export", LangueType.TS);

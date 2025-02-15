@@ -19,9 +19,9 @@ Access.init(
 require("./access_declare");
 
 Access.add(LangueType.CS, AccessCS);
-// Access.add(LangueType.CPP, AccessCPP);
-// Access.add(LangueType.TS, AccessTS);
+Access.add(LangueType.CPP, AccessCPP);
+Access.add(LangueType.TS, AccessTS);
 
 Access.compile("./export", LangueType.CS);
-// Access.compile("./export", LangueType.CPP);
-// Access.compile("./export", LangueType.TS);
+Access.compile("./export", LangueType.CPP);
+Access.compile("./export", LangueType.TS);
