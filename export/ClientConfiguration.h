@@ -2,8 +2,10 @@
 #include <tuple>
 #include <string>
 #include <vector>
-#include <optional>
+#include <memory>
 #include <unordered_map>
+
+#include "IConfiguration.h"
 
 namespace Gen
 {
@@ -19,67 +21,67 @@ namespace Gen
         /* 测试 */
         struct Test : public IConfiguration
         {
-            using Tuple = std::tuple<std::optional<int32>, std::optional<uint32>, std::optional<int64>, std::optional<uint64>, std::optional<string>>;
+            using Tuple = std::tuple<int32, uint32, int64, uint64, string>;
             /* id */
-            std::optional<int32> num32;
+            int32 num32;
             /* 数值 */
-            std::optional<uint32> uNum32;
+            uint32 uNum32;
             /* id */
-            std::optional<int64> id64;
+            int64 id64;
             /* 数值 */
-            std::optional<uint64> uId64;
+            uint64 uId64;
             /* 字符串 */
-            std::optional<string> str;
+            string str;
         };
-        std::optional<Test::Tuple> TestEncode(std::optional<Test> &obj);
-        std::optional<Test> TestDecode(std::optional<Test::Tuple> &t);
+        std::shared_ptr<Test::Tuple> TestEncode(const std::shared_ptr<Test>& obj);
+        std::shared_ptr<Test> TestDecode(const std::shared_ptr<Test::Tuple>& t);
 
         /* 属性 */
         struct Attr : public IConfiguration
         {
-            using Tuple = std::tuple<std::optional<int64>, std::optional<int64>>;
+            using Tuple = std::tuple<int64, int64>;
             /* 属性ID */
-            std::optional<int64> attrId;
+            int64 attrId;
             /* 属性值 */
-            std::optional<int64> value;
+            int64 value;
         };
-        std::optional<Attr::Tuple> AttrEncode(std::optional<Attr> &obj);
-        std::optional<Attr> AttrDecode(std::optional<Attr::Tuple> &t);
+        std::shared_ptr<Attr::Tuple> AttrEncode(const std::shared_ptr<Attr>& obj);
+        std::shared_ptr<Attr> AttrDecode(const std::shared_ptr<Attr::Tuple>& t);
 
         /* 三维坐标 */
         struct Vector3 : public IConfiguration
         {
-            using Tuple = std::tuple<std::optional<float>, std::optional<float>, std::optional<float>>;
+            using Tuple = std::tuple<float, float, float>;
             /* 坐标X */
-            std::optional<float> x;
+            float x;
             /* 坐标Y */
-            std::optional<float> y;
+            float y;
             /* 坐标Z */
-            std::optional<float> z;
+            float z;
         };
-        std::optional<Vector3::Tuple> Vector3Encode(std::optional<Vector3> &obj);
-        std::optional<Vector3> Vector3Decode(std::optional<Vector3::Tuple> &t);
+        std::shared_ptr<Vector3::Tuple> Vector3Encode(const std::shared_ptr<Vector3>& obj);
+        std::shared_ptr<Vector3> Vector3Decode(const std::shared_ptr<Vector3::Tuple>& t);
 
         struct Monster : public IConfiguration
         {
-            using Tuple = std::tuple<std::optional<int64>, std::optional<string>, std::optional<int64>, std::optional<std::vector<std::optional<int64>>>, std::optional<string>, std::optional<Vector3::Tuple>, std::optional<string>>;
+            using Tuple = std::tuple<int64, string, int64, std::shared_ptr<std::vector<int64>>, string, std::shared_ptr<Vector3::Tuple>, string>;
             /* 怪物Id */
-            std::optional<int64> monsterId;
+            int64 monsterId;
             /* 怪物名 */
-            std::optional<string> name;
+            string name;
             /* 怪物等级 */
-            std::optional<int64> level;
+            int64 level;
             /* 技能列表 id#id */
-            std::optional<std::vector<std::optional<int64>>> skills;
+            std::shared_ptr<std::vector<int64>> skills;
             /* 怪物模型 */
-            std::optional<string> model;
+            string model;
             /* 坐标 */
-            std::optional<Vector3> pos;
+            std::shared_ptr<Vector3> pos;
             /* 头像 */
-            std::optional<string> head;
+            string head;
         };
-        std::optional<Monster::Tuple> MonsterEncode(std::optional<Monster> &obj);
-        std::optional<Monster> MonsterDecode(std::optional<Monster::Tuple> &t);
+        std::shared_ptr<Monster::Tuple> MonsterEncode(const std::shared_ptr<Monster>& obj);
+        std::shared_ptr<Monster> MonsterDecode(const std::shared_ptr<Monster::Tuple>& t);
 
         namespace TypeNames
         {
@@ -93,5 +95,6 @@ namespace Gen
             using monster = std::unordered_map<string, Monster>;
         };
 
-#endif // CLIENT    }
+#endif // CLIENT
+    }
 }

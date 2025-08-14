@@ -17,8 +17,9 @@ export class AccessCPP extends CPP implements AccessBase {
                 "\n#include <tuple>" +
                 "\n#include <string>" +
                 "\n#include <vector>" +
-                "\n#include <optional>" +
+                "\n#include <memory>" +
                 "\n#include <unordered_map>\n" +
+                "\n#include \"IAccess.h\"\n" +
 
                 `\nnamespace Gen\n{` +
                 `\n${T}/* ${declaration} */` +
@@ -36,8 +37,9 @@ export class AccessCPP extends CPP implements AccessBase {
                 "\n#include <tuple>" +
                 "\n#include <string>" +
                 "\n#include <vector>" +
-                "\n#include <optional>" +
+                "\n#include <memory>" +
                 "\n#include <unordered_map>\n" +
+                "\n#include \"IAccess.h\"\n" +
                 `\n#include \"${this.fileName}.h\"\n` +
 
                 `\nnamespace Gen\n{` +

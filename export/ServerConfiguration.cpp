@@ -2,8 +2,10 @@
 #include <tuple>
 #include <string>
 #include <vector>
-#include <optional>
+#include <memory>
 #include <unordered_map>
+
+#include "IConfiguration.h"
 
 #include "ServerConfiguration.h"
 
@@ -14,163 +16,148 @@ namespace Gen
     {
         using namespace std;
 #ifdef SERVER
-        std::optional<Test::Tuple> TestEncode(std::optional<Test> &obj)
+        std::shared_ptr<Test::Tuple> TestEncode(const std::shared_ptr<Test>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return Test::Tuple(oValue.num32, oValue.uNum32, oValue.id64, oValue.uId64, oValue.str);
+                return make_shared<Test::Tuple>(obj->num32, obj->uNum32, obj->id64, obj->uId64, obj->str);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<Test> TestDecode(std::optional<Test::Tuple> &t)
+        std::shared_ptr<Test> TestDecode(const std::shared_ptr<Test::Tuple>& t)
         {
-            std::optional<Test> obj;
-            if (t.has_value())
+            std::shared_ptr<Test> obj;
+            if (t != nullptr)
             {
-                obj = Test();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.num32 = std::get<0>(tValue);
-                oValue.uNum32 = std::get<1>(tValue);
-                oValue.id64 = std::get<2>(tValue);
-                oValue.uId64 = std::get<3>(tValue);
-                oValue.str = std::get<4>(tValue);
+                obj = make_shared<Test>();
+                obj->num32 = std::get<0>(*t.get());
+                obj->uNum32 = std::get<1>(*t.get());
+                obj->id64 = std::get<2>(*t.get());
+                obj->uId64 = std::get<3>(*t.get());
+                obj->str = std::get<4>(*t.get());
             }
             return obj;
         }
 
-        std::optional<Attr::Tuple> AttrEncode(std::optional<Attr> &obj)
+        std::shared_ptr<Attr::Tuple> AttrEncode(const std::shared_ptr<Attr>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return Attr::Tuple(oValue.attrId, oValue.value);
+                return make_shared<Attr::Tuple>(obj->attrId, obj->value);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<Attr> AttrDecode(std::optional<Attr::Tuple> &t)
+        std::shared_ptr<Attr> AttrDecode(const std::shared_ptr<Attr::Tuple>& t)
         {
-            std::optional<Attr> obj;
-            if (t.has_value())
+            std::shared_ptr<Attr> obj;
+            if (t != nullptr)
             {
-                obj = Attr();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.attrId = std::get<0>(tValue);
-                oValue.value = std::get<1>(tValue);
+                obj = make_shared<Attr>();
+                obj->attrId = std::get<0>(*t.get());
+                obj->value = std::get<1>(*t.get());
             }
             return obj;
         }
 
-        std::optional<Vector3::Tuple> Vector3Encode(std::optional<Vector3> &obj)
+        std::shared_ptr<Vector3::Tuple> Vector3Encode(const std::shared_ptr<Vector3>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return Vector3::Tuple(oValue.x, oValue.y, oValue.z);
+                return make_shared<Vector3::Tuple>(obj->x, obj->y, obj->z);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<Vector3> Vector3Decode(std::optional<Vector3::Tuple> &t)
+        std::shared_ptr<Vector3> Vector3Decode(const std::shared_ptr<Vector3::Tuple>& t)
         {
-            std::optional<Vector3> obj;
-            if (t.has_value())
+            std::shared_ptr<Vector3> obj;
+            if (t != nullptr)
             {
-                obj = Vector3();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.x = std::get<0>(tValue);
-                oValue.y = std::get<1>(tValue);
-                oValue.z = std::get<2>(tValue);
+                obj = make_shared<Vector3>();
+                obj->x = std::get<0>(*t.get());
+                obj->y = std::get<1>(*t.get());
+                obj->z = std::get<2>(*t.get());
             }
             return obj;
         }
 
-        std::optional<Monster::Tuple> MonsterEncode(std::optional<Monster> &obj)
+        std::shared_ptr<Monster::Tuple> MonsterEncode(const std::shared_ptr<Monster>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                std::optional<std::vector<std::optional<Attr::Tuple>>> attrsArr;
-                if (oValue.attrs.has_value())
+                std::shared_ptr<std::vector<std::shared_ptr<Attr::Tuple>>> attrsArr;
+                if (obj->attrs != nullptr)
                 {
-                    attrsArr = std::vector<std::optional<Attr::Tuple>>();
-                    auto &value = attrsArr.value();
-                    auto &attrs = oValue.attrs.value();
+                    attrsArr = make_shared<std::vector<std::shared_ptr<Attr::Tuple>>>();
+                    auto& value = *attrsArr.get();
+                    auto& attrs = *obj->attrs.get();
                     for (auto i = 0; i < attrs.size(); ++i)
                     {
                         value.push_back(AttrEncode(attrs[i]));
                     }
                 }
-                std::optional<std::vector<std::optional<int64>>> skillsArr;
-                if (oValue.skills.has_value())
+                std::shared_ptr<std::vector<int64>> skillsArr;
+                if (obj->skills != nullptr)
                 {
-                    skillsArr = std::vector<std::optional<int64>>();
-                    auto &value = skillsArr.value();
-                    auto &skills = oValue.skills.value();
+                    skillsArr = make_shared<std::vector<int64>>();
+                    auto& value = *skillsArr.get();
+                    auto& skills = *obj->skills.get();
                     for (auto i = 0; i < skills.size(); ++i)
                     {
                         value.push_back(skills[i]);
                     }
                 }
-                return Monster::Tuple(oValue.monsterId, oValue.name, oValue.level, attrsArr, skillsArr, Vector3Encode(oValue.pos));
+                return make_shared<Monster::Tuple>(obj->monsterId, obj->name, obj->level, attrsArr, skillsArr, Vector3Encode(obj->pos));
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<Monster> MonsterDecode(std::optional<Monster::Tuple> &t)
+        std::shared_ptr<Monster> MonsterDecode(const std::shared_ptr<Monster::Tuple>& t)
         {
-            std::optional<Monster> obj;
-            if (t.has_value())
+            std::shared_ptr<Monster> obj;
+            if (t != nullptr)
             {
-                obj = Monster();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                auto &attrs_t = std::get<3>(tValue);
-                if (attrs_t.has_value())
+                obj = make_shared<Monster>();
+                auto& attrs_t = std::get<3>(*t.get());
+                if (attrs_t != nullptr)
                 {
-                    oValue.attrs = std::vector<std::optional<Attr>>();
-                    auto &attrs = attrs_t.value();
-                    auto &value = oValue.attrs.value();
+                    obj->attrs = make_shared<std::vector<std::shared_ptr<Attr>>>();
+                    auto& attrs = *attrs_t.get();
+                    auto& value = *obj->attrs.get();
                     for (auto i = 0; i < attrs.size(); ++i)
                     {
                         value.push_back(AttrDecode(attrs[i]));
                     }
                 }
-                auto &skills_t = std::get<4>(tValue);
-                if (skills_t.has_value())
+                auto& skills_t = std::get<4>(*t.get());
+                if (skills_t != nullptr)
                 {
-                    oValue.skills = std::vector<std::optional<int64>>();
-                    auto &skills = skills_t.value();
-                    auto &value = oValue.skills.value();
+                    obj->skills = make_shared<std::vector<int64>>();
+                    auto& skills = *skills_t.get();
+                    auto& value = *obj->skills.get();
                     for (auto i = 0; i < skills.size(); ++i)
                     {
                         value.push_back(skills[i]);
                     }
                 }
-                oValue.monsterId = std::get<0>(tValue);
-                oValue.name = std::get<1>(tValue);
-                oValue.level = std::get<2>(tValue);
-                oValue.pos = Vector3Decode(std::get<5>(tValue));
+                obj->monsterId = std::get<0>(*t.get());
+                obj->name = std::get<1>(*t.get());
+                obj->level = std::get<2>(*t.get());
+                obj->pos = Vector3Decode(std::get<5>(*t.get()));
             }
             return obj;
         }
 
-#endif // SERVER    }
+#endif // SERVER
+    }
 }

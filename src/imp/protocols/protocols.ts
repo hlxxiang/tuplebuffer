@@ -30,7 +30,7 @@ Protocols.init(
     [
         [GroupType.Client, "Client", "Group 类型: Client"],
         [GroupType.System, "System", "Group 类型: System"],
-        [GroupType.Bg, "BG", "Group 类型: BG"],
+        [GroupType.BG, "BG", "Group 类型: BG"],
     ],
     "ServerType",
     [

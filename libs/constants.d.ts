@@ -119,7 +119,7 @@ declare const enum ProtocolMask {
 declare const enum GroupType {
     Client = 0,
     System = 1,
-    Bg = 2,
+    BG = 2,
 }
 
 /** 不同服务的协议掩码, 可扩展 */

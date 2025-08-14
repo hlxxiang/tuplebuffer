@@ -43,6 +43,7 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
             let group = groups.get(groupType);
             content += `\n${T}${T}/*************************************** ${v[1]} 协议命令 ***************************************/\n`;
             content += this.compileGroup(groupType, groupName, group);
+            content += `\n${T}${T}/*************************************** ${v[1]} 协议命令 ***************************************/\n`;
         }
         this.addContent(content);
     }
@@ -57,11 +58,11 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
                 if (channel[0][3] == GroupType.Client) {
                     to_c_result += this.compileCommand(groupType, groupName, channel);
                 }
-                else if (channel[0][3] == GroupType.System) {
-                    to_s_result += this.compileCommand(groupType, groupName, channel);
+                else if (channel[0][3] == GroupType.BG) {
+                    to_b_result += this.compileCommand(groupType, groupName, channel);
                 }
                 else {
-                    to_b_result += this.compileCommand(groupType, groupName, channel);
+                    to_s_result += this.compileCommand(groupType, groupName, channel);
                 }
             }
         }
@@ -78,8 +79,8 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
             content += `\n${T}${T}}\n`;
         }
         if (to_b_result.length > 0) {
-            content += `\n${T}${T}/** ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Bg]}  协议命令 */`;
-            content += `\n${T}${T}const enum ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Bg]}${this.commandSuffix} {`;
+            content += `\n${T}${T}/** ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.BG]}  协议命令 */`;
+            content += `\n${T}${T}const enum ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.BG]}${this.commandSuffix} {`;
             content += to_b_result;
             content += `\n${T}${T}}\n`;
         }
@@ -135,11 +136,11 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
                 if (channel[0][3] == GroupType.Client) {
                     to_c_result += this.compileGroupType(groupType, groupName, channel);
                 }
-                else if (channel[0][3] == GroupType.System) {
-                    to_s_result += this.compileGroupType(groupType, groupName, channel);
+                else if (channel[0][3] == GroupType.BG) {
+                     to_b_result += this.compileGroupType(groupType, groupName, channel);
                 }
                 else {
-                    to_b_result += this.compileGroupType(groupType, groupName, channel);
+                    to_s_result += this.compileGroupType(groupType, groupName, channel);
                 }
             }
         }
@@ -156,8 +157,8 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
             content += `\n${T}${T}}\n`;
         }
         if (to_b_result.length > 0) {
-            content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Bg]}  协议 */`;
-            content += `\n${T}${T}interface ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Bg]}${typesName} {`;
+            content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.BG]}  协议 */`;
+            content += `\n${T}${T}interface ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.BG]}${typesName} {`;
             content += to_b_result;
             content += `\n${T}${T}}\n`;
         }
