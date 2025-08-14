@@ -107,8 +107,8 @@ declare const enum MsgFields {
 }
 
 declare const enum BitMask {
-    SourceGroup = 20,
-    TargetGroup = 24,
+    SourceGroup = 24,
+    TargetGroup = 20,
 }
 
 declare const enum ProtocolMask {

@@ -30,17 +30,17 @@ namespace Gen
         enum class ProtocolMask
         {
             /* 高字节位 SourceGroup 类型 */
-            SourceGroupMask = 0x700000,
+            SourceGroupMask = 0x7000000,
             /* 中字节 TargetGroup 类型 */
-            TargetGroupMask = 0xf000000,
+            TargetGroupMask = 0xf00000,
         };
 
         enum class BitMask
         {
             /* SourceGroup 类型 */
-            SourceGroup = 0x14,
+            SourceGroup = 0x18,
             /* TargetGroup 类型 */
-            TargetGroup = 0x18,
+            TargetGroup = 0x14,
         };
 
         enum class GroupType
@@ -132,20 +132,20 @@ namespace Gen
         enum class C2SOpcode
         {
             /* 心跳 */
-            Ping = 0x1000000,
+            Ping = 0x100000,
             /* 测试3 */
-            Test3 = 0x1000001,
+            Test3 = 0x100001,
             /* 测试1 */
-            Test1 = 0x1000064,
+            Test1 = 0x100064,
             /* 客户端验证 */
-            AuthClient = 0x1000065,
+            AuthClient = 0x100065,
         };
 
         /* S to C 协议命令 */
         enum class S2COpcode
         {
             /* 心跳 */
-            Pong = 0x100000,
+            Pong = 0x1000000,
         };
         /* C to S  协议 */
         namespace C2SProtocols

@@ -8,13 +8,13 @@ declare namespace Gen {
         }
 
         const enum ProtocolMask {
-            SourceGroupMask = 0x700000,
-            TargetGroupMask = 0xf000000,
+            SourceGroupMask = 0x7000000,
+            TargetGroupMask = 0xf00000,
         }
 
         const enum BitMask {
-            SourceGroup = 0x14,
-            TargetGroup = 0x18,
+            SourceGroup = 0x18,
+            TargetGroup = 0x14,
         }
 
         const enum GroupType {
@@ -104,13 +104,13 @@ declare namespace Gen {
         /** C to S  协议命令 */
         const enum C2SOpcode {
             /** 心跳 */
-            Ping = 0x1000000,
+            Ping = 0x100000,
             /** 测试3 */
-            Test3 = 0x1000001,
+            Test3 = 0x100001,
             /** 测试1 */
-            Test1 = 0x1000064,
+            Test1 = 0x100064,
             /** 客户端验证 */
-            AuthClient = 0x1000065,
+            AuthClient = 0x100065,
         }
 
         /*************************************** Client 协议命令 ***************************************/
@@ -120,7 +120,7 @@ declare namespace Gen {
         /** S to C 协议命令 */
         const enum S2COpcode {
             /** 心跳 */
-            Pong = 0x100000,
+            Pong = 0x1000000,
         }
 
         /*************************************** System 协议命令 ***************************************/

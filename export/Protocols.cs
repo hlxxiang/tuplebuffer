@@ -19,17 +19,17 @@ namespace Gen
         public enum ProtocolMask 
         {
             /// <summary> 高字节位 SourceGroup 类型 </summary>
-            SourceGroupMask = 0x700000,
+            SourceGroupMask = 0x7000000,
             /// <summary> 中字节 TargetGroup 类型 </summary>
-            TargetGroupMask = 0xf000000,
+            TargetGroupMask = 0xf00000,
         }
 
         public enum BitMask 
         {
             /// <summary> SourceGroup 类型 </summary>
-            SourceGroup = 0x14,
+            SourceGroup = 0x18,
             /// <summary> TargetGroup 类型 </summary>
-            TargetGroup = 0x18,
+            TargetGroup = 0x14,
         }
 
         public enum GroupType 
@@ -119,13 +119,13 @@ namespace Gen
         public enum C2SOpcode
         {
             /// <summary> 心跳 </summary>
-            Ping = 0x1000000,
+            Ping = 0x100000,
             /// <summary> 测试3 </summary>
-            Test3 = 0x1000001,
+            Test3 = 0x100001,
             /// <summary> 测试1 </summary>
-            Test1 = 0x1000064,
+            Test1 = 0x100064,
             /// <summary> 客户端验证 </summary>
-            AuthClient = 0x1000065,
+            AuthClient = 0x100065,
         }
 
         #endregion
@@ -135,7 +135,7 @@ namespace Gen
         public enum S2COpcode
         {
             /// <summary> 心跳 </summary>
-            Pong = 0x100000,
+            Pong = 0x1000000,
         }
 
         #endregion
