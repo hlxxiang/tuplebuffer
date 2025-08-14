@@ -29,6 +29,49 @@ declare namespace Gen {
             BG = 0x14,
         }
 
+        /** 三维坐标 */
+        const enum Vector3Fields {
+            /** 坐标X */
+            x = 0,
+            /** 坐标Y */
+            y = 1,
+            /** 坐标Z */
+            z = 2,
+        }
+        interface Vector3Types {
+            [Vector3Fields.x]: number;
+            [Vector3Fields.y]: number;
+            [Vector3Fields.z]: number;
+        }
+        /** 三维坐标 */
+        type Vector3 = [number, number, number];
+
+        /** 测试 */
+        const enum TestFields {
+            /** id */
+            num32 = 0,
+            /** 数值 */
+            uNum32 = 1,
+            /** id */
+            id64 = 2,
+            /** 数值 */
+            uId64 = 3,
+            /** 字符串 */
+            str = 4,
+            /** 坐标 */
+            position = 5,
+        }
+        interface TestTypes {
+            [TestFields.num32]: number;
+            [TestFields.uNum32]: number;
+            [TestFields.id64]: number;
+            [TestFields.uId64]: number;
+            [TestFields.str]: string;
+            [TestFields.position]: Vector3;
+        }
+        /** 测试 */
+        type Test = [number, number, number, number, string, Vector3];
+
         /** 心跳 */
         const enum PingFields {
         }
@@ -49,12 +92,15 @@ declare namespace Gen {
         const enum Test3Fields {
             /** 账号 */
             account = 0,
+            /** Test */
+            test = 1,
         }
         interface Test3Types {
             [Test3Fields.account]: string;
+            [Test3Fields.test]: Test;
         }
         /** 测试3 */
-        type Test3 = [string];
+        type Test3 = [string, Test];
 
         /** RPC请求:测试3 */
         const enum Test3ReplyFields {

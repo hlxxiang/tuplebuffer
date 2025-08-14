@@ -18,6 +18,7 @@ Protocols.protocol(
     GroupType.Client, ServerType.Gateway, Segment.Common_c2s,
     [
         string("account", "账号"),
+        Util.Test("test", "Test")
     ],
     [
         int64("code", "错误码"),

@@ -56,6 +56,45 @@ namespace Gen
 
         #region 自定义结构
 
+        /// <summary> 三维坐标 </summary>
+        [MessagePackObject(true)]
+        public class Vector3 : IMessage
+        {
+            /// <summary> 坐标X </summary>
+            [Key(0)]
+            public float x { get; set; }
+            /// <summary> 坐标Y </summary>
+            [Key(1)]
+            public float y { get; set; }
+            /// <summary> 坐标Z </summary>
+            [Key(2)]
+            public float z { get; set; }
+        }
+
+        /// <summary> 测试 </summary>
+        [MessagePackObject(true)]
+        public class Test : IMessage
+        {
+            /// <summary> id </summary>
+            [Key(0)]
+            public Int32 num32 { get; set; }
+            /// <summary> 数值 </summary>
+            [Key(1)]
+            public UInt32 uNum32 { get; set; }
+            /// <summary> id </summary>
+            [Key(2)]
+            public Int64 id64 { get; set; }
+            /// <summary> 数值 </summary>
+            [Key(3)]
+            public UInt64 uId64 { get; set; }
+            /// <summary> 字符串 </summary>
+            [Key(4)]
+            public string str { get; set; }
+            /// <summary> 坐标 </summary>
+            [Key(5)]
+            public Vector3 position { get; set; }
+        }
+
         /// <summary> 心跳 </summary>
         [MessagePackObject(true)]
         public class Ping : IMessage
@@ -75,6 +114,9 @@ namespace Gen
             /// <summary> 账号 </summary>
             [Key(0)]
             public string account { get; set; }
+            /// <summary> Test </summary>
+            [Key(1)]
+            public Test test { get; set; }
         }
 
         /// <summary> RPC请求:测试3 </summary>

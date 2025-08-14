@@ -2,8 +2,10 @@
 #include <tuple>
 #include <string>
 #include <vector>
-#include <optional>
+#include <memory>
 #include <unordered_map>
+
+#include "IAccess.h"
 
 #include "ServerAccess.h"
 
@@ -14,212 +16,184 @@ namespace Gen
     {
         using namespace std;
 #ifdef SERVER
-        std::optional<Vector3::Tuple> Vector3Encode(std::optional<Vector3> &obj)
+        std::shared_ptr<Vector3::Tuple> Vector3Encode(const std::shared_ptr<Vector3>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return Vector3::Tuple(oValue.x, oValue.y, oValue.z);
+                return make_shared<Vector3::Tuple>(obj->x, obj->y, obj->z);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<Vector3> Vector3Decode(std::optional<Vector3::Tuple> &t)
+        std::shared_ptr<Vector3> Vector3Decode(const std::shared_ptr<Vector3::Tuple>& t)
         {
-            std::optional<Vector3> obj;
-            if (t.has_value())
+            std::shared_ptr<Vector3> obj;
+            if (t != nullptr)
             {
-                obj = Vector3();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.x = std::get<0>(tValue);
-                oValue.y = std::get<1>(tValue);
-                oValue.z = std::get<2>(tValue);
+                obj = make_shared<Vector3>();
+                obj->x = std::get<0>(*t.get());
+                obj->y = std::get<1>(*t.get());
+                obj->z = std::get<2>(*t.get());
             }
             return obj;
         }
 
-        std::optional<Test::Tuple> TestEncode(std::optional<Test> &obj)
+        std::shared_ptr<Test::Tuple> TestEncode(const std::shared_ptr<Test>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return Test::Tuple(oValue.num32, oValue.uNum32, oValue.id64, oValue.uId64, oValue.str);
+                return make_shared<Test::Tuple>(obj->num32, obj->uNum32, obj->id64, obj->uId64, obj->str);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<Test> TestDecode(std::optional<Test::Tuple> &t)
+        std::shared_ptr<Test> TestDecode(const std::shared_ptr<Test::Tuple>& t)
         {
-            std::optional<Test> obj;
-            if (t.has_value())
+            std::shared_ptr<Test> obj;
+            if (t != nullptr)
             {
-                obj = Test();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.num32 = std::get<0>(tValue);
-                oValue.uNum32 = std::get<1>(tValue);
-                oValue.id64 = std::get<2>(tValue);
-                oValue.uId64 = std::get<3>(tValue);
-                oValue.str = std::get<4>(tValue);
+                obj = make_shared<Test>();
+                obj->num32 = std::get<0>(*t.get());
+                obj->uNum32 = std::get<1>(*t.get());
+                obj->id64 = std::get<2>(*t.get());
+                obj->uId64 = std::get<3>(*t.get());
+                obj->str = std::get<4>(*t.get());
             }
             return obj;
         }
 
-        std::optional<AccountInfo::Tuple> AccountInfoEncode(std::optional<AccountInfo> &obj)
+        std::shared_ptr<AccountInfo::Tuple> AccountInfoEncode(const std::shared_ptr<AccountInfo>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return AccountInfo::Tuple(oValue.account, oValue.createTime, oValue.uid);
+                return make_shared<AccountInfo::Tuple>(obj->account, obj->createTime, obj->uid);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<AccountInfo> AccountInfoDecode(std::optional<AccountInfo::Tuple> &t)
+        std::shared_ptr<AccountInfo> AccountInfoDecode(const std::shared_ptr<AccountInfo::Tuple>& t)
         {
-            std::optional<AccountInfo> obj;
-            if (t.has_value())
+            std::shared_ptr<AccountInfo> obj;
+            if (t != nullptr)
             {
-                obj = AccountInfo();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.account = std::get<0>(tValue);
-                oValue.createTime = std::get<1>(tValue);
-                oValue.uid = std::get<2>(tValue);
+                obj = make_shared<AccountInfo>();
+                obj->account = std::get<0>(*t.get());
+                obj->createTime = std::get<1>(*t.get());
+                obj->uid = std::get<2>(*t.get());
             }
             return obj;
         }
 
-        std::optional<ActorIdRecord::Tuple> ActorIdRecordEncode(std::optional<ActorIdRecord> &obj)
+        std::shared_ptr<ActorIdRecord::Tuple> ActorIdRecordEncode(const std::shared_ptr<ActorIdRecord>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return ActorIdRecord::Tuple(oValue.objId);
+                return make_shared<ActorIdRecord::Tuple>(obj->objId);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<ActorIdRecord> ActorIdRecordDecode(std::optional<ActorIdRecord::Tuple> &t)
+        std::shared_ptr<ActorIdRecord> ActorIdRecordDecode(const std::shared_ptr<ActorIdRecord::Tuple>& t)
         {
-            std::optional<ActorIdRecord> obj;
-            if (t.has_value())
+            std::shared_ptr<ActorIdRecord> obj;
+            if (t != nullptr)
             {
-                obj = ActorIdRecord();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.objId = std::get<0>(tValue);
+                obj = make_shared<ActorIdRecord>();
+                obj->objId = std::get<0>(*t.get());
             }
             return obj;
         }
 
-        std::optional<TestRecord::Tuple> TestRecordEncode(std::optional<TestRecord> &obj)
+        std::shared_ptr<TestRecord::Tuple> TestRecordEncode(const std::shared_ptr<TestRecord>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return TestRecord::Tuple(TestEncode(oValue.test));
+                return make_shared<TestRecord::Tuple>(TestEncode(obj->test));
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<TestRecord> TestRecordDecode(std::optional<TestRecord::Tuple> &t)
+        std::shared_ptr<TestRecord> TestRecordDecode(const std::shared_ptr<TestRecord::Tuple>& t)
         {
-            std::optional<TestRecord> obj;
-            if (t.has_value())
+            std::shared_ptr<TestRecord> obj;
+            if (t != nullptr)
             {
-                obj = TestRecord();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.test = TestDecode(std::get<0>(tValue));
+                obj = make_shared<TestRecord>();
+                obj->test = TestDecode(std::get<0>(*t.get()));
             }
             return obj;
         }
 
-        std::optional<DataRecord::Tuple> DataRecordEncode(std::optional<DataRecord> &obj)
+        std::shared_ptr<DataRecord::Tuple> DataRecordEncode(const std::shared_ptr<DataRecord>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return DataRecord::Tuple(oValue.objId, oValue.a, oValue.b, oValue.c, Vector3Encode(oValue.pos));
+                return make_shared<DataRecord::Tuple>(obj->objId, obj->a, obj->b, obj->c, Vector3Encode(obj->pos));
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<DataRecord> DataRecordDecode(std::optional<DataRecord::Tuple> &t)
+        std::shared_ptr<DataRecord> DataRecordDecode(const std::shared_ptr<DataRecord::Tuple>& t)
         {
-            std::optional<DataRecord> obj;
-            if (t.has_value())
+            std::shared_ptr<DataRecord> obj;
+            if (t != nullptr)
             {
-                obj = DataRecord();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.objId = std::get<0>(tValue);
-                oValue.a = std::get<1>(tValue);
-                oValue.b = std::get<2>(tValue);
-                oValue.c = std::get<3>(tValue);
-                oValue.pos = Vector3Decode(std::get<4>(tValue));
+                obj = make_shared<DataRecord>();
+                obj->objId = std::get<0>(*t.get());
+                obj->a = std::get<1>(*t.get());
+                obj->b = std::get<2>(*t.get());
+                obj->c = std::get<3>(*t.get());
+                obj->pos = Vector3Decode(std::get<4>(*t.get()));
             }
             return obj;
         }
 
-        std::optional<AccountRecord::Tuple> AccountRecordEncode(std::optional<AccountRecord> &obj)
+        std::shared_ptr<AccountRecord::Tuple> AccountRecordEncode(const std::shared_ptr<AccountRecord>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                std::optional<std::vector<std::optional<AccountInfo::Tuple>>> infoArr;
-                if (oValue.info.has_value())
+                std::shared_ptr<std::vector<std::shared_ptr<AccountInfo::Tuple>>> infoArr;
+                if (obj->info != nullptr)
                 {
-                    infoArr = std::vector<std::optional<AccountInfo::Tuple>>();
-                    auto &value = infoArr.value();
-                    auto &info = oValue.info.value();
+                    infoArr = make_shared<std::vector<std::shared_ptr<AccountInfo::Tuple>>>();
+                    auto& value = *infoArr.get();
+                    auto& info = *obj->info.get();
                     for (auto i = 0; i < info.size(); ++i)
                     {
                         value.push_back(AccountInfoEncode(info[i]));
                     }
                 }
-                return AccountRecord::Tuple(infoArr);
+                return make_shared<AccountRecord::Tuple>(infoArr);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<AccountRecord> AccountRecordDecode(std::optional<AccountRecord::Tuple> &t)
+        std::shared_ptr<AccountRecord> AccountRecordDecode(const std::shared_ptr<AccountRecord::Tuple>& t)
         {
-            std::optional<AccountRecord> obj;
-            if (t.has_value())
+            std::shared_ptr<AccountRecord> obj;
+            if (t != nullptr)
             {
-                obj = AccountRecord();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                auto &info_t = std::get<0>(tValue);
-                if (info_t.has_value())
+                obj = make_shared<AccountRecord>();
+                auto& info_t = std::get<0>(*t.get());
+                if (info_t != nullptr)
                 {
-                    oValue.info = std::vector<std::optional<AccountInfo>>();
-                    auto &info = info_t.value();
-                    auto &value = oValue.info.value();
+                    obj->info = make_shared<std::vector<std::shared_ptr<AccountInfo>>>();
+                    auto& info = *info_t.get();
+                    auto& value = *obj->info.get();
                     for (auto i = 0; i < info.size(); ++i)
                     {
                         value.push_back(AccountInfoDecode(info[i]));
@@ -229,31 +203,28 @@ namespace Gen
             return obj;
         }
 
-        std::optional<TestListRecord::Tuple> TestListRecordEncode(std::optional<TestListRecord> &obj)
+        std::shared_ptr<TestListRecord::Tuple> TestListRecordEncode(const std::shared_ptr<TestListRecord>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return TestListRecord::Tuple(oValue.objId);
+                return make_shared<TestListRecord::Tuple>(obj->objId);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<TestListRecord> TestListRecordDecode(std::optional<TestListRecord::Tuple> &t)
+        std::shared_ptr<TestListRecord> TestListRecordDecode(const std::shared_ptr<TestListRecord::Tuple>& t)
         {
-            std::optional<TestListRecord> obj;
-            if (t.has_value())
+            std::shared_ptr<TestListRecord> obj;
+            if (t != nullptr)
             {
-                obj = TestListRecord();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.objId = std::get<0>(tValue);
+                obj = make_shared<TestListRecord>();
+                obj->objId = std::get<0>(*t.get());
             }
             return obj;
         }
 
-#endif // SERVER    }
+#endif // SERVER
+    }
 }

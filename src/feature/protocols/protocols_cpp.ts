@@ -24,8 +24,10 @@ export class ProtocolsCpp extends CPP implements ProtocolsBase {
                 "\n#include <tuple>" +
                 "\n#include <string>" +
                 "\n#include <vector>" +
+                "\n#include <memory>" +
                 "\n#include <optional>" +
                 "\n#include <unordered_map>\n" +
+                "\n#include \"IProtocols.h\"\n" +
 
                 `\nnamespace Gen\n{` +
                 `\n${T}/* ${declaration} */` +
@@ -42,8 +44,10 @@ export class ProtocolsCpp extends CPP implements ProtocolsBase {
                 "\n#include <tuple>" +
                 "\n#include <string>" +
                 "\n#include <vector>" +
+                "\n#include <memory>" +
                 "\n#include <optional>" +
                 "\n#include <unordered_map>\n" +
+                "\n#include \"IProtocols.h\"\n" +
                 `\n#include \"${this.fileName}.h\"\n` +
 
                 `\nnamespace Gen\n{` +
@@ -105,19 +109,19 @@ export class ProtocolsCpp extends CPP implements ProtocolsBase {
             content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Client]} 协议命令 */`;
             content += `\n${T}${T}enum class ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Client]}${this.commandSuffix}\n${T}${T}{`;
             content += to_c_result;
-            content += `\n${T}${T}}`;
+            content += `\n${T}${T}};`;
         }
         if (to_s_result.length > 0) {
             content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.System]} 协议命令 */`;
             content += `\n${T}${T}enum class ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.System]}${this.commandSuffix}\n${T}${T}{`;
-            content += to_c_result;
-            content += `\n${T}${T}}\n`;
+            content += to_s_result;
+            content += `\n${T}${T}};\n`;
         }
         if (to_b_result.length > 0) {
             content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Bg]} 协议命令 */`;
             content += `\n${T}${T}enum class ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Bg]}${this.commandSuffix}\n${T}${T}{`;
-            content += to_c_result;
-            content += `\n${T}${T}}\n`;
+            content += to_b_result;
+            content += `\n${T}${T}};\n`;
         }
         return content;
     }
@@ -208,21 +212,21 @@ export class ProtocolsCpp extends CPP implements ProtocolsBase {
                 if (meta.metaRpc.comment) {
                     content += `\n${T}${T}${T}/* ${meta.metaRpc.comment} */`;
                 }
-                content += `\n${T}${T}${T}class ${this.className(meta.meta)}Oper : Call<${this.className(meta.meta)}, ${this.className(meta.metaRpc)}, ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}>`;
+                content += `\n${T}${T}${T}class ${this.className(meta.meta, false)}Oper : public Call<${this.className(meta.meta, false)}, ${this.className(meta.metaRpc, false)}, ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}>`;
                 content += `\n${T}${T}${T}{`;
                 content += `\n${T}${T}${T}public:`;
-                content += `\n${T}${T}${T}${T}static constexpr ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix} Opcode = ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}.${this.className(meta.meta)};`;
-                content += `\n${T}${T}${T}}`;
+                content += `\n${T}${T}${T}${T}static constexpr ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix} Opcode = ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}::${this.className(meta.meta, false)};`;
+                content += `\n${T}${T}${T}};`;
             }
             else {
                 if (meta.meta.comment) {
                     content += `\n${T}${T}${T}/* ${meta.meta.comment} */`;
                 }
-                content += `\n${T}${T}${T}class ${this.className(meta.meta)}Oper : Send<${this.className(meta.meta)}, ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}>`;
+                content += `\n${T}${T}${T}class ${this.className(meta.meta, false)}Oper : public Send<${this.className(meta.meta, false)}, ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}>`;
                 content += `\n${T}${T}${T}{`;
                 content += `\n${T}${T}${T}public:`;
-                content += `\n${T}${T}${T}${T}static constexpr ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix} Opcode = ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}.${this.className(meta.meta)};`;
-                content += `\n${T}${T}${T}}`;
+                content += `\n${T}${T}${T}${T}static constexpr ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix} Opcode = ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[channel[0][3]]}${this.commandSuffix}::${this.className(meta.meta, false)};`;
+                content += `\n${T}${T}${T}};`;
             }
         }
         return content;

@@ -2,8 +2,11 @@
 #include <tuple>
 #include <string>
 #include <vector>
+#include <memory>
 #include <optional>
 #include <unordered_map>
+
+#include "IProtocols.h"
 
 #include "Protocols.h"
 
@@ -14,152 +17,185 @@ namespace Gen
     {
         using namespace std;
 
-        std::optional<Ping::Tuple> PingEncode(std::optional<Ping> &obj)
+        std::shared_ptr<Vector3::Tuple> Vector3Encode(const std::shared_ptr<Vector3>& obj)
         {
-            return std::nullopt;
-        }
-        std::optional<Ping> PingDecode(std::optional<Ping::Tuple> &t)
-        {
-            return std::nullopt;
-        }
-
-        std::optional<Pong::Tuple> PongEncode(std::optional<Pong> &obj)
-        {
-            return std::nullopt;
-        }
-        std::optional<Pong> PongDecode(std::optional<Pong::Tuple> &t)
-        {
-            return std::nullopt;
-        }
-
-        std::optional<Test3::Tuple> Test3Encode(std::optional<Test3> &obj)
-        {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return Test3::Tuple(oValue.account);
+                return make_shared<Vector3::Tuple>(obj->x, obj->y, obj->z);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<Test3> Test3Decode(std::optional<Test3::Tuple> &t)
+        std::shared_ptr<Vector3> Vector3Decode(const std::shared_ptr<Vector3::Tuple>& t)
         {
-            std::optional<Test3> obj;
-            if (t.has_value())
+            std::shared_ptr<Vector3> obj;
+            if (t != nullptr)
             {
-                obj = Test3();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.account = std::get<0>(tValue);
+                obj = make_shared<Vector3>();
+                obj->x = std::get<0>(*t.get());
+                obj->y = std::get<1>(*t.get());
+                obj->z = std::get<2>(*t.get());
             }
             return obj;
         }
 
-        std::optional<Test3Reply::Tuple> Test3ReplyEncode(std::optional<Test3Reply> &obj)
+        std::shared_ptr<Test::Tuple> TestEncode(const std::shared_ptr<Test>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return Test3Reply::Tuple(oValue.code);
+                return make_shared<Test::Tuple>(obj->num32, obj->uNum32, obj->id64, obj->uId64, obj->str, Vector3Encode(obj->position));
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<Test3Reply> Test3ReplyDecode(std::optional<Test3Reply::Tuple> &t)
+        std::shared_ptr<Test> TestDecode(const std::shared_ptr<Test::Tuple>& t)
         {
-            std::optional<Test3Reply> obj;
-            if (t.has_value())
+            std::shared_ptr<Test> obj;
+            if (t != nullptr)
             {
-                obj = Test3Reply();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.code = std::get<0>(tValue);
+                obj = make_shared<Test>();
+                obj->num32 = std::get<0>(*t.get());
+                obj->uNum32 = std::get<1>(*t.get());
+                obj->id64 = std::get<2>(*t.get());
+                obj->uId64 = std::get<3>(*t.get());
+                obj->str = std::get<4>(*t.get());
+                obj->position = Vector3Decode(std::get<5>(*t.get()));
             }
             return obj;
         }
 
-        std::optional<Test1::Tuple> Test1Encode(std::optional<Test1> &obj)
+        std::shared_ptr<Ping::Tuple> PingEncode(const std::shared_ptr<Ping>& obj)
         {
-            if (obj.has_value())
-            {
+            return nullptr;
+        }
+        std::shared_ptr<Ping> PingDecode(const std::shared_ptr<Ping::Tuple>& t)
+        {
+            return nullptr;
+        }
 
-                auto &oValue = obj.value();
-                return Test1::Tuple(oValue.test);
+        std::shared_ptr<Pong::Tuple> PongEncode(const std::shared_ptr<Pong>& obj)
+        {
+            return nullptr;
+        }
+        std::shared_ptr<Pong> PongDecode(const std::shared_ptr<Pong::Tuple>& t)
+        {
+            return nullptr;
+        }
+
+        std::shared_ptr<Test3::Tuple> Test3Encode(const std::shared_ptr<Test3>& obj)
+        {
+            if (obj != nullptr)
+            {
+                return make_shared<Test3::Tuple>(obj->account, TestEncode(obj->test));
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<Test1> Test1Decode(std::optional<Test1::Tuple> &t)
+        std::shared_ptr<Test3> Test3Decode(const std::shared_ptr<Test3::Tuple>& t)
         {
-            std::optional<Test1> obj;
-            if (t.has_value())
+            std::shared_ptr<Test3> obj;
+            if (t != nullptr)
             {
-                obj = Test1();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.test = std::get<0>(tValue);
+                obj = make_shared<Test3>();
+                obj->account = std::get<0>(*t.get());
+                obj->test = TestDecode(std::get<1>(*t.get()));
             }
             return obj;
         }
 
-        std::optional<AuthClient::Tuple> AuthClientEncode(std::optional<AuthClient> &obj)
+        std::shared_ptr<Test3Reply::Tuple> Test3ReplyEncode(const std::shared_ptr<Test3Reply>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return AuthClient::Tuple(oValue.account);
+                return make_shared<Test3Reply::Tuple>(obj->code);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<AuthClient> AuthClientDecode(std::optional<AuthClient::Tuple> &t)
+        std::shared_ptr<Test3Reply> Test3ReplyDecode(const std::shared_ptr<Test3Reply::Tuple>& t)
         {
-            std::optional<AuthClient> obj;
-            if (t.has_value())
+            std::shared_ptr<Test3Reply> obj;
+            if (t != nullptr)
             {
-                obj = AuthClient();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.account = std::get<0>(tValue);
+                obj = make_shared<Test3Reply>();
+                obj->code = std::get<0>(*t.get());
             }
             return obj;
         }
 
-        std::optional<AuthClientReply::Tuple> AuthClientReplyEncode(std::optional<AuthClientReply> &obj)
+        std::shared_ptr<Test1::Tuple> Test1Encode(const std::shared_ptr<Test1>& obj)
         {
-            if (obj.has_value())
+            if (obj != nullptr)
             {
-
-                auto &oValue = obj.value();
-                return AuthClientReply::Tuple(oValue.code);
+                return make_shared<Test1::Tuple>(obj->test);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-        std::optional<AuthClientReply> AuthClientReplyDecode(std::optional<AuthClientReply::Tuple> &t)
+        std::shared_ptr<Test1> Test1Decode(const std::shared_ptr<Test1::Tuple>& t)
         {
-            std::optional<AuthClientReply> obj;
-            if (t.has_value())
+            std::shared_ptr<Test1> obj;
+            if (t != nullptr)
             {
-                obj = AuthClientReply();
-                auto &oValue = obj.value();
-                auto &tValue = t.value();
-                oValue.code = std::get<0>(tValue);
+                obj = make_shared<Test1>();
+                obj->test = std::get<0>(*t.get());
             }
             return obj;
         }
+
+        std::shared_ptr<AuthClient::Tuple> AuthClientEncode(const std::shared_ptr<AuthClient>& obj)
+        {
+            if (obj != nullptr)
+            {
+                return make_shared<AuthClient::Tuple>(obj->account);
+            }
+            else
+            {
+                return nullptr;
+            }
+        }
+        std::shared_ptr<AuthClient> AuthClientDecode(const std::shared_ptr<AuthClient::Tuple>& t)
+        {
+            std::shared_ptr<AuthClient> obj;
+            if (t != nullptr)
+            {
+                obj = make_shared<AuthClient>();
+                obj->account = std::get<0>(*t.get());
+            }
+            return obj;
+        }
+
+        std::shared_ptr<AuthClientReply::Tuple> AuthClientReplyEncode(const std::shared_ptr<AuthClientReply>& obj)
+        {
+            if (obj != nullptr)
+            {
+                return make_shared<AuthClientReply::Tuple>(obj->code);
+            }
+            else
+            {
+                return nullptr;
+            }
+        }
+        std::shared_ptr<AuthClientReply> AuthClientReplyDecode(const std::shared_ptr<AuthClientReply::Tuple>& t)
+        {
+            std::shared_ptr<AuthClientReply> obj;
+            if (t != nullptr)
+            {
+                obj = make_shared<AuthClientReply>();
+                obj->code = std::get<0>(*t.get());
+            }
+            return obj;
+        }
+
     }
 }

@@ -13,5 +13,6 @@ export namespace Util {
         int64("id64", "id"),
         uint64("uId64", "数值"),
         string("str", "字符串"),
+         Util.Vector3("position", "坐标")
     ], "测试");
 }

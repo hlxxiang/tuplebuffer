@@ -2,8 +2,11 @@
 #include <tuple>
 #include <string>
 #include <vector>
+#include <memory>
 #include <optional>
 #include <unordered_map>
+
+#include "IProtocols.h"
 
 namespace Gen
 {
@@ -60,121 +63,166 @@ namespace Gen
             BG = 0x14,
         };
 
+        /* 三维坐标 */
+        struct Vector3 : public IMessage
+        {
+            using Tuple = std::tuple<float, float, float>;
+            /* 坐标X */
+            float x;
+            /* 坐标Y */
+            float y;
+            /* 坐标Z */
+            float z;
+        };
+        std::shared_ptr<Vector3::Tuple> Vector3Encode(const std::shared_ptr<Vector3>& obj);
+        std::shared_ptr<Vector3> Vector3Decode(const std::shared_ptr<Vector3::Tuple>& t);
+
+        /* 测试 */
+        struct Test : public IMessage
+        {
+            using Tuple = std::tuple<int32, uint32, int64, uint64, string, std::shared_ptr<Vector3::Tuple>>;
+            /* id */
+            int32 num32;
+            /* 数值 */
+            uint32 uNum32;
+            /* id */
+            int64 id64;
+            /* 数值 */
+            uint64 uId64;
+            /* 字符串 */
+            string str;
+            /* 坐标 */
+            std::shared_ptr<Vector3> position;
+        };
+        std::shared_ptr<Test::Tuple> TestEncode(const std::shared_ptr<Test>& obj);
+        std::shared_ptr<Test> TestDecode(const std::shared_ptr<Test::Tuple>& t);
+
         /* 心跳 */
         struct Ping : public IMessage
         {
             using Tuple = std::tuple<std::nullopt_t>;
         };
-        std::optional<Ping::Tuple> PingEncode(std::optional<Ping> &obj);
-        std::optional<Ping> PingDecode(std::optional<Ping::Tuple> &t);
+        std::shared_ptr<Ping::Tuple> PingEncode(const std::shared_ptr<Ping>& obj);
+        std::shared_ptr<Ping> PingDecode(const std::shared_ptr<Ping::Tuple>& t);
 
         /* 心跳 */
         struct Pong : public IMessage
         {
             using Tuple = std::tuple<std::nullopt_t>;
         };
-        std::optional<Pong::Tuple> PongEncode(std::optional<Pong> &obj);
-        std::optional<Pong> PongDecode(std::optional<Pong::Tuple> &t);
+        std::shared_ptr<Pong::Tuple> PongEncode(const std::shared_ptr<Pong>& obj);
+        std::shared_ptr<Pong> PongDecode(const std::shared_ptr<Pong::Tuple>& t);
 
         /* 测试3 */
         struct Test3 : public IMessage
         {
-            using Tuple = std::tuple<std::optional<string>>;
+            using Tuple = std::tuple<string, std::shared_ptr<Test::Tuple>>;
             /* 账号 */
-            std::optional<string> account;
+            string account;
+            /* Test */
+            std::shared_ptr<Test> test;
         };
-        std::optional<Test3::Tuple> Test3Encode(std::optional<Test3> &obj);
-        std::optional<Test3> Test3Decode(std::optional<Test3::Tuple> &t);
+        std::shared_ptr<Test3::Tuple> Test3Encode(const std::shared_ptr<Test3>& obj);
+        std::shared_ptr<Test3> Test3Decode(const std::shared_ptr<Test3::Tuple>& t);
 
         /* RPC请求:测试3 */
         struct Test3Reply : public IMessage
         {
-            using Tuple = std::tuple<std::optional<int64>>;
+            using Tuple = std::tuple<int64>;
             /* 错误码 */
-            std::optional<int64> code;
+            int64 code;
         };
-        std::optional<Test3Reply::Tuple> Test3ReplyEncode(std::optional<Test3Reply> &obj);
-        std::optional<Test3Reply> Test3ReplyDecode(std::optional<Test3Reply::Tuple> &t);
+        std::shared_ptr<Test3Reply::Tuple> Test3ReplyEncode(const std::shared_ptr<Test3Reply>& obj);
+        std::shared_ptr<Test3Reply> Test3ReplyDecode(const std::shared_ptr<Test3Reply::Tuple>& t);
 
         /* 测试1 */
         struct Test1 : public IMessage
         {
-            using Tuple = std::tuple<std::optional<string>>;
-            std::optional<string> test;
+            using Tuple = std::tuple<string>;
+            string test;
         };
-        std::optional<Test1::Tuple> Test1Encode(std::optional<Test1> &obj);
-        std::optional<Test1> Test1Decode(std::optional<Test1::Tuple> &t);
+        std::shared_ptr<Test1::Tuple> Test1Encode(const std::shared_ptr<Test1>& obj);
+        std::shared_ptr<Test1> Test1Decode(const std::shared_ptr<Test1::Tuple>& t);
 
         /* 客户端验证 */
         struct AuthClient : public IMessage
         {
-            using Tuple = std::tuple<std::optional<string>>;
+            using Tuple = std::tuple<string>;
             /* 账号 */
-            std::optional<string> account;
+            string account;
         };
-        std::optional<AuthClient::Tuple> AuthClientEncode(std::optional<AuthClient> &obj);
-        std::optional<AuthClient> AuthClientDecode(std::optional<AuthClient::Tuple> &t);
+        std::shared_ptr<AuthClient::Tuple> AuthClientEncode(const std::shared_ptr<AuthClient>& obj);
+        std::shared_ptr<AuthClient> AuthClientDecode(const std::shared_ptr<AuthClient::Tuple>& t);
 
         /* RPC请求:客户端验证 */
         struct AuthClientReply : public IMessage
         {
-            using Tuple = std::tuple<std::optional<int64>>;
+            using Tuple = std::tuple<int64>;
             /* 错误码 */
-            std::optional<int64> code;
+            int64 code;
         };
-        std::optional<AuthClientReply::Tuple> AuthClientReplyEncode(std::optional<AuthClientReply> &obj);
-        std::optional<AuthClientReply> AuthClientReplyDecode(std::optional<AuthClientReply::Tuple> &t);
+        std::shared_ptr<AuthClientReply::Tuple> AuthClientReplyEncode(const std::shared_ptr<AuthClientReply>& obj);
+        std::shared_ptr<AuthClientReply> AuthClientReplyDecode(const std::shared_ptr<AuthClientReply::Tuple>& t);
 
         /* C to S 协议命令 */
         enum class C2SOpcode
         {
-        }
+            /* 心跳 */
+            Ping = 0x1000000,
+            /* 测试3 */
+            Test3 = 0x1000001,
+            /* 测试1 */
+            Test1 = 0x1000064,
+            /* 客户端验证 */
+            AuthClient = 0x1000065,
+        };
 
         /* S to C 协议命令 */
         enum class S2COpcode
         {
             /* 心跳 */
             Pong = 0x100000,
-        }
+        };
         /* C to S  协议 */
         namespace C2SProtocols
         {
             /* 心跳 */
-            class PingOper : Send<Ping, C2SOpcode>
+            class PingOper : public Send<Ping, C2SOpcode>
             {
             public:
-                static constexpr C2SOpcode Opcode = C2SOpcode.Ping;
-            }
+                static constexpr C2SOpcode Opcode = C2SOpcode::Ping;
+            };
             /* RPC请求:测试3 */
-            class Test3Oper : Call<Test3, Test3Reply, C2SOpcode>
+            class Test3Oper : public Call<Test3, Test3Reply, C2SOpcode>
             {
             public:
-                static constexpr C2SOpcode Opcode = C2SOpcode.Test3;
-            }
+                static constexpr C2SOpcode Opcode = C2SOpcode::Test3;
+            };
             /* 测试1 */
-            class Test1Oper : Send<Test1, C2SOpcode>
+            class Test1Oper : public Send<Test1, C2SOpcode>
             {
             public:
-                static constexpr C2SOpcode Opcode = C2SOpcode.Test1;
-            }
+                static constexpr C2SOpcode Opcode = C2SOpcode::Test1;
+            };
             /* RPC请求:客户端验证 */
-            class AuthClientOper : Call<AuthClient, AuthClientReply, C2SOpcode>
+            class AuthClientOper : public Call<AuthClient, AuthClientReply, C2SOpcode>
             {
             public:
-                static constexpr C2SOpcode Opcode = C2SOpcode.AuthClient;
-            }
+                static constexpr C2SOpcode Opcode = C2SOpcode::AuthClient;
+            };
         }
 
         /* S to C 协议 */
         namespace S2CProtocols
         {
             /* 心跳 */
-            class PongOper : Send<Pong, S2COpcode>
+            class PongOper : public Send<Pong, S2COpcode>
             {
             public:
-                static constexpr S2COpcode Opcode = S2COpcode.Pong;
-            }
+                static constexpr S2COpcode Opcode = S2COpcode::Pong;
+            };
         }
+
 
     }
 }

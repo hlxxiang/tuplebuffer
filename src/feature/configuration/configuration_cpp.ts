@@ -17,8 +17,9 @@ export class ConfigurationCPP extends CPP implements ConfigurationBase {
                 "\n#include <tuple>" +
                 "\n#include <string>" +
                 "\n#include <vector>" +
-                "\n#include <optional>" +
+                "\n#include <memory>" +
                 "\n#include <unordered_map>\n" +
+                "\n#include \"IConfiguration.h\"\n" +
 
                 `\nnamespace Gen\n{` +
                 `\n${T}/* ${declaration} */` +
@@ -36,8 +37,9 @@ export class ConfigurationCPP extends CPP implements ConfigurationBase {
                 "\n#include <tuple>" +
                 "\n#include <string>" +
                 "\n#include <vector>" +
-                "\n#include <optional>" +
+                "\n#include <memory>" +
                 "\n#include <unordered_map>\n" +
+                "\n#include \"IConfiguration.h\"\n" +
                 `\n#include \"${this.fileName}.h\"\n` +
 
                 `\nnamespace Gen\n{` +
