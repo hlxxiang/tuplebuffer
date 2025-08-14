@@ -107,19 +107,19 @@ declare const enum MsgFields {
 }
 
 declare const enum BitMask {
-    SourceGroup = 20,
-    TargetServer = 24,
+    GroupType = 24,
+    ServerType = 20,
 }
 
 declare const enum ProtocolMask {
-    SourceGroupMask = 7 << BitMask.SourceGroup,
-    TargetServerMask = 0xF << BitMask.TargetServer
+    GroupMask = 7 << BitMask.GroupType,
+    ServerMask = 0xF << BitMask.ServerType
 }
 
 declare const enum GroupType {
     Client = 0,
     System = 1,
-    Bg = 2,
+    BG = 2,
 }
 
 /** 不同服务的协议掩码, 可扩展 */

@@ -79,8 +79,8 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
             content += `\n${T}${T}}\n`;
         }
         if (to_b_result.length > 0) {
-            content += `\n${T}${T}/** ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Bg]}  协议命令 */`;
-            content += `\n${T}${T}const enum ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Bg]}${this.commandSuffix} {`;
+            content += `\n${T}${T}/** ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.BG]}  协议命令 */`;
+            content += `\n${T}${T}const enum ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.BG]}${this.commandSuffix} {`;
             content += to_b_result;
             content += `\n${T}${T}}\n`;
         }
@@ -101,7 +101,7 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
                 Log.instance.error(`超过频道上限`);
                 throw new Error("超过频道上限");
             }
-            let opcode = meta.source << BitMask.SourceGroup | meta.target << BitMask.TargetServer | (base[0] + i);
+            let opcode = meta.source << BitMask.GroupType | meta.target << BitMask.ServerType | (base[0] + i);
             if (opcode > this.maxOpcode) {
                 Log.instance.error(`opcode(${opcode}) max(${this.maxOpcode})`)
                 throw new Error("协议号超上限");
@@ -157,8 +157,8 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
             content += `\n${T}${T}}\n`;
         }
         if (to_b_result.length > 0) {
-            content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Bg]}  协议 */`;
-            content += `\n${T}${T}interface ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Bg]}${typesName} {`;
+            content += `\n${T}${T}/* ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.BG]}  协议 */`;
+            content += `\n${T}${T}interface ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.BG]}${typesName} {`;
             content += to_b_result;
             content += `\n${T}${T}}\n`;
         }

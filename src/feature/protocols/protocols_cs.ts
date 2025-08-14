@@ -100,8 +100,8 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
             content += `\n\n${T}${T}#endregion\n`;
         }
         if (to_b_result.length > 0) {
-            content += `\n${T}${T}#region ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Bg]}  协议命令\n`;
-            content += `\n${T}${T}public enum ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Bg]}${this.commandSuffix}\n${T}${T}{`;
+            content += `\n${T}${T}#region ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.BG]}  协议命令\n`;
+            content += `\n${T}${T}public enum ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.BG]}${this.commandSuffix}\n${T}${T}{`;
             content += to_b_result;
             content += `\n${T}${T}}`;
             content += `\n\n${T}${T}#endregion\n`;
@@ -123,7 +123,7 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
                 Log.instance.error(`超过频道上限`);
                 throw new Error("超过频道上限");
             }
-            let opcode = meta.source << BitMask.SourceGroup | meta.target << BitMask.TargetServer | (base[0] + i);
+            let opcode = meta.source << BitMask.GroupType | meta.target << BitMask.ServerType | (base[0] + i);
             if (opcode > this.maxOpcode) {
                 Log.instance.error(`opcode(${opcode}) max(${this.maxOpcode})`)
                 throw new Error("协议号超上限");
@@ -181,8 +181,8 @@ export class ProtocolsCS extends CS implements ProtocolsBase {
             content += `\n\n${T}${T}#endregion\n`;
         }
         if (to_b_result.length > 0) {
-            content += `\n${T}${T}#region ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.Bg]}  协议 \n`;
-            content += `\n${T}${T}namespace ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.Bg]}${typesName} \n${T}${T}{`;
+            content += `\n${T}${T}#region ${GroupOpcodeNames[groupType]} to ${GroupOpcodeNames[GroupType.BG]}  协议 \n`;
+            content += `\n${T}${T}namespace ${GroupOpcodeNames[groupType]}2${GroupOpcodeNames[GroupType.BG]}${typesName} \n${T}${T}{`;
             content += to_b_result;
             content += `\n${T}${T}}`;
             content += `\n\n${T}${T}#endregion\n`;
