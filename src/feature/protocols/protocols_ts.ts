@@ -43,6 +43,7 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
             let group = groups.get(groupType);
             content += `\n${T}${T}/*************************************** ${v[1]} 协议命令 ***************************************/\n`;
             content += this.compileGroup(groupType, groupName, group);
+            content += `\n${T}${T}/*************************************** ${v[1]} 协议命令 ***************************************/\n`;
         }
         this.addContent(content);
     }
@@ -54,14 +55,14 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
         let to_b_result = "";
         for (const groupChannel of group) {
             for (const channel of groupChannel[1]) {
-                if (channel[0][3] == GroupType.Client) {
+                if (channel[0][3] == ServerType.Client) {
                     to_c_result += this.compileCommand(groupType, groupName, channel);
                 }
-                else if (channel[0][3] == GroupType.System) {
-                    to_s_result += this.compileCommand(groupType, groupName, channel);
+                else if (channel[0][3] == ServerType.BG) {
+                    to_b_result += this.compileCommand(groupType, groupName, channel);
                 }
                 else {
-                    to_b_result += this.compileCommand(groupType, groupName, channel);
+                    to_s_result += this.compileCommand(groupType, groupName, channel);
                 }
             }
         }
@@ -100,7 +101,7 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
                 Log.instance.error(`超过频道上限`);
                 throw new Error("超过频道上限");
             }
-            let opcode = meta.source << BitMask.SourceGroup | meta.target << BitMask.TargetGroup | (base[0] + i);
+            let opcode = meta.source << BitMask.SourceGroup | meta.target << BitMask.TargetServer | (base[0] + i);
             if (opcode > this.maxOpcode) {
                 Log.instance.error(`opcode(${opcode}) max(${this.maxOpcode})`)
                 throw new Error("协议号超上限");
@@ -132,14 +133,14 @@ export class ProtocolsTS extends TS implements ProtocolsBase {
         let to_b_result = "";
         for (const groupChannel of group) {
             for (const channel of groupChannel[1]) {
-                if (channel[0][3] == GroupType.Client) {
+                if (channel[0][3] == ServerType.Client) {
                     to_c_result += this.compileGroupType(groupType, groupName, channel);
                 }
-                else if (channel[0][3] == GroupType.System) {
-                    to_s_result += this.compileGroupType(groupType, groupName, channel);
+                else if (channel[0][3] == ServerType.BG) {
+                     to_b_result += this.compileGroupType(groupType, groupName, channel);
                 }
                 else {
-                    to_b_result += this.compileGroupType(groupType, groupName, channel);
+                    to_s_result += this.compileGroupType(groupType, groupName, channel);
                 }
             }
         }

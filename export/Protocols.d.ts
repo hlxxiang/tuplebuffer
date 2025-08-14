@@ -9,12 +9,12 @@ declare namespace Gen {
 
         const enum ProtocolMask {
             SourceGroupMask = 0x700000,
-            TargetGroupMask = 0xf000000,
+            TargetServerMask = 0xf000000,
         }
 
         const enum BitMask {
             SourceGroup = 0x14,
-            TargetGroup = 0x18,
+            TargetServer = 0x18,
         }
 
         const enum GroupType {
@@ -26,7 +26,7 @@ declare namespace Gen {
         const enum ServerType {
             Client = 0x0,
             Gateway = 0x1,
-            End = 0x14,
+            BG = 0x14,
         }
 
         /** 心跳 */
@@ -113,6 +113,8 @@ declare namespace Gen {
             AuthClient = 0x1000065,
         }
 
+        /*************************************** Client 协议命令 ***************************************/
+
         /*************************************** System 协议命令 ***************************************/
 
         /** S to C 协议命令 */
@@ -120,6 +122,10 @@ declare namespace Gen {
             /** 心跳 */
             Pong = 0x100000,
         }
+
+        /*************************************** System 协议命令 ***************************************/
+
+        /*************************************** BG 协议命令 ***************************************/
 
         /*************************************** BG 协议命令 ***************************************/
 

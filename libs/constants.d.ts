@@ -108,12 +108,12 @@ declare const enum MsgFields {
 
 declare const enum BitMask {
     SourceGroup = 20,
-    TargetGroup = 24,
+    TargetServer = 24,
 }
 
 declare const enum ProtocolMask {
     SourceGroupMask = 7 << BitMask.SourceGroup,
-    TargetGroupMask = 0xF << BitMask.TargetGroup
+    TargetServerMask = 0xF << BitMask.TargetServer
 }
 
 declare const enum GroupType {
@@ -126,5 +126,5 @@ declare const enum GroupType {
 declare const enum ServerType {
     Client = 0,
     Gateway = 1,
-    End = 20
+    BG = 20
 }

@@ -5,17 +5,17 @@ import { Segment } from "../segment";
 
 Protocols.protocol(
     "Ping", "心跳",
-    GroupType.Client, GroupType.System, Segment.Common_c2s,
+    GroupType.Client, ServerType.Gateway, Segment.Common_c2s,
 );
 
 Protocols.protocol(
     "Pong", "心跳",
-    GroupType.System, GroupType.Client, Segment.Common_s2c,
+    GroupType.System, ServerType.Client, Segment.Common_s2c,
 );
 
 Protocols.protocol(
     "Test3", "测试3",
-    GroupType.Client, GroupType.System, Segment.Common_c2s,
+    GroupType.Client, ServerType.Gateway, Segment.Common_c2s,
     [
         string("account", "账号"),
     ],
@@ -26,7 +26,7 @@ Protocols.protocol(
 
 Protocols.protocol(
     "Test1", "测试1",
-    GroupType.Client, GroupType.System, Segment.Test_c2s,
+    GroupType.Client, ServerType.Gateway, Segment.Test_c2s,
     [
         string("test")
     ]
@@ -34,7 +34,7 @@ Protocols.protocol(
 
 Protocols.protocol(
     "AuthClient", "客户端验证",
-    GroupType.Client, GroupType.System, Segment.Test_c2s,
+    GroupType.Client, ServerType.Gateway, Segment.Test_c2s,
     [
         string("account", "账号"),
     ],

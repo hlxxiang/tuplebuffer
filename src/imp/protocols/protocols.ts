@@ -19,12 +19,12 @@ Protocols.init(
     "ProtocolMask",
     [
         [ProtocolMask.SourceGroupMask, "SourceGroupMask", "高字节位 SourceGroup 类型"],
-        [ProtocolMask.TargetGroupMask, "TargetGroupMask", "中字节 TargetGroup 类型"],
+        [ProtocolMask.TargetServerMask, "TargetServerMask", "中字节 TargetServer 类型"],
     ],
     "BitMask",
     [
         [BitMask.SourceGroup, "SourceGroup", "SourceGroup 类型"],
-        [BitMask.TargetGroup, "TargetGroup", "TargetGroup 类型"],
+        [BitMask.TargetServer, "TargetServer", "TargetServer 类型"],
     ],
     "GroupType",
     [
@@ -36,9 +36,9 @@ Protocols.init(
     [
         [ServerType.Client, "Client", "Client:客户端"],
         [ServerType.Gateway, "Gateway", "Gateway:网关"],
-        [ServerType.End, "End", "End"]
+        [ServerType.BG, "BG", "BG: 后台"]
     ],
-    1 << BitMask.TargetGroup,
+    1 << BitMask.TargetServer,
     Math.pow(2, 32) - 1,
 );
 

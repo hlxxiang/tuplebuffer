@@ -28,16 +28,16 @@ namespace Gen
         {
             /* 高字节位 SourceGroup 类型 */
             SourceGroupMask = 0x700000,
-            /* 中字节 TargetGroup 类型 */
-            TargetGroupMask = 0xf000000,
+            /* 中字节 TargetServer 类型 */
+            TargetServerMask = 0xf000000,
         };
 
         enum class BitMask
         {
             /* SourceGroup 类型 */
             SourceGroup = 0x14,
-            /* TargetGroup 类型 */
-            TargetGroup = 0x18,
+            /* TargetServer 类型 */
+            TargetServer = 0x18,
         };
 
         enum class GroupType
@@ -56,8 +56,8 @@ namespace Gen
             Client = 0x0,
             /* Gateway:网关 */
             Gateway = 0x1,
-            /* End */
-            End = 0x14,
+            /* BG: 后台 */
+            BG = 0x14,
         };
 
         /* 心跳 */

@@ -84,7 +84,7 @@ export class Protocols {
         this._groups = new Map<GroupType, ProtocolGroup>();
 
         for (const group of groupDefine) {
-            this._groups.set(group[0], new Map<GroupType, ProtocolGroupChannel>());
+            this._groups.set(group[0], new Map<ServerType, ProtocolGroupChannel>());
         }
 
         this._segments = [];
@@ -94,7 +94,7 @@ export class Protocols {
         langueList.set(langueType, constructor);
     }
 
-    public static segment(source: GroupType, target: GroupType, segment: ProtocolSegment, size: number): ProtocolSegment {
+    public static segment(source: GroupType, target: ServerType, segment: ProtocolSegment, size: number): ProtocolSegment {
         let result: ProtocolSegment;
         if (segment == null) {
             result = [0, size, source, target];
@@ -135,7 +135,7 @@ export class Protocols {
     }
 
     //注册协议
-    public static protocol(name: string, comment: string, sourceGroup: GroupType, targetGroup: GroupType, segment: [number, number, GroupType, GroupType], fields?: Array<VarMeta> | TypeMeta, fieldsReply?: Array<VarMeta> | TypeMeta): void {
+    public static protocol(name: string, comment: string, sourceGroup: GroupType, targetServer: ServerType, segment: [number, number, GroupType, ServerType], fields?: Array<VarMeta> | TypeMeta, fieldsReply?: Array<VarMeta> | TypeMeta): void {
         if (this._protocols.find((e) => e.name == name) != null) {
             Log.instance.error(`类型名${name}重复。`);
             throw new Error(`类型名${name}重复。`);
@@ -149,7 +149,7 @@ export class Protocols {
         let meta: ProtocolMeta = {
             name: name,
             source: sourceGroup,
-            target: targetGroup,
+            target: targetServer,
             comment: comment,
             meta: null,
             metaRpc: null
@@ -202,14 +202,14 @@ export class Protocols {
             Log.instance.error(`段的协议组(${segment[2]})不匹配 ${name}`);
             throw new Error(`段的协议组(${segment[2]})不匹配 ${name}`);
         }
-        if (targetGroup !== segment[3]) {
+        if (targetServer !== segment[3]) {
             Log.instance.error(`段的频道(${segment[3]})不匹配 ${name}`);
             throw new Error(`段的频道(${segment[3]})不匹配 ${name}`);
         }
-        let channels = list.get(targetGroup);
+        let channels = list.get(targetServer);
         if (channels == null) {
             channels = [];
-            list.set(targetGroup, channels);
+            list.set(targetServer, channels);
         }
         let protocolSegment = channels.find((e) => e[0] === segment);
         if (protocolSegment == null) {
